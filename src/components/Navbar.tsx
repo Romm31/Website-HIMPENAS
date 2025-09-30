@@ -26,7 +26,8 @@ const Navbar: React.FC = () => {
     { name: 'Berita', href: '/berita' },
     { name: 'Event', href: '/event' },
     { name: 'Visi & Misi', href: '/#visi-misi' },
-    { name: 'Tentang Kami', href: '/#tentang' },
+    { name: 'Tentang Kami', href: '/tentang' },
+     { name: 'Gallery', href: '/Gallery' },
   ];
 
   const navbarClasses = `
