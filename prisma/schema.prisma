@@ -44,19 +44,16 @@ model Event {
   updatedAt DateTime @updatedAt
 }
 
-// Model 'About' yang sudah disederhanakan
 model About {
   id      Int    @id @default(autoincrement())
   profile String
 }
 
-// Model 'Visi' yang baru
 model Visi {
   id     Int    @id @default(autoincrement())
   konten String
 }
 
-// Model 'Misi' yang baru
 model Misi {
   id     Int    @id @default(autoincrement())
   konten String
@@ -84,4 +81,30 @@ model Slide {
   updatedAt DateTime @updatedAt
 
   @@unique([order])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+model GalleryAlbum {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String?
+  coverImageUrl String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  mediaItems    GalleryMedia[]
+}
+
+model GalleryMedia {
+  id           Int          @id @default(autoincrement())
+  title        String?
+  url          String
+  type         MediaType    @default(IMAGE)
+  thumbnailUrl String?      // Berguna untuk thumbnail video
+  createdAt    DateTime     @default(now())
+  albumId      Int
+  album        GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
 }
