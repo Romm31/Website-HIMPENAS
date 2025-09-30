@@ -88,3 +88,13 @@
   transform: translateY(-8px);
   box-shadow: 0 20px 40px -15px rgba(4, 106, 56, 0.3);
 }
+
+.swiper-pagination-hero {
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: auto !important;
+  display: flex;
+  justify-content: center;
+  gap: 8px; /* Memberi jarak antar titik */
+}

@@ -7,6 +7,7 @@ import { GalleryAlbum } from '@prisma/client';
 import GalleryFilterControls from '@/components/GalleryFilterControls';
 import Pagination from '@/components/Pagination';
 import AlbumCard from '@/components/AlbumCard';
+import { useInView } from 'react-intersection-observer';
 
 type AlbumWithCount = GalleryAlbum & {
   _count: {
@@ -31,13 +32,16 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
   currentSearch,
   currentFilter,
 }) => {
+  const { ref: headerRef, inView: headerInView } = useInView({ triggerOnce: true, threshold: 0.2 });
+  const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
 
-      <header className="bg-emerald-dark text-white pt-24 pb-40 relative">
+      <header ref={headerRef} className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
         <div className="absolute inset-0 opacity-10">
-          <Image src="/header/berita-header.jpeg" layout="fill" objectFit="cover" alt="Galeri Kegiatan" className="brightness-50" />
+          <Image src="/header/event-header.jpeg" layout="fill" objectFit="cover" alt="Galeri Kegiatan" className="brightness-50" />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
@@ -49,7 +53,7 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
         </div>
       </header>
 
-      <main className="flex-grow">
+      <main ref={contentRef} className={`flex-grow fade-in-section ${contentInView ? 'is-visible' : ''}`}>
         <div className="container mx-auto px-4">
           <GalleryFilterControls />
           
@@ -80,6 +84,9 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
 
 export default GaleriPage;
 
+// ===============================================================
+// PERBAIKAN DI SINI: Mengisi kembali fungsi getServerSideProps
+// ===============================================================
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const pageSize = 9;
   const page = parseInt(context.query.page as string) || 1;

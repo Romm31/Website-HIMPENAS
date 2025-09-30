@@ -5,6 +5,7 @@ import { Slide } from '@prisma/client';
 import { BeritaType } from '@/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
+import 'swiper/css';
 import 'swiper/css/effect-fade';
 
 interface HeroSliderProps {
@@ -14,15 +15,15 @@ interface HeroSliderProps {
 
 const HeroSlider: React.FC<HeroSliderProps> = ({ slides, berita }) => {
   const combinedSlides = [
-    ...slides.map(slide => ({
+    ...slides.map((slide) => ({
       id: `slide-${slide.id}`,
       title: slide.title,
       imageUrl: slide.imageUrl,
       href: '/',
     })),
     ...berita
-      .filter(item => item.gambarUrl)
-      .map(item => ({
+      .filter((item) => item.gambarUrl)
+      .map((item) => ({
         id: `berita-${item.id}`,
         title: item.judul,
         imageUrl: item.gambarUrl!,
@@ -39,29 +40,29 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, berita }) => {
   }
 
   return (
-    <section className="w-full h-[70vh] relative overflow-hidden bg-gray-900">
+    <section className="relative w-full h-[70vh] overflow-hidden bg-gray-900">
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
         slidesPerView={1}
-        pagination={{ clickable: true }}
+        pagination={{
+          el: '.swiper-pagination-hero',
+          clickable: true,
+        }}
         loop={true}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         className="w-full h-full"
       >
         {combinedSlides.map((slide) => (
-          <SwiperSlide key={slide.id}>
+          <SwiperSlide key={slide.id} className="w-full h-full">
             <Link href={slide.href} className="block w-full h-full relative group">
               <Image
                 src={slide.imageUrl}
                 alt={slide.title}
-                layout="fill"
-                objectFit="cover"
+                fill
+                className="object-cover brightness-75 group-hover:brightness-50 transition-all duration-300"
                 priority={slide.id.startsWith('slide-')}
-                className="brightness-75 group-hover:brightness-50 transition-all duration-300"
               />
-
-              {/* PERUBAHAN DI SINI: Judul hanya tampil jika ID diawali 'slide-' */}
               {slide.id.startsWith('slide-') && (
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-center p-8 text-center">
                   <h1 className="text-white text-4xl md:text-6xl font-bold font-heading leading-tight drop-shadow-md">
@@ -73,6 +74,11 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, berita }) => {
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {/* Pagination */}
+      <div className="absolute bottom-6 md:bottom-10 lg:bottom-12 w-full z-10">
+        <div className="swiper-pagination-hero"></div>
+      </div>
     </section>
   );
 };
