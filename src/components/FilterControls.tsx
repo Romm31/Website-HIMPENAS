@@ -10,9 +10,10 @@ interface FilterControlsProps {
 const FilterControls: React.FC<FilterControlsProps> = ({ kategoriList, currentSearch, currentKategori }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg mb-12">
-      <form method="GET" action="/berita" className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+      <form method="GET" action="/berita" className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
         
-        <div className="md:col-span-2">
+        {/* Search */}
+        <div className="md:col-span-2 flex flex-col">
           <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
             Cari Berita
           </label>
@@ -23,11 +24,12 @@ const FilterControls: React.FC<FilterControlsProps> = ({ kategoriList, currentSe
             defaultValue={currentSearch}
             placeholder="Ketik judul atau kata kunci..."
             className="w-full px-4 py-3 bg-gray-100 border-transparent rounded-lg focus:ring-2 focus:ring-emerald-himp focus:border-transparent"
-            autoComplete="off" // <-- TAMBAHKAN ATRIBUT INI
+            autoComplete="off"
           />
         </div>
 
-        <div>
+        {/* Kategori */}
+        <div className="flex flex-col">
           <label htmlFor="kategori" className="block text-sm font-medium text-gray-700 mb-2">
             Filter Kategori
           </label>
@@ -46,9 +48,18 @@ const FilterControls: React.FC<FilterControlsProps> = ({ kategoriList, currentSe
           </select>
         </div>
 
-        <button type="submit" className="md:col-start-3 bg-emerald-himp text-white font-bold py-3 px-5 rounded-lg hover:bg-emerald-light transition-colors w-full">
-          Terapkan Filter
-        </button>
+        {/* Tombol */}
+        <div className="flex flex-col">
+          <label className="block text-sm font-medium text-transparent mb-2">
+            .
+          </label>
+          <button
+            type="submit"
+            className="w-full bg-emerald-himp text-white font-bold py-3 px-5 rounded-lg hover:bg-emerald-light transition-colors"
+          >
+            Terapkan Filter
+          </button>
+        </div>
       </form>
     </div>
   );
