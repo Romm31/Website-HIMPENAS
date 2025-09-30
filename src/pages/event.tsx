@@ -22,33 +22,15 @@ const EventPage: NextPage<EventPageProps> = ({ upcomingEvents, pastEvents }) => 
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
       
-      {/* =============================================================== */}
-      {/* PERUBAHAN DI SINI: Header Baru */}
-      {/* =============================================================== */}
-      <header
-        ref={headerRef}
-        className={`relative h-64 bg-emerald-dark fade-in-section ${
-          headerInView ? 'is-visible' : ''
-        }`}
-      >
-        {/* Pastikan Anda memiliki gambar ini di folder public/header/event-header.jpg */}
-        <Image
-          src="/header/event-header.jpeg" // Ganti dengan path gambar baru Anda untuk event
-          layout="fill"
-          objectFit="cover"
-          alt="Latar Belakang Kalender Kegiatan"
-          className="opacity-20"
-          priority
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-6xl font-bold text-white font-heading tracking-wider drop-shadow-lg">
+      <header ref={headerRef} className={`relative h-64 bg-emerald-dark fade-in-section ${headerInView ? 'is-visible' : ''}`}>
+        <Image src="/header/event-header.jpeg" layout="fill" objectFit="cover" alt="Kalender Kegiatan" className="opacity-20" priority />
+        <div className="absolute inset-0 flex items-center justify-center p-4"> {/* Tambahkan padding untuk mobile */}
+          {/* PERUBAHAN DI SINI: Ukuran teks & perataan */}
+          <h1 className="text-4xl md:text-6xl font-bold text-white font-heading tracking-wider drop-shadow-lg text-center">
             Kalender Kegiatan
           </h1>
         </div>
       </header>
-      {/* =============================================================== */}
-      {/* AKHIR PERUBAHAN HEADER */}
-      {/* =============================================================== */}
 
       <main className="flex-grow">
         <section id="upcoming-events" className="bg-white py-16">
@@ -99,7 +81,7 @@ const EventPage: NextPage<EventPageProps> = ({ upcomingEvents, pastEvents }) => 
 
 export default EventPage;
 
-// getServerSideProps tidak perlu diubah
+// getServerSideProps tidak berubah
 export const getServerSideProps: GetServerSideProps = async () => {
   const now = new Date();
   const allEvents = await prisma.event.findMany({

@@ -8,19 +8,19 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
   password  String
   name      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  uploads   Upload[]  // ⬅️ relasi ke tabel Upload
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  uploads   Upload[]
 }
 
 model Kategori {
-  id        Int      @id @default(autoincrement())
-  nama      String   @unique
-  berita    Berita[]
+  id     Int      @id @default(autoincrement())
+  nama   String   @unique
+  berita Berita[]
 }
 
 model Berita {
@@ -44,19 +44,23 @@ model Event {
   updatedAt DateTime @updatedAt
 }
 
+// Model 'About' yang sudah disederhanakan
 model About {
-  id       Int    @id @default(autoincrement())
-  visi     String
-  misi     String
-  profile  String
+  id      Int    @id @default(autoincrement())
+  profile String
 }
 
-model VisiMisi {
-  id        Int      @id @default(autoincrement())
-  visi      String
-  misi      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// Model 'Visi' yang baru
+model Visi {
+  id     Int    @id @default(autoincrement())
+  konten String
+}
+
+// Model 'Misi' yang baru
+model Misi {
+  id     Int    @id @default(autoincrement())
+  konten String
+  order  Int?
 }
 
 model Upload {
@@ -67,18 +71,17 @@ model Upload {
   mimetype  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId Int?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model Slide {
   id        Int      @id @default(autoincrement())
   title     String
   imageUrl  String
-  order     Int      // gunakan 1 atau 2 untuk posisi slide utama
+  order     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([order]) // setiap posisi hanya boleh 1 baris
+  @@unique([order])
 }
-
