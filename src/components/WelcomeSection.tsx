@@ -15,8 +15,9 @@ const WelcomeSection: React.FC = () => {
           Selamat Datang
         </h2>
         <p className="mt-4 text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-          di Himpunan Pengolahan Sawit. Jelajahi inovasi, berita, dan kegiatan terbaru dari komunitas kami.
+          di Himpunan Pengolahan Sawit (HIMPENAS), Jelajahi inovasi, berita, dan kegiatan terbaru dari kami.
         </p>
+      
       </div>
     </section>
   );

@@ -22,12 +22,17 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
 
-      <header ref={headerRef} className={`relative h-72 bg-emerald-dark fade-in-section ${headerInView ? 'is-visible' : ''}`}>
-        <Image src="/header/berita-header.jpeg" layout="fill" objectFit="cover" alt="Tentang Himpunan" className="opacity-20" />
-        <div className="absolute inset-0 flex items-center justify-center p-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-white font-heading tracking-wider drop-shadow-lg text-center">
+      <header ref={headerRef} className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
+        <div className="absolute inset-0 opacity-10">
+          <Image src="/about/about.jpeg" layout="fill" objectFit="cover" alt="Latar Belakang Tentang Kami" className="brightness-50" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-5xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
             Tentang HIMPENAS
           </h1>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+            Mengenal lebih dekat sejarah, struktur, dan semangat kami.
+          </p>
         </div>
       </header>
 

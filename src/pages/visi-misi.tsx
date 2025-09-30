@@ -20,10 +20,17 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misiItems }) => {
       <Navbar />
 
       {/* Banner Header */}
-      <header ref={headerRef} className={`relative h-72 bg-emerald-dark fade-in-section ${headerInView ? 'is-visible' : ''}`}>
-        <Image src="/header/berita-header.jpeg" layout="fill" objectFit="cover" alt="Visi & Misi Himpunan" className="opacity-10" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-6xl font-bold text-white font-heading tracking-wider drop-shadow-lg text-center">Visi & Misi HIMPENAS</h1>
+      <header ref={headerRef} className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
+        <div className="absolute inset-0 opacity-10">
+          <Image src="/header/berita-header.jpeg" layout="fill" objectFit="cover" alt="Latar Belakang Visi Misi" className="brightness-50" />
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <h1 className="text-5xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
+            Visi & Misi
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+            Arah dan tujuan yang menjadi landasan gerak HIMPENAS.
+          </p>
         </div>
       </header>
 
