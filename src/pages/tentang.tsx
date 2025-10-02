@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import TeamCard from '@/components/TeamCard';
+import DepartmentCard from '@/components/DepartmentCard';
 import Link from 'next/link';
 
 interface TentangPageProps {
@@ -22,54 +23,140 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
 
-      <header ref={headerRef} className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
+      {/* Header */}
+      <header
+        ref={headerRef}
+        className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}
+      >
         <div className="absolute inset-0 opacity-10">
-          <Image src="/about/about.jpeg" layout="fill" objectFit="cover" alt="Latar Belakang Tentang Kami" className="brightness-50" />
+          <Image
+            src="/header/event-header.jpeg"
+            layout="fill"
+            objectFit="cover"
+            alt="Latar Belakang Tentang Kami"
+            className="brightness-50"
+          />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
             Tentang HIMPENAS
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-            Mengenal lebih dekat sejarah, struktur, dan semangat kami.
+            Mengenal lebih dekat struktur organisasi & departemen HIMPENAS.
           </p>
         </div>
       </header>
 
       <main className="flex-grow">
-        <section ref={profileRef} className={`bg-white py-20 fade-in-section ${profileInView ? 'is-visible' : ''}`}>
+        {/* Profil */}
+        <section
+          ref={profileRef}
+          className={`bg-white py-20 fade-in-section ${profileInView ? 'is-visible' : ''}`}
+        >
           <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-4">
-            
-            {/* PERUBAHAN DI SINI */}
+            <div className="relative h-80 order-first md:order-last">
+              <Image
+                src="/about/about.jpeg"
+                layout="fill"
+                objectFit="cover"
+                alt="Kegiatan Himpunan"
+                className="rounded-xl shadow-2xl"
+              />
+            </div>
             <div className="text-center md:text-left">
               <h2 className="text-4xl font-bold font-heading text-emerald-dark mb-6">Profil & Sejarah</h2>
-              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">{about?.profile || 'Informasi profil belum tersedia.'}</p>
-            </div>
-
-            <div className="relative h-80 order-first md:order-last"> {/* Pindahkan gambar ke atas di mobile */}
-              <Image src="/about/about.jpeg" layout="fill" objectFit="cover" alt="Kegiatan Himpunan" className="rounded-xl shadow-2xl" />
+              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
+                {about?.profile || 'Informasi profil belum tersedia.'}
+              </p>
             </div>
           </div>
         </section>
 
-        <section ref={teamRef} className={`py-20 bg-gray-50 fade-in-section ${teamInView ? 'is-visible' : ''}`}>
+        {/* Struktur Organisasi */}
+        <section
+          ref={teamRef}
+          className={`py-20 bg-gray-50 fade-in-section ${teamInView ? 'is-visible' : ''}`}
+        >
           <div className="container mx-auto px-4">
-            <div className="text-center mb-16"><h2 className="text-4xl font-bold font-heading text-emerald-dark">Struktur Organisasi</h2><div className="mt-4 w-24 h-1 bg-emerald-himp mx-auto rounded-full"></div></div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-              <TeamCard imageUrl="/team/ketua.jpg" name="Nama Ketua" role="Ketua Himpunan" />
-              <TeamCard imageUrl="/team/wakil.jpg" name="Nama Wakil" role="Wakil Ketua" />
-              <TeamCard imageUrl="/team/sekretaris.jpg" name="Nama Sekretaris" role="Sekretaris" />
-              <TeamCard imageUrl="/team/bendahara.jpg" name="Nama Bendahara" role="Bendahara" />
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold font-heading text-emerald-dark">Struktur Organisasi</h2>
+              <div className="mt-4 w-24 h-1 bg-emerald-himp mx-auto rounded-full"></div>
+            </div>
+
+            <div className="flex flex-col items-center gap-12">
+              {/* Ketua & Wakil */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+                <TeamCard imageUrl="/struktur/ketua.jpg" name="Nama Ketua" role="Ketua Himpunan" />
+                <TeamCard imageUrl="/struktur/wakil.jpg" name="Nama Wakil" role="Wakil Ketua Himpunan" />
+              </div>
+
+              {/* Sekum + Bendahara */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+                <TeamCard imageUrl="/struktur/sekre.jpg" name="Nama Sekum" role="Sekretaris Umum" />
+                <TeamCard imageUrl="/struktur/bendum1.jpg" name="Nama Bendum 1" role="Bendahara Umum 1" />
+                <TeamCard imageUrl="/struktur/bendum2.jpg" name="Nama Bendum 2" role="Bendahara Umum 2" />
+              </div>
+
+              {/* Departemen */}
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                <DepartmentCard
+                  title="Departemen Internal"
+                  staffCount={18}
+                  ketua={{ name: "Nama Ketua Internal", imageUrl: "/struktur/departemen/internal/foto1.jpg" }}
+                  wakil={{ name: "Nama Wakil Internal", imageUrl: "/struktur/departemen/internal/foto2.jpg" }}
+                  sekretaris={{ name: "Nama Sekretaris Internal", imageUrl: "/struktur/departemen/internal/foto3.jpg" }}
+                />
+
+                <DepartmentCard
+                  title="Departemen Eksternal"
+                  staffCount={20}
+                  ketua={{ name: "Nama Ketua Eksternal", imageUrl: "/struktur/departemen/eksternal/foto1.jpg" }}
+                  wakil={{ name: "Nama Wakil Eksternal", imageUrl: "/struktur/departemen/eksternal/foto2.jpg" }}
+                  sekretaris={{ name: "Nama Sekretaris Eksternal", imageUrl: "/struktur/departemen/eksternal/foto3.jpg" }}
+                />
+
+                <DepartmentCard
+                  title="Departemen Akademik"
+                  staffCount={14}
+                  ketua={{ name: "Nama Ketua Akademik", imageUrl: "/struktur/departemen/akademik/foto1.jpg" }}
+                  wakil={{ name: "Nama Wakil Akademik", imageUrl: "/struktur/departemen/akademik/foto2.jpg" }}
+                  sekretaris={{ name: "Nama Sekretaris Akademik", imageUrl: "/struktur/departemen/akademik/foto3.jpg" }}
+                />
+
+                <DepartmentCard
+                  title="Departemen PSDM"
+                  staffCount={19}
+                  ketua={{ name: "Nama Ketua PSDM", imageUrl: "/struktur/departemen/psdm/foto1.jpg" }}
+                  wakil={{ name: "Nama Wakil PSDM", imageUrl: "/struktur/departemen/psdm/foto2.jpg" }}
+                  sekretaris={{ name: "Nama Sekretaris PSDM", imageUrl: "/struktur/departemen/psdm/foto3.jpg" }}
+                />
+
+                <DepartmentCard
+                  title="Departemen INFOKOM"
+                  staffCount={9}
+                  ketua={{ name: "Nama Ketua INFOKOM", imageUrl: "/struktur/departemen/infokom/foto1.jpg" }}
+                  wakil={{ name: "Nama Wakil INFOKOM", imageUrl: "/struktur/departemen/infokom/foto2.jpg" }}
+                  sekretaris={{ name: "Nama Sekretaris INFOKOM", imageUrl: "/struktur/departemen/infokom/foto3.jpg" }}
+                />
+              </div>
             </div>
           </div>
         </section>
 
-        <section ref={ctaRef} className={`py-20 bg-emerald-himp fade-in-section ${ctaInView ? 'is-visible' : ''}`}>
+        {/* CTA */}
+        <section
+          ref={ctaRef}
+          className={`py-20 bg-emerald-himp fade-in-section ${ctaInView ? 'is-visible' : ''}`}
+        >
           <div className="container mx-auto px-4 text-center text-white">
             <h2 className="text-4xl font-bold font-heading mb-4">Tertarik untuk Bergabung?</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">Jadilah bagian dari komunitas kami!</p>
-             {/* Untuk meletakkan contact person */}
-            <Link href="/kontak" className="bg-white text-emerald-himp font-bold py-3 px-8 rounded-full hover:bg-gray-200 transition-all duration-300 shadow-lg text-lg">
+            <p className="text-xl mb-8 max-w-2xl mx-auto">
+              Jadilah bagian dari komunitas kami dan kembangkan skill-mu di dunia teknologi open source!
+            </p>
+            <Link
+              href="/kontak"
+              className="bg-white text-emerald-himp font-bold py-3 px-8 rounded-full hover:bg-gray-200 transition-all duration-300 shadow-lg text-lg"
+            >
               Hubungi Kami
             </Link>
           </div>
@@ -83,13 +170,9 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
 
 export default TentangPage;
 
-// getServerSideProps tidak berubah
 export const getServerSideProps: GetServerSideProps = async () => {
   const about = await prisma.about.findFirst();
-
   return {
-    props: {
-      about: JSON.parse(JSON.stringify(about)),
-    },
+    props: { about: JSON.parse(JSON.stringify(about)) },
   };
 };
