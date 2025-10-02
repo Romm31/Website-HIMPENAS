@@ -23,6 +23,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-3 text-base">
               <li><Link href="#berita" className="hover:text-emerald-light transition-colors">Berita</Link></li>
               <li><Link href="#event" className="hover:text-emerald-light transition-colors">Event</Link></li>
+              <li><Link href="#galeri" className="hover:text-emerald-light transition-colors">Galeri</Link></li>
               <li><Link href="#visi-misi" className="hover:text-emerald-light transition-colors">Visi & Misi</Link></li>
               <li><Link href="#tentang" className="hover:text-emerald-light transition-colors">Tentang Kami</Link></li>
               <li><Link href="/kontak" className="hover:text-emerald-light transition-colors">Kontak</Link></li>

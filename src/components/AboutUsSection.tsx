@@ -1,56 +1,62 @@
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { About } from '@prisma/client';
-import { useInView } from 'react-intersection-observer';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useInView } from "react-intersection-observer";
 
-interface AboutUsProps {
-  data: About | null;
+interface AboutUsSectionProps {
+  data: {
+    profile?: string | null;
+  } | null;
 }
 
-const AboutUsSection: React.FC<AboutUsProps> = ({ data }) => {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  if (!data) return null;
+const AboutUsSection: React.FC<AboutUsSectionProps> = ({ data }) => {
+  const { ref: sectionRef, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   return (
     <section
-      id="tentang"
-      ref={ref}
-      className={`py-20 bg-white fade-in-section ${inView ? 'is-visible' : ''}`}
+      ref={sectionRef}
+      className={`py-20 bg-white transition-all duration-700 ${
+        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      }`}
     >
-      <div className="container mx-auto px-4">
-        {/* Judul Tengah */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold font-heading tracking-tight text-emerald-himp">
-            Tentang Kami
-          </h2>
-          <div className="mt-2 w-20 h-1 bg-emerald-himp rounded-full mx-auto"></div>
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        {/* Gambar */}
+        <div
+          className={`relative h-72 md:h-96 rounded-xl overflow-hidden shadow-lg transform transition duration-700 ${
+            inView ? "scale-100 opacity-100" : "scale-95 opacity-0"
+          } hover:scale-105 hover:shadow-2xl`}
+        >
+          <Image
+            src="/about/about.jpeg"
+            alt="Tentang Himpunan"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-xl"
+          />
         </div>
 
-        <div className="flex flex-wrap items-center">
-          {/* Gambar */}
-          <div className="w-full md:w-1/2 p-4">
-            <Image
-              src="/about/about.jpeg"
-              alt="Tentang Kami HIMPENAS"
-              width={600}
-              height={400}
-              className="rounded-xl shadow-2xl object-cover"
-            />
-          </div>
-
-          {/* Konten */}
-          <div className="w-full md:w-1/2 p-4 md:pl-12">
-            <p className="text-gray-700 leading-relaxed text-lg mb-8">
-              {data.profile}
-            </p>
-            <Link
-              href="/tentang"
-              className="inline-flex items-center bg-emerald-himp text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-light transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            >
-              Pelajari Lebih Lanjut
-            </Link>
-          </div>
+        {/* Konten */}
+        <div
+          className={`transition-all duration-700 delay-150 ${
+            inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+          }`}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-emerald-700 mb-6">
+            Tentang Kami
+          </h2>
+          <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+            {data?.profile ||
+              "HIMPENAS adalah himpunan mahasiswa yang berkomitmen pada pengembangan diri, teknologi, dan solidaritas antar anggota."}
+          </p>
+          <Link
+            href="/tentang"
+            className="inline-block mt-6 bg-emerald-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-emerald-700 hover:shadow-xl transition-all duration-300"
+          >
+            Lihat Selengkapnya
+          </Link>
         </div>
       </div>
     </section>

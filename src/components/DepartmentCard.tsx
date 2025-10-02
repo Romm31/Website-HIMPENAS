@@ -5,6 +5,7 @@ interface PersonMini {
   name: string;
   imageUrl: string;
 }
+
 interface DepartmentCardProps {
   title: string;
   staffCount: number;
@@ -29,12 +30,13 @@ const DepartmentCard: React.FC<DepartmentCardProps> = ({
       <div className="flex flex-col items-center gap-6 mb-6">
         {/* Ketua */}
         <div className="flex flex-col items-center">
-          <div className="relative w-20 h-20 md:w-24 md:h-24">
+          <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-gray-200">
             <Image
               src={ketua.imageUrl}
-              alt="" // hilangin text di dalam bulatan
-              layout="fill"
-              className="rounded-full border-4 border-emerald-himp object-cover"
+              alt={ketua.name}
+              fill
+              sizes="96px"
+              className="object-cover border-4 border-emerald-himp rounded-full"
             />
           </div>
           <p className="text-sm font-semibold text-gray-800 mt-2 text-center line-clamp-2">
@@ -48,12 +50,13 @@ const DepartmentCard: React.FC<DepartmentCardProps> = ({
           {[{ person: wakil, role: 'Wakil' }, { person: sekretaris, role: 'Sekretaris' }].map(
             ({ person, role }, i) => (
               <div key={i} className="flex flex-col items-center">
-                <div className="relative w-16 h-16 md:w-20 md:h-20">
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden bg-gray-200">
                   <Image
                     src={person.imageUrl}
-                    alt="" // alt kosong biar ga nongol text
-                    layout="fill"
-                    className="rounded-full border-4 border-emerald-himp object-cover"
+                    alt={person.name}
+                    fill
+                    sizes="80px"
+                    className="object-cover border-4 border-emerald-himp rounded-full"
                   />
                 </div>
                 <p className="text-sm font-semibold text-gray-800 mt-2 text-center line-clamp-2">

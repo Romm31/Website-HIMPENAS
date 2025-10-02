@@ -1,23 +1,23 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import { About } from '@prisma/client';
-import { prisma } from '@/lib/prisma';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import Image from 'next/image';
-import { useInView } from 'react-intersection-observer';
-import TeamCard from '@/components/TeamCard';
-import DepartmentCard from '@/components/DepartmentCard';
-import Link from 'next/link';
+import type { GetServerSideProps, NextPage } from "next";
+import { About } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Image from "next/image";
+import { useInView } from "react-intersection-observer";
+import TeamCard from "@/components/TeamCard";
+import DepartmentCard from "@/components/DepartmentCard";
+import Link from "next/link";
 
 interface TentangPageProps {
   about: About | null;
 }
 
 const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
-  const { ref: headerRef, inView: headerInView } = useInView({ triggerOnce: true, threshold: 0.3 });
+  const { ref: headerRef, inView: headerInView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const { ref: profileRef, inView: profileInView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const { ref: teamRef, inView: teamInView } = useInView({ triggerOnce: true, threshold: 0.2 });
-  const { ref: ctaRef, inView: ctaInView } = useInView({ triggerOnce: true, threshold: 0.3 });
+  const { ref: ctaRef, inView: ctaInView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -26,47 +26,56 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
       {/* Header */}
       <header
         ref={headerRef}
-        className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}
+        className={`relative bg-emerald-dark text-white pt-24 pb-40 transition-all duration-700 ${
+          headerInView ? "opacity-100 translate-y-0" : "md:opacity-0 md:translate-y-10"
+        }`}
       >
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-20">
           <Image
             src="/header/event-header.jpeg"
-            layout="fill"
-            objectFit="cover"
             alt="Latar Belakang Tentang Kami"
-            className="brightness-50"
+            fill
+            className="object-cover brightness-50"
+            priority
           />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
+          <h1 className="text-4xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
             Tentang HIMPENAS
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-lg md:text-2xl text-gray-200 max-w-3xl mx-auto">
             Mengenal lebih dekat struktur organisasi & departemen HIMPENAS.
           </p>
         </div>
       </header>
 
       <main className="flex-grow">
-        {/* Profil */}
+        {/* Profil & Sejarah */}
         <section
           ref={profileRef}
-          className={`bg-white py-20 fade-in-section ${profileInView ? 'is-visible' : ''}`}
+          className={`bg-white py-16 md:py-24 transition-all duration-700 ${
+            profileInView ? "opacity-100 translate-y-0" : "md:opacity-0 md:translate-y-10"
+          }`}
         >
           <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center px-4">
-            <div className="relative h-80 order-first md:order-last">
+            {/* Gambar Profil */}
+            <div className="relative h-64 md:h-80 order-first md:order-last rounded-xl shadow-xl overflow-hidden">
               <Image
                 src="/about/about.jpeg"
-                layout="fill"
-                objectFit="cover"
                 alt="Kegiatan Himpunan"
-                className="rounded-xl shadow-2xl"
+                fill
+                className="object-cover rounded-xl transition-transform duration-500 hover:scale-105"
+                priority
               />
             </div>
+
+            {/* Deskripsi Profil */}
             <div className="text-center md:text-left">
-              <h2 className="text-4xl font-bold font-heading text-emerald-dark mb-6">Profil & Sejarah</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-heading text-emerald-dark mb-6">
+                Profil & Sejarah
+              </h2>
               <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
-                {about?.profile || 'Informasi profil belum tersedia.'}
+                {about?.profile || "Informasi profil belum tersedia."}
               </p>
             </div>
           </div>
@@ -75,11 +84,15 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
         {/* Struktur Organisasi */}
         <section
           ref={teamRef}
-          className={`py-20 bg-gray-50 fade-in-section ${teamInView ? 'is-visible' : ''}`}
+          className={`py-20 bg-gray-50 transition-all duration-700 ${
+            teamInView ? "opacity-100 translate-y-0" : "md:opacity-0 md:translate-y-10"
+          }`}
         >
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold font-heading text-emerald-dark">Struktur Organisasi</h2>
+              <h2 className="text-3xl md:text-4xl font-bold font-heading text-emerald-dark">
+                Struktur Organisasi
+              </h2>
               <div className="mt-4 w-24 h-1 bg-emerald-himp mx-auto rounded-full"></div>
             </div>
 
@@ -106,7 +119,6 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                   wakil={{ name: "Nama Wakil Internal", imageUrl: "/struktur/departemen/internal/foto2.jpg" }}
                   sekretaris={{ name: "Nama Sekretaris Internal", imageUrl: "/struktur/departemen/internal/foto3.jpg" }}
                 />
-
                 <DepartmentCard
                   title="Departemen Eksternal"
                   staffCount={20}
@@ -114,7 +126,6 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                   wakil={{ name: "Nama Wakil Eksternal", imageUrl: "/struktur/departemen/eksternal/foto2.jpg" }}
                   sekretaris={{ name: "Nama Sekretaris Eksternal", imageUrl: "/struktur/departemen/eksternal/foto3.jpg" }}
                 />
-
                 <DepartmentCard
                   title="Departemen Akademik"
                   staffCount={14}
@@ -122,7 +133,6 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                   wakil={{ name: "Nama Wakil Akademik", imageUrl: "/struktur/departemen/akademik/foto2.jpg" }}
                   sekretaris={{ name: "Nama Sekretaris Akademik", imageUrl: "/struktur/departemen/akademik/foto3.jpg" }}
                 />
-
                 <DepartmentCard
                   title="Departemen PSDM"
                   staffCount={19}
@@ -130,7 +140,6 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                   wakil={{ name: "Nama Wakil PSDM", imageUrl: "/struktur/departemen/psdm/foto2.jpg" }}
                   sekretaris={{ name: "Nama Sekretaris PSDM", imageUrl: "/struktur/departemen/psdm/foto3.jpg" }}
                 />
-
                 <DepartmentCard
                   title="Departemen INFOKOM"
                   staffCount={9}
@@ -146,11 +155,13 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
         {/* CTA */}
         <section
           ref={ctaRef}
-          className={`py-20 bg-emerald-himp fade-in-section ${ctaInView ? 'is-visible' : ''}`}
+          className={`py-20 bg-emerald-himp transition-all duration-700 ${
+            ctaInView ? "opacity-100 translate-y-0" : "md:opacity-0 md:translate-y-10"
+          }`}
         >
           <div className="container mx-auto px-4 text-center text-white">
-            <h2 className="text-4xl font-bold font-heading mb-4">Tertarik untuk Bergabung?</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">Tertarik untuk Bergabung?</h2>
+            <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
               Jadilah bagian dari komunitas kami dan kembangkan skill-mu di dunia teknologi open source!
             </p>
             <Link

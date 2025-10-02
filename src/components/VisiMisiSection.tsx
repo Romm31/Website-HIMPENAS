@@ -1,36 +1,69 @@
-import React from 'react';
-import { VisiMisi } from '@prisma/client';
-import { useInView } from 'react-intersection-observer';
+import React from "react";
+import { useInView } from "react-intersection-observer";
 
-interface VisiMisiProps {
-  data: VisiMisi | null;
+interface VisiMisiSectionProps {
+  data: {
+    visi: string | null;
+    misi: string | null;
+  } | null;
 }
 
-const VisiMisiSection: React.FC<VisiMisiProps> = ({ data }) => {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  if (!data) return null;
+const VisiMisiSection: React.FC<VisiMisiSectionProps> = ({ data }) => {
+  const { ref: visiRef, inView: visiInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+  const { ref: misiRef, inView: misiInView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   return (
-    <section id="visi-misi" ref={ref} className={`py-20 bg-gray-50 fade-in-section ${inView ? 'is-visible' : ''}`}>
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold font-heading tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-himp to-emerald-dark">
-            Visi & Misi
-          </h2>
-          <div className="mt-4 w-24 h-1 bg-emerald-himp mx-auto rounded-full"></div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-white p-8 rounded-xl shadow-lg border-t-4 border-emerald-himp">
-            <h3 className="text-3xl font-semibold mb-6 text-emerald-himp font-heading flex items-center">Visi</h3>
-            <p className="text-gray-700 leading-relaxed text-lg">{data.visi}</p>
+    <section className="py-20 bg-gray-50 relative">
+      <div className="container mx-auto px-4 text-center">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-emerald-dark mb-12">
+          Visi & Misi
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+          {/* Visi Card */}
+          <div
+            ref={visiRef}
+            className={`bg-white p-8 rounded-2xl shadow-lg border-t-4 border-emerald-600 transform transition-all duration-700 ${
+              visiInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            } hover:shadow-2xl hover:-translate-y-2 hover:scale-105`}
+          >
+            <h3 className="text-2xl font-bold text-emerald-700 mb-4">Visi</h3>
+            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+              {data?.visi || "Belum ada visi yang ditambahkan."}
+            </p>
           </div>
-          <div className="bg-white p-8 rounded-xl shadow-lg border-t-4 border-emerald-himp">
-            <h3 className="text-3xl font-semibold mb-6 text-emerald-himp font-heading flex items-center">Misi</h3>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg">{data.misi}</p>
+
+          {/* Misi Card */}
+          <div
+            ref={misiRef}
+            className={`bg-white p-8 rounded-2xl shadow-lg border-t-4 border-emerald-600 transform transition-all duration-700 delay-150 ${
+              misiInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            } hover:shadow-2xl hover:-translate-y-2 hover:scale-105`}
+          >
+            <h3 className="text-2xl font-bold text-emerald-700 mb-4">Misi</h3>
+            <ul className="text-gray-600 text-left list-disc list-inside space-y-2 whitespace-pre-line">
+              {data?.misi
+                ? data.misi.split("\n").map((m, i) => (
+                    <li key={i} className="hover:text-emerald-600 transition-colors">
+                      {m}
+                    </li>
+                  ))
+                : "Belum ada misi yang ditambahkan."}
+            </ul>
           </div>
         </div>
       </div>
     </section>
   );
 };
+
 export default VisiMisiSection;
