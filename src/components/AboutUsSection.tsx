@@ -44,7 +44,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ data }) => {
             inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
           }`}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-emerald-700 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-emerald-dark mb-6">
             Tentang Kami
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
@@ -53,7 +53,7 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ data }) => {
           </p>
           <Link
             href="/tentang"
-            className="inline-block mt-6 bg-emerald-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-emerald-700 hover:shadow-xl transition-all duration-300"
+            className="inline-block mt-6 bg-emerald-dark text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-emerald-dark hover:shadow-xl transition-all duration-300"
           >
             Lihat Selengkapnya
           </Link>

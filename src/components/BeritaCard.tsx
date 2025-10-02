@@ -1,63 +1,65 @@
-// src/components/BeritaCard.tsx
-import Image from "next/image";
-import Link from "next/link";
+import React from "react";
 import { Berita, Kategori } from "@prisma/client";
+import Link from "next/link";
+import Image from "next/image";
 
-type BeritaWithKategori = Berita & { kategori?: Kategori | null };
+type BeritaWithKategori = Berita & { kategori: Kategori | null };
 
 interface BeritaCardProps {
   berita: BeritaWithKategori;
 }
 
-export default function BeritaCard({ berita }: BeritaCardProps) {
-  const publicationDate = new Date(berita.createdAt).toLocaleDateString("id-ID", {
+const BeritaCard: React.FC<BeritaCardProps> = ({ berita }) => {
+  const date = new Date(berita.createdAt).toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden flex flex-col group">
+    <div className="bg-white rounded-xl shadow hover:shadow-lg transition-transform duration-300 hover:scale-[1.02] flex flex-col min-h-[380px]">
       {/* Gambar */}
-      <div className="relative h-52 w-full overflow-hidden">
+      <div className="relative w-full h-48">
         {berita.gambarUrl ? (
           <Image
             src={berita.gambarUrl}
             alt={berita.judul}
             layout="fill"
             objectFit="cover"
-            className="transition-transform duration-500 group-hover:scale-105"
+            className="rounded-t-xl"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-sm rounded-t-xl">
             Gambar tidak tersedia
           </div>
         )}
       </div>
 
       {/* Konten */}
-      <div className="p-5 flex flex-col flex-grow">
+      <div className="flex flex-col flex-grow p-4">
         {berita.kategori && (
-          <span className="text-xs font-semibold text-emerald-himp uppercase mb-1">
+          <p className="text-xs font-semibold text-emerald-himp uppercase mb-1">
             {berita.kategori.nama}
-          </span>
+          </p>
         )}
-        <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2 group-hover:text-emerald-himp">
+        <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
           {berita.judul}
         </h3>
-        <p className="text-xs text-gray-500 mb-3">{publicationDate}</p>
-        <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-          {/* Strip HTML dari konten */}
-          {berita.konten.replace(/<[^>]+>/g, "").slice(0, 150)}...
+        <p className="text-sm text-gray-500 mb-4">{date}</p>
+        <p className="text-sm text-gray-600 line-clamp-3 flex-grow">
+          {berita.konten.replace(/<[^>]+>/g, "").slice(0, 120)}...
         </p>
 
+        {/* Tombol */}
         <Link
           href={`/berita/${berita.id}`}
-          className="mt-auto font-semibold text-emerald-himp hover:underline"
+          className="text-emerald-himp font-semibold mt-4 hover:underline"
         >
           Baca Selengkapnya →
         </Link>
       </div>
     </div>
   );
-}
+};
+
+export default BeritaCard;

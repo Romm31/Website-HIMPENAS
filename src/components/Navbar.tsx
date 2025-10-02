@@ -10,13 +10,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -31,9 +25,9 @@ const Navbar: React.FC = () => {
   ];
 
   const navbarClasses = `
-    sticky top-0 z-50 text-white font-sans
+    fixed top-0 left-0 w-full z-50 font-sans
     transition-all duration-300 ease-in-out
-    bg-emerald-himp
+    bg-emerald-himp bg-opacity-100 text-white
     ${isScrolled ? 'shadow-lg py-3' : 'py-5'}
   `;
 
@@ -44,10 +38,7 @@ const Navbar: React.FC = () => {
     <header className={navbarClasses}>
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 lg:px-8">
         {/* Logo + Nama */}
-        <Link
-          href="/"
-          className="flex items-center space-x-3 transform transition-transform duration-300 hover:scale-105 hover:drop-shadow-lg"
-        >
+        <Link href="/" className="flex items-center space-x-3 hover:scale-105 transition-transform">
           <Image
             src="/logo/logo.png"
             alt="Logo HIMPENAS"
@@ -55,11 +46,7 @@ const Navbar: React.FC = () => {
             height={logoSize}
             className="rounded-full transition-all duration-300"
           />
-          <span
-            className={`font-bold tracking-wide transition-all duration-300 ${textSize} text-white`}
-          >
-            HIMPENAS
-          </span>
+          <span className={`font-bold tracking-wide ${textSize}`}>HIMPENAS</span>
         </Link>
 
         {/* Menu Desktop */}
@@ -68,8 +55,10 @@ const Navbar: React.FC = () => {
             <Link
               key={link.name}
               href={link.href}
-              className={`relative hover:text-green-200 transition-colors group ${
-                router.pathname === link.href ? 'text-green-200 font-semibold' : 'text-white'
+              className={`relative group ${
+                router.pathname === link.href
+                  ? 'text-green-200 font-semibold'
+                  : 'text-white hover:text-green-200'
               }`}
             >
               {link.name}
@@ -83,7 +72,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle Menu"
-            className="text-white hover:text-green-200 transition-colors"
+            className="text-white hover:text-green-200"
           >
             {isMenuOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,14 +89,16 @@ const Navbar: React.FC = () => {
 
       {/* Menu Mobile */}
       {isMenuOpen && (
-        <div className="md:hidden bg-emerald-himp shadow-inner pb-4">
+        <div className="md:hidden bg-emerald-himp text-white shadow-inner pb-4">
           <nav className="flex flex-col items-center space-y-4 py-4 text-lg">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`hover:text-green-200 transition-colors ${
-                  router.pathname === link.href ? 'text-green-200 font-semibold' : 'text-white'
+                className={`${
+                  router.pathname === link.href
+                    ? 'text-green-200 font-semibold'
+                    : 'text-white hover:text-green-200'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -5,22 +5,27 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   basePath: string;
-  query?: { [key: string]: string | string[] | undefined };
+  query?: { [key: string]: string | string[] | undefined | null };
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   basePath,
-  query,
+  query = {},
 }) => {
-  if (totalPages <= 1) return null;
+  if (totalPages < 1) return null;
 
   const createPageUrl = (page: number) => {
     const params = new URLSearchParams();
-    if (query?.search) params.set("search", query.search as string);
-    if (query?.kategori) params.set("kategori", query.kategori as string);
-    if (query?.filter) params.set("filter", query.filter as string);
+
+    // ✅ pastikan query diterusin kalau ada
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.set(key, value as string);
+      }
+    });
+
     params.set("page", page.toString());
     return `${basePath}?${params.toString()}`;
   };
@@ -49,9 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({
       );
       if (startPage > 2) {
         pageNumbers.push(
-          <span key="start-ellipsis" className="px-3 py-2 text-gray-400">
-            ...
-          </span>
+          <span key="start-ellipsis" className="px-3 py-2 text-gray-400">...</span>
         );
       }
     }
@@ -72,17 +75,11 @@ const Pagination: React.FC<PaginationProps> = ({
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
         pageNumbers.push(
-          <span key="end-ellipsis" className="px-3 py-2 text-gray-400">
-            ...
-          </span>
+          <span key="end-ellipsis" className="px-3 py-2 text-gray-400">...</span>
         );
       }
       pageNumbers.push(
-        <Link
-          key={totalPages}
-          href={createPageUrl(totalPages)}
-          className={btnClass(totalPages === currentPage)}
-        >
+        <Link key={totalPages} href={createPageUrl(totalPages)} className={btnClass(totalPages === currentPage)}>
           {totalPages}
         </Link>
       );
