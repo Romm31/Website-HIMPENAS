@@ -58,7 +58,6 @@ model Visi {
 model Misi {
   id     Int    @id @default(autoincrement())
   konten String
-  order  Int?
 }
 
 model Upload {

@@ -30,8 +30,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: "Kategori", href: "/admin/kategori", icon: <Shapes size={20} /> },
     { name: "Event", href: "/admin/event", icon: <Calendar size={20} /> },
     { name: "Galeri", href: "/admin/galeri", icon: <Image size={20} /> },
-    { name: "Tentang Kami", href: "/admin/tentang", icon: <Info size={20} /> },
-    { name: "Visi & Misi", href: "/admin/visi-misi", icon: <Goal size={20} /> },
+    { name: "Tentang Kami", href: "/admin/about ", icon: <Info size={20} /> },
+    { name: "Visi & Misi", href: "/admin/visimisi", icon: <Goal size={20} /> },
   ];
 
   const handleLogout = () => setShowLogout(true);

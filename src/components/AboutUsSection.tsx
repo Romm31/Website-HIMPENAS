@@ -32,9 +32,9 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ data }) => {
           <Image
             src="/about/about.jpeg"
             alt="Tentang Himpunan"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-xl"
+            fill
+            className="object-cover rounded-xl"
+            priority
           />
         </div>
 
@@ -42,21 +42,30 @@ const AboutUsSection: React.FC<AboutUsSectionProps> = ({ data }) => {
         <div
           className={`transition-all duration-700 delay-150 ${
             inView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-          }`}
+          } text-center md:text-left`}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-emerald-dark mb-6">
             Tentang Kami
           </h2>
-          <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
-            {data?.profile ||
-              "HIMPENAS adalah himpunan mahasiswa yang berkomitmen pada pengembangan diri, teknologi, dan solidaritas antar anggota."}
-          </p>
-          <Link
-            href="/tentang"
-            className="inline-block mt-6 bg-emerald-dark text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-emerald-dark hover:shadow-xl transition-all duration-300"
-          >
-            Lihat Selengkapnya
-          </Link>
+
+          {/* Render HTML dari React Quill */}
+          <div
+            className="text-gray-600 text-lg leading-relaxed prose max-w-none mx-auto md:mx-0"
+            dangerouslySetInnerHTML={{
+              __html:
+                data?.profile ||
+                "<p>HIMPENAS adalah himpunan mahasiswa yang berkomitmen pada pengembangan diri, teknologi, dan solidaritas antar anggota.</p>",
+            }}
+          />
+
+          <div className="mt-6">
+            <Link
+              href="/tentang"
+              className="inline-block bg-emerald-dark text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-emerald-dark hover:shadow-xl transition-all duration-300"
+            >
+              Lihat Selengkapnya
+            </Link>
+          </div>
         </div>
       </div>
     </section>

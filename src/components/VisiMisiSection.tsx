@@ -3,8 +3,8 @@ import { useInView } from "react-intersection-observer";
 
 interface VisiMisiSectionProps {
   data: {
-    visi: string | null;
-    misi: string | null;
+    visi?: string | null; // pakai optional biar gak error kalau undefined
+    misi?: string | null;
   } | null;
 }
 
@@ -18,14 +18,21 @@ const VisiMisiSection: React.FC<VisiMisiSectionProps> = ({ data }) => {
     threshold: 0.2,
   });
 
+  // Fungsi untuk hapus <p> luar supaya gak double
+  const sanitizeHTML = (html: string | null | undefined, fallback: string) => {
+    if (!html) return fallback;
+    return html.replace(/^<p>/gi, "").replace(/<\/p>$/gi, "").trim();
+  };
+
   return (
     <section className="py-20 bg-gray-50 relative">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-emerald-da mb-12">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-emerald-dark mb-12">
           Visi & Misi
         </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-          {/* Visi Card */}
+          {/* === VISI CARD === */}
           <div
             ref={visiRef}
             className={`bg-white p-8 rounded-2xl shadow-lg border-t-4 border-emerald-dark transform transition-all duration-700 ${
@@ -35,12 +42,18 @@ const VisiMisiSection: React.FC<VisiMisiSectionProps> = ({ data }) => {
             } hover:shadow-2xl hover:-translate-y-2 hover:scale-105`}
           >
             <h3 className="text-2xl font-bold text-emerald-700 mb-4">Visi</h3>
-            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-              {data?.visi || "Belum ada visi yang ditambahkan."}
-            </p>
+            <div
+              className="text-gray-600 leading-relaxed text-left prose max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHTML(
+                  data?.visi,
+                  "Belum ada visi yang ditambahkan."
+                ),
+              }}
+            />
           </div>
 
-          {/* Misi Card */}
+          {/* === MISI CARD === */}
           <div
             ref={misiRef}
             className={`bg-white p-8 rounded-2xl shadow-lg border-t-4 border-emerald-dark transform transition-all duration-700 delay-150 ${
@@ -50,15 +63,15 @@ const VisiMisiSection: React.FC<VisiMisiSectionProps> = ({ data }) => {
             } hover:shadow-2xl hover:-translate-y-2 hover:scale-105`}
           >
             <h3 className="text-2xl font-bold text-emerald-700 mb-4">Misi</h3>
-            <ul className="text-gray-600 text-left list-disc list-inside space-y-2 whitespace-pre-line">
-              {data?.misi
-                ? data.misi.split("\n").map((m, i) => (
-                    <li key={i} className="hover:text-emerald-600 transition-colors">
-                      {m}
-                    </li>
-                  ))
-                : "Belum ada misi yang ditambahkan."}
-            </ul>
+            <div
+              className="text-gray-600 leading-relaxed text-left prose max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHTML(
+                  data?.misi,
+                  "Belum ada misi yang ditambahkan."
+                ),
+              }}
+            />
           </div>
         </div>
       </div>

@@ -74,9 +74,12 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
               <h2 className="text-3xl md:text-4xl font-bold font-heading text-emerald-dark mb-6">
                 Profil & Sejarah
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
-                {about?.profile || "Informasi profil belum tersedia."}
-              </p>
+              <div
+                className="text-lg text-gray-700 leading-relaxed prose max-w-none"
+                dangerouslySetInnerHTML={{
+                  __html: about?.profile || "<p>Informasi profil belum tersedia.</p>",
+                }}
+              />
             </div>
           </div>
         </section>
