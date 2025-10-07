@@ -37,7 +37,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const handleLogout = () => setShowLogout(true);
   const confirmLogout = () => {
     setShowLogout(false);
-    router.push("/login");
+    router.push("/admin/login");
   };
 
   // ... sisa kode tetap sama

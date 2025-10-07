@@ -112,7 +112,7 @@ export default function EditBerita() {
 
       if (res.ok && data?.url) {
         setGambarUrl(data.url);
-        toast.success("📸 Gambar berhasil diupload!");
+        toast.success("Gambar berhasil diupload!");
       } else {
         toast.error("Upload gagal atau server tidak mengembalikan URL");
       }
@@ -140,7 +140,7 @@ export default function EditBerita() {
       });
 
       if (!res.ok) throw new Error(await res.text());
-      toast.success("✅ Berita berhasil diperbarui!");
+      toast.success("Berita berhasil diperbarui!");
       router.push("/admin/berita");
     } catch (err) {
       console.error(err);
