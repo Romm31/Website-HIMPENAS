@@ -32,6 +32,7 @@ model Berita {
   updatedAt  DateTime  @updatedAt
   kategoriId Int?
   kategori   Kategori? @relation(fields: [kategoriId], references: [id])
+  views      Int       @default(0)
 }
 
 model Event {

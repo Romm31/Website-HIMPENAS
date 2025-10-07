@@ -3,18 +3,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 2. Style Dasar & Animasi Kustom */
+/* 2. Style Dasar & Reset */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+    @apply bg-gray-50 text-gray-900;
+  }
+
   body {
     margin: 0;
     padding: 0;
   }
-  html {
-    scroll-behavior: smooth;
-    font-family: 'Inter', sans-serif;
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    display: none;
   }
 }
 
+/* 3. Animasi Dasar */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -37,10 +47,22 @@
   transform: translateY(0);
 }
 
-/* 3. Styling Kustom untuk Swiper Slider */
+@media (min-width: 768px) {
+  .fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .fade-in-section.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 4. Swiper Slider Custom Style */
 .swiper-button-next,
 .swiper-button-prev {
-  color: #ffffff !important;
+  color: #fff !important;
   background-color: rgba(4, 106, 56, 0.4);
   border-radius: 50%;
   width: 44px !important;
@@ -50,7 +72,7 @@
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-    background-color: rgba(4, 106, 56, 0.7);
+  background-color: rgba(4, 106, 56, 0.7);
 }
 
 .swiper-button-next::after,
@@ -63,13 +85,14 @@
   background-color: #046A38 !important; /* Warna Hijau Emerald */
 }
 
-/* Tombol Panah Slider Berita yang Elegan (custom) */
+/* Tombol Panah Slider Berita yang elegan */
 .news-slider-container .swiper-button-next,
 .news-slider-container .swiper-button-prev {
   width: 40px !important;
   height: 40px !important;
   opacity: 0;
   transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .news-slider-container:hover .swiper-button-next,
@@ -83,12 +106,6 @@
   font-size: 16px !important;
 }
 
-/* Efek "Glow" Hijau untuk Kartu */
-.card-hover-effect:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px -15px rgba(4, 106, 56, 0.3);
-}
-
 .swiper-pagination-hero {
   position: relative !important;
   bottom: auto !important;
@@ -96,33 +113,160 @@
   width: auto !important;
   display: flex;
   justify-content: center;
-  gap: 8px; /* Memberi jarak antar titik */
+  gap: 8px;
 }
 
-.fade-in-section {
-  opacity: 1;
-  transform: none;
+/* 5. Efek Hover Card */
+.card-hover-effect {
+  transition: all 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .fade-in-section {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+.card-hover-effect:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -15px rgba(4, 106, 56, 0.3);
+}
+
+/* 6. React Quill Editor Styling (FINAL) */
+.ql-toolbar.ql-snow {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background-color: #f9fafb;
+  padding: 8px 10px;
+}
+
+.ql-container.ql-snow {
+  border: 1px solid #d1d5db;
+  border-top: none;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: #ffffff;
+  min-height: 300px;
+}
+
+.ql-editor {
+  min-height: 280px;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.ql-editor img {
+  max-width: 100%;
+  border-radius: 0.25rem;
+  margin: 8px 0;
+}
+
+.editor-quill {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* 7. Scrollbar styling (optional biar modern) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(4, 106, 56, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(4, 106, 56, 0.7);
+}
+
+/* 8. Responsif untuk halaman admin (biar rapi di mobile) */
+@media (max-width: 768px) {
+  .ql-toolbar.ql-snow {
+    font-size: 13px;
+    padding: 6px 8px;
   }
-  .fade-in-section.is-visible {
-    opacity: 1;
-    transform: none;
+
+  .ql-editor {
+    font-size: 14px;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 36px !important;
+    height: 36px !important;
   }
 }
 
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  display: none;
+/* === React Quill Styling Fix v2 (tanpa kotak tambahan) === */
+.react-quill-wrapper {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  overflow: hidden;
 }
 
-html, body {
-  @apply bg-gray-50;
+/* Toolbar nyatu dengan editor */
+.ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 8px 10px;
 }
+
+/* Editor area */
+.ql-container.ql-snow {
+  border: none !important;
+  background: #ffffff;
+  border-radius: 0 0 0.5rem 0.5rem;
+  min-height: 300px;
+  margin: 0 !important;       /* ❌ Hilangin margin bawah */
+  padding: 0 !important;
+}
+
+/* Editor content */
+.ql-editor {
+  min-height: 280px;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 15px;
+  overflow-y: auto;
+}
+
+.ql-editor img {
+  max-width: 100%;
+  border-radius: 0.25rem;
+  margin: 8px 0;
+}
+
+/* Hilangkan spacing tambahan bawah */
+.ql-container + * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.react-quill-wrapper {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: #fff;
+  overflow: hidden;
+}
+
+.ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 8px 10px;
+}
+
+.ql-container.ql-snow {
+  border: none !important;
+  background: #ffffff;
+  border-radius: 0 0 0.5rem 0.5rem;
+  min-height: 300px;
+  margin: 0 !important;
+}
+
+.ql-editor {
+  min-height: 280px;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.ql-editor img { max-width: 100%; border-radius: .25rem; margin: 8px 0; }
