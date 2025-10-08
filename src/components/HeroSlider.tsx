@@ -33,14 +33,14 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, berita }) => {
 
   if (combinedSlides.length === 0) {
     return (
-      <div className="w-full h-[70vh] bg-gray-300 flex items-center justify-center">
+      <div className="w-full h-[85vh] bg-gray-300 flex items-center justify-center">
         <p className="text-gray-500">Tidak ada slide untuk ditampilkan.</p>
       </div>
     );
   }
 
   return (
-    <section className="relative w-full h-[70vh] overflow-hidden bg-gray-900">
+    <section className="relative w-full h-[85vh] overflow-hidden bg-gray-900">
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
@@ -63,12 +63,9 @@ const HeroSlider: React.FC<HeroSliderProps> = ({ slides, berita }) => {
                 className="object-cover brightness-75 group-hover:brightness-50 transition-all duration-300"
                 priority={slide.id.startsWith('slide-')}
               />
+              {/* Background overlay tanpa judul */}
               {slide.id.startsWith('slide-') && (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-center p-8 text-center">
-                  <h1 className="text-white text-4xl md:text-6xl font-bold font-heading leading-tight drop-shadow-md">
-                    {slide.title}
-                  </h1>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               )}
             </Link>
           </SwiperSlide>

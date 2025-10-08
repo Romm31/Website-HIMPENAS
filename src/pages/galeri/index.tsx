@@ -39,7 +39,7 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
     <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
 
-      <header ref={headerRef} className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
+      <header ref={headerRef} className={`bg-emerald-dark text-white pt-48 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
         <div className="absolute inset-0 opacity-10">
           <Image src="/header/event-header.jpeg" layout="fill" objectFit="cover" alt="Galeri Kegiatan" className="brightness-50" />
         </div>

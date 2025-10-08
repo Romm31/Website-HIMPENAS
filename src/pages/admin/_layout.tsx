@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   // Menu diperbarui dengan ikon yang benar
   const menu = [
     { name: "Dashboard", href: "/admin", icon: <LayoutDashboard size={20} /> },
-    { name: "Slide Show", href: "/admin/slides", icon: <Presentation size={20} /> }, // <-- Ikon diperbaiki
+    { name: "Slide Show", href: "/admin/slide", icon: <Presentation size={20} /> }, // <-- Ikon diperbaiki
     { name: "Berita", href: "/admin/berita", icon: <Newspaper size={20} /> },
     { name: "Kategori", href: "/admin/kategori", icon: <Shapes size={20} /> },
     { name: "Event", href: "/admin/event", icon: <Calendar size={20} /> },

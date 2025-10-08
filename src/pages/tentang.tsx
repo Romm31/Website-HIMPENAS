@@ -26,7 +26,7 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
       {/* Header */}
       <header
         ref={headerRef}
-        className={`relative bg-emerald-dark text-white pt-24 pb-40 transition-all duration-700 ${
+        className={`relative bg-emerald-dark text-white pt-48 pb-40 transition-all duration-700 ${
           headerInView ? "opacity-100 translate-y-0" : "md:opacity-0 md:translate-y-10"
         }`}
       >

@@ -51,7 +51,7 @@ const BeritaPage: NextPage<BeritaPageProps> = ({
       {/* Header */}
       <header
         ref={headerRef}
-        className={`bg-emerald-dark text-white pt-24 pb-40 relative fade-in-section ${
+        className={`bg-emerald-dark text-white pt-48 pb-40 relative fade-in-section ${
           headerInView ? "is-visible" : ""
         }`}
       >
