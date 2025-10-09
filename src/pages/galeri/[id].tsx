@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import { useState } from "react";
 import Lightbox, { MediaItem } from "@/components/Lightbox";
+import { FiPlayCircle } from "react-icons/fi";
 
 interface GalleryAlbum {
   id: number;
@@ -63,15 +64,44 @@ const GalleryPage: NextPage<GalleryPageProps> = ({ album }) => {
             {album.mediaItems.map((item, index) => (
               <div
                 key={item.id}
-                className="relative w-full h-48 md:h-64 cursor-pointer group overflow-hidden rounded-xl shadow-md"
+                className="relative w-full h-48 md:h-64 cursor-pointer group overflow-hidden rounded-xl shadow-md bg-gray-200"
                 onClick={() => openLightbox(index)}
               >
-                <Image
-                  src={item.thumbnailUrl || item.url}
-                  alt={item.title ?? "Media"}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+                {/* === IMAGE === */}
+                {item.type === "IMAGE" && (
+                  <img
+                    src={item.url}
+                    alt={item.title || "Gambar"}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                )}
+
+                {/* === VIDEO === */}
+                {item.type === "VIDEO" && (
+                  <>
+                    {/* kalau ada thumbnail, pakai */}
+                    {item.thumbnailUrl ? (
+                      <img
+                        src={item.thumbnailUrl}
+                        alt="thumbnail video"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      // fallback → render frame pertama dari video
+                      <video
+                        src={item.url}
+                        className="w-full h-full object-cover bg-black"
+                        muted
+                        preload="metadata"
+                        playsInline
+                      />
+                    )}
+                    {/* overlay icon play */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition">
+                      <FiPlayCircle className="text-white text-6xl opacity-90 group-hover:scale-110 transition-transform" />
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>

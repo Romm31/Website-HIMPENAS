@@ -12,6 +12,7 @@ import {
   Presentation,
   Info,
   Goal,
+  User,
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -25,13 +26,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   // Menu diperbarui dengan ikon yang benar
   const menu = [
     { name: "Dashboard", href: "/admin", icon: <LayoutDashboard size={20} /> },
-    { name: "Slide Show", href: "/admin/slide", icon: <Presentation size={20} /> }, // <-- Ikon diperbaiki
+    { name: "User Account", href: "/admin/user", icon: <User size={20} /> },
+    { name: "Slide Show", href: "/admin/slide", icon: <Presentation size={20} /> },
     { name: "Berita", href: "/admin/berita", icon: <Newspaper size={20} /> },
     { name: "Kategori", href: "/admin/kategori", icon: <Shapes size={20} /> },
     { name: "Event", href: "/admin/event", icon: <Calendar size={20} /> },
     { name: "Galeri", href: "/admin/galeri", icon: <Image size={20} /> },
     { name: "Tentang Kami", href: "/admin/about ", icon: <Info size={20} /> },
     { name: "Visi & Misi", href: "/admin/visimisi", icon: <Goal size={20} /> },
+
   ];
 
   const handleLogout = () => setShowLogout(true);
