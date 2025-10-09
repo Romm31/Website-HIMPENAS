@@ -6,7 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion"; // <-- PERBAIKAN DI SINI
+import { motion, AnimatePresence } from "framer-motion"; 
 
 export default function AdminLogin() {
   const router = useRouter();
