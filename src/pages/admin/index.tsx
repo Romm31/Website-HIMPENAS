@@ -262,10 +262,10 @@ export default function AdminDashboard() {
                   <FiArrowRight className="text-gray-400 group-hover:text-white" />
                 </a>
               </Link>
-              <Link href="/admin/galeri/tambah" legacyBehavior>
+              <Link href="/admin/berita/tambah" legacyBehavior>
                 <a className="group flex items-center justify-between rounded-lg bg-gray-50 p-3 transition-colors hover:bg-emerald-700">
                   <span className="font-medium text-gray-700 group-hover:text-white">
-                    Upload ke Galeri
+                    Upload Berita
                   </span>
                   <FiArrowRight className="text-gray-400 group-hover:text-white" />
                 </a>

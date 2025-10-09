@@ -20,7 +20,7 @@ const SidebarContent = () => {
   const router = useRouter();
   const menu = [
     { name: "Dashboard", href: "/admin", icon: <LayoutDashboard size={20} /> },
-    { name: "User Account", href: "/admin/user", icon: <User size={20} /> },
+    { name: "Admin Account", href: "/admin/user", icon: <User size={20} /> },
     { name: "Slide Show", href: "/admin/slide", icon: <Presentation size={20} /> },
     { name: "Berita", href: "/admin/berita", icon: <Newspaper size={20} /> },
     { name: "Kategori", href: "/admin/kategori", icon: <Shapes size={20} /> },
