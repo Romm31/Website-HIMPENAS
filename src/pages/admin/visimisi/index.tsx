@@ -1,15 +1,21 @@
+// src/pages/admin/visimisi/index.tsx
+
 import { useEffect, useState } from "react";
 import AdminLayout from "../_layout";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "sonner";
+import { Save, Loader2, Goal, Flag } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function AdminVisiMisiPage() {
   const [visi, setVisi] = useState("");
   const [misi, setMisi] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSavingVisi, setIsSavingVisi] = useState(false);
+  const [isSavingMisi, setIsSavingMisi] = useState(false);
 
-  // Ambil data awal
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const [visiRes, misiRes] = await Promise.all([
           fetch("/api/admin/visi"),
@@ -20,82 +26,117 @@ export default function AdminVisiMisiPage() {
         setVisi(visiData.konten || "");
         setMisi(misiData.konten || "");
       } catch {
-        toast.error("Gagal memuat data!");
+        toast.error("Gagal memuat data Visi & Misi!");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
     fetchData();
   }, []);
 
-  // Simpan visi
-  const simpanVisi = async () => {
-    const res = await fetch("/api/admin/visi", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ konten: visi }),
-    });
-    if (res.ok) toast.success("Visi diperbarui!");
-    else toast.error("Gagal menyimpan visi!");
+  const handleSave = async (type: 'visi' | 'misi') => {
+    if (type === 'visi') setIsSavingVisi(true);
+    if (type === 'misi') setIsSavingMisi(true);
+
+    const endpoint = `/api/admin/${type}`;
+    const payload = type === 'visi' ? { konten: visi } : { konten: misi };
+    const typeName = type.charAt(0).toUpperCase() + type.slice(1);
+
+    try {
+        const res = await fetch(endpoint, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(`Gagal menyimpan ${typeName}`);
+        toast.success(`${typeName} berhasil diperbarui!`);
+    } catch (error: any) {
+        toast.error(error.message);
+    } finally {
+        if (type === 'visi') setIsSavingVisi(false);
+        if (type === 'misi') setIsSavingMisi(false);
+    }
   };
 
-  // Simpan misi
-  const simpanMisi = async () => {
-    const res = await fetch("/api/admin/misi", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ konten: misi }),
-    });
-    if (res.ok) toast.success("Misi diperbarui!");
-    else toast.error("Gagal menyimpan misi!");
-  };
+  const CardSkeleton = () => (
+    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm animate-pulse">
+        <div className="h-7 w-24 rounded-md bg-gray-200 mb-6"></div>
+        <div className="h-32 w-full rounded-md bg-gray-200"></div>
+        <div className="h-10 w-32 rounded-md bg-gray-300 mt-4"></div>
+    </div>
+  );
 
   return (
     <AdminLayout>
-      <Toaster position="top-right" />
-      <div className="space-y-10">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">Kelola Visi & Misi</h1>
+      <Toaster position="top-right" richColors />
+      <div>
+        <h1 className="text-3xl font-bold text-gray-800">Kelola Visi & Misi</h1>
+        <p className="mt-1 text-gray-500">Atur pernyataan visi dan misi utama organisasi.</p>
+      </div>
 
-        {loading ? (
-          <p className="text-gray-500">Memuat data...</p>
+      <div className="mt-8">
+        {isLoading ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <CardSkeleton />
+            <CardSkeleton />
+          </div>
         ) : (
-          <>
-            {/* === VISI === */}
-            <div className="bg-white p-6 rounded-xl shadow border border-gray-200">
-              <h2 className="text-xl font-semibold text-emerald-himp mb-4">Visi</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+          >
+            {/* === KARTU VISI === */}
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+              <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
+                <Flag className="text-emerald-dark" /> Visi
+              </h2>
               <textarea
                 value={visi}
                 onChange={(e) => setVisi(e.target.value)}
-                rows={5}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                placeholder="Masukkan visi organisasi..."
+                rows={8}
+                className="w-full rounded-md border-gray-300 p-3 shadow-sm focus:border-emerald-dark focus:ring-emerald-dark transition"
+                placeholder="Tuliskan visi organisasi di sini..."
               />
-              <button
-                onClick={simpanVisi}
-                className="mt-3 bg-emerald-himp text-white px-5 py-2 rounded-md hover:bg-emerald-light transition"
-              >
-                Simpan Visi
-              </button>
+              <div className="flex justify-end">
+                <motion.button
+                  onClick={() => handleSave('visi')}
+                  disabled={isSavingVisi}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-emerald-dark px-5 py-2.5 font-semibold text-white shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isSavingVisi ? <><Loader2 className="animate-spin" size={20}/> Menyimpan...</> : <><Save size={18} /> Simpan Visi</>}
+                </motion.button>
+              </div>
             </div>
 
-            {/* === MISI === */}
-            <div className="bg-white p-6 rounded-xl shadow border border-gray-200">
-              <h2 className="text-xl font-semibold text-emerald-himp mb-4">Misi</h2>
+            {/* === KARTU MISI === */}
+            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+              <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-4">
+                <Goal className="text-emerald-dark" /> Misi
+              </h2>
               <textarea
                 value={misi}
                 onChange={(e) => setMisi(e.target.value)}
-                rows={5}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                placeholder="Masukkan misi organisasi..."
+                rows={8}
+                className="w-full rounded-md border-gray-300 p-3 shadow-sm focus:border-emerald-dark focus:ring-emerald-dark transition"
+                placeholder="Tuliskan poin-poin misi organisasi di sini..."
               />
-              <button
-                onClick={simpanMisi}
-                className="mt-3 bg-emerald-himp text-white px-5 py-2 rounded-md hover:bg-emerald-light transition"
-              >
-                Simpan Misi
-              </button>
+              <div className="flex justify-end">
+                <motion.button
+                  onClick={() => handleSave('misi')}
+                  disabled={isSavingMisi}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-emerald-dark px-5 py-2.5 font-semibold text-white shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isSavingMisi ? <><Loader2 className="animate-spin" size={20}/> Menyimpan...</> : <><Save size={18} /> Simpan Misi</>}
+                </motion.button>
+              </div>
             </div>
-          </>
+          </motion.div>
         )}
       </div>
     </AdminLayout>
