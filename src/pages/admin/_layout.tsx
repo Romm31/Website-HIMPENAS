@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, type ReactNode } from "react";
 import { signOut } from "next-auth/react";
+import NextImage from "next/image";
 import {
-  LayoutDashboard, Newspaper, Shapes, Calendar, Image,
+  LayoutDashboard, Newspaper, Shapes, Calendar,
   LogOut, Presentation, Info, Goal, User, X, Menu,
+  Image,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -14,7 +16,6 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
-// ✅ PINDAHKAN SidebarContent KE LUAR DARI AdminLayout
 const SidebarContent = () => {
   const router = useRouter();
   const menu = [
@@ -27,13 +28,19 @@ const SidebarContent = () => {
     { name: "Galeri", href: "/admin/galeri", icon: <Image size={20} /> },
     { name: "Visi & Misi", href: "/admin/visimisi", icon: <Goal size={20} /> },
     { name: "Tentang Kami", href: "/admin/about", icon: <Info size={20} /> },
-
   ];
 
   return (
     <>
-      <div>
-        <div className="p-5 border-b border-white/10 text-center">
+      <div className="flex-grow">
+        <div className="p-6 text-center">
+          <NextImage
+            src="/logo/logo.png"
+            alt="HIMPENAS Logo"
+            width={64}
+            height={64}
+            className="mx-auto mb-4"
+          />
           <h1 className="text-2xl font-bold">Admin HIMPENAS</h1>
           <p className="text-sm text-emerald-300">Dashboard Panel</p>
         </div>
@@ -75,9 +82,6 @@ const SidebarContent = () => {
           })}
         </nav>
       </div>
-      <div className="border-t border-white/10 p-4">
-        {/* Tombol logout sekarang ada di dalam komponen AdminLayout */}
-      </div>
     </>
   );
 };
@@ -96,27 +100,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* === SIDEBAR (Desktop) === */}
       <aside className="hidden w-64 flex-col justify-between bg-emerald-dark text-white shadow-lg lg:flex">
         <SidebarContent />
-        {/* ✅ Tombol Logout dipindah ke sini */}
-        <div className="border-t border-white/10 p-4">
-            <motion.button
+        <div className="p-4 mt-auto">
+          <motion.button
             onClick={() => setShowLogout(true)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-600 py-2.5 font-medium text-white transition-colors hover:bg-red-700"
-            >
+          >
             <LogOut size={18} />
             <span>Logout</span>
-            </motion.button>
-            <p className="mt-3 text-center text-xs text-emerald-400">
-                © {new Date().getFullYear()} HIMPENAS
-            </p>
+          </motion.button>
+          <p className="mt-3 text-center text-xs text-emerald-400">
+              © {new Date().getFullYear()} HIMPENAS
+          </p>
         </div>
       </aside>
 
-      {/* === SIDEBAR (Mobile) === */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
@@ -135,8 +136,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               className="fixed top-0 left-0 z-50 flex h-full w-64 flex-col justify-between bg-emerald-dark text-white shadow-lg"
             >
               <SidebarContent />
-              {/* ✅ Tombol Logout dipindah ke sini juga */}
-              <div className="border-t border-white/10 p-4">
+              <div className="p-4 mt-auto">
                 <motion.button
                     onClick={() => setShowLogout(true)}
                     whileHover={{ scale: 1.05 }}
@@ -156,7 +156,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </AnimatePresence>
 
       <div className="flex flex-1 flex-col">
-        {/* === TOP HEADER (Mobile) === */}
         <header className="sticky top-0 z-30 flex items-center justify-between bg-white p-4 shadow-sm lg:hidden">
           <h1 className="text-xl font-bold text-emerald-dark">Admin HIMPENAS</h1>
           <button onClick={() => setSidebarOpen(true)}>
@@ -165,7 +164,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </header>
 
         {/* === MAIN CONTENT === */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 pt-6 px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={router.pathname}
@@ -180,7 +179,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </main>
       </div>
 
-      {/* === LOGOUT MODAL === */}
       <AnimatePresence>
         {showLogout && (
           <motion.div
