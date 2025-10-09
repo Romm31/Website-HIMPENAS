@@ -1,3 +1,5 @@
+// src/pages/galeri/index.tsx
+
 import { GetServerSideProps, NextPage } from 'next';
 import { prisma } from '@/lib/prisma';
 import Navbar from '@/components/Navbar';
@@ -8,6 +10,8 @@ import GalleryFilterControls from '@/components/GalleryFilterControls';
 import Pagination from '@/components/Pagination';
 import AlbumCard from '@/components/AlbumCard';
 import { useInView } from 'react-intersection-observer';
+import { motion, Variants } from 'framer-motion'; // ✅ TAMBAHKAN IMPORT `Variants`
+import { FolderSearch } from 'lucide-react';
 
 type AlbumWithCount = GalleryAlbum & {
   _count: {
@@ -35,46 +39,90 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
   const { ref: headerRef, inView: headerInView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const { ref: contentRef, inView: contentInView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
+  // ✅ TAMBAHKAN TIPE `Variants`
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  // ✅ TAMBAHKAN TIPE `Variants`
+  const itemVariants: Variants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
+      },
+    },
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      <header ref={headerRef} className={`bg-emerald-dark text-white pt-48 pb-40 relative fade-in-section ${headerInView ? 'is-visible' : ''}`}>
+      <header
+        ref={headerRef}
+        className="relative bg-emerald-dark pt-48 pb-40 text-white"
+      >
         <div className="absolute inset-0 opacity-10">
-          <Image src="/header/event-header.jpeg" layout="fill" objectFit="cover" alt="Galeri Kegiatan" className="brightness-50" />
+          <Image src="/header/event-header.jpeg" layout="fill" objectFit="cover" alt="Galeri Kegiatan" className="brightness-50" priority />
         </div>
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: headerInView ? 1 : 0 }}
+          transition={{ duration: 0.8 }}
+          className="container mx-auto px-4 text-center relative z-10"
+        >
           <h1 className="text-5xl md:text-6xl font-extrabold font-heading tracking-tight mt-2 mb-4">
             Galeri Kegiatan
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
             Dokumentasi visual dari setiap momen berharga dan kegiatan inspiratif HIMPENAS.
           </p>
-        </div>
+        </motion.div>
       </header>
 
-      <main ref={contentRef} className={`flex-grow fade-in-section ${contentInView ? 'is-visible' : ''}`}>
-        <div className="container mx-auto px-4">
+      <main className="flex-grow">
+        <div className="container mx-auto px-4 py-16">
           <GalleryFilterControls />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+          <motion.div
+            ref={contentRef}
+            variants={containerVariants}
+            initial="hidden"
+            animate={contentInView ? "visible" : "hidden"}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12"
+          >
             {albums.length > 0 ? (
               albums.map((album) => (
-                <AlbumCard key={album.id} album={album} />
+                <motion.div key={album.id} variants={itemVariants}>
+                  <AlbumCard album={album} />
+                </motion.div>
               ))
             ) : (
-              <div className="col-span-full text-center py-20">
-                <p className="text-gray-500 text-2xl font-semibold">Album tidak ditemukan.</p>
+              <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+                <FolderSearch size={64} className="text-gray-300" />
+                <p className="mt-6 text-gray-600 text-2xl font-semibold">Album tidak ditemukan</p>
+                <p className="mt-2 text-gray-500">Coba gunakan kata kunci atau filter yang berbeda.</p>
               </div>
             )}
-          </div>
+          </motion.div>
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            basePath="/galeri"
-            query={{ search: currentSearch, filter: currentFilter }}
-          />
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              basePath="/galeri"
+              query={{ search: currentSearch, filter: currentFilter }}
+            />
+          )}
         </div>
       </main>
       <Footer />
@@ -84,9 +132,6 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
 
 export default GaleriPage;
 
-// ===============================================================
-// PERBAIKAN DI SINI: Mengisi kembali fungsi getServerSideProps
-// ===============================================================
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const pageSize = 9;
   const page = parseInt(context.query.page as string) || 1;
@@ -100,11 +145,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       { description: { contains: search, mode: 'insensitive' } },
     ];
   }
+  
+  const mediaFilter: any = {};
   if (filter === 'foto') {
-    whereClause.mediaItems = { some: { type: 'IMAGE' } };
+    mediaFilter.some = { type: 'IMAGE' };
   }
   if (filter === 'video') {
-    whereClause.mediaItems = { some: { type: 'VIDEO' } };
+    mediaFilter.some = { type: 'VIDEO' };
+  }
+  if (Object.keys(mediaFilter).length > 0) {
+    whereClause.mediaItems = mediaFilter;
   }
   
   const [albums, totalAlbums] = await Promise.all([

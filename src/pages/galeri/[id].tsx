@@ -1,3 +1,5 @@
+// src/pages/galeri/[id].tsx
+
 import { GetServerSideProps, NextPage } from "next";
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/components/Navbar";
@@ -5,15 +7,14 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import { useState } from "react";
 import Lightbox, { MediaItem } from "@/components/Lightbox";
-import { FiPlayCircle } from "react-icons/fi";
+import { PlayCircle, Image as ImageIcon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface GalleryAlbum {
   id: number;
   title: string;
   description?: string | null;
   coverImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
   mediaItems: MediaItem[];
 }
 
@@ -22,109 +23,139 @@ interface GalleryPageProps {
 }
 
 const GalleryPage: NextPage<GalleryPageProps> = ({ album }) => {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
 
-  const openLightbox = (index: number) => setLightboxIndex(index);
-  const closeLightbox = () => setLightboxIndex(null);
-  const showPrev = () =>
-    setLightboxIndex((i) => (i !== null && i > 0 ? i - 1 : i));
-  const showNext = () =>
-    setLightboxIndex((i) =>
-      i !== null && i < album.mediaItems.length - 1 ? i + 1 : i
-    );
+  const openLightbox = (media: MediaItem) => setSelectedMedia(media);
+  const closeLightbox = () => setSelectedMedia(null);
+
+  const showNext = () => {
+    if (!selectedMedia) return;
+    const currentIndex = album.mediaItems.findIndex(item => item.id === selectedMedia.id);
+    const nextIndex = (currentIndex + 1) % album.mediaItems.length;
+    setSelectedMedia(album.mediaItems[nextIndex]);
+  };
+
+  const showPrev = () => {
+    if (!selectedMedia) return;
+    const currentIndex = album.mediaItems.findIndex(item => item.id === selectedMedia.id);
+    const prevIndex = (currentIndex - 1 + album.mediaItems.length) % album.mediaItems.length;
+    setSelectedMedia(album.mediaItems[prevIndex]);
+  };
+
+  const hasNext = selectedMedia ? album.mediaItems.findIndex(item => item.id === selectedMedia.id) < album.mediaItems.length - 1 : false;
+  const hasPrev = selectedMedia ? album.mediaItems.findIndex(item => item.id === selectedMedia.id) > 0 : false;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
 
-      {/* Header */}
-      <header className="bg-emerald-dark text-white py-24 text-center relative">
-        <div className="absolute inset-0 opacity-20">
+      <header className="relative h-[60vh] overflow-hidden text-center text-white">
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute inset-0"
+        >
           <Image
             src={album.coverImageUrl}
             alt={album.title}
             fill
             className="object-cover brightness-50"
+            priority
           />
-        </div>
-        <div className="relative z-10 container mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
+        </motion.div>
+        <div className="relative z-10 flex h-full flex-col items-center justify-center bg-black/30 px-4">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-4xl font-extrabold md:text-6xl"
+          >
             {album.title}
-          </h1>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-4 max-w-3xl text-lg text-gray-200 md:text-xl"
+          >
             {album.description || "Dokumentasi kegiatan HIMPENAS"}
-          </p>
+          </motion.p>
         </div>
       </header>
 
-      {/* Gallery Grid */}
-      <main className="flex-grow container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
         {album.mediaItems.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {album.mediaItems.map((item, index) => (
-              <div
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {album.mediaItems.map((item) => (
+              <motion.div
                 key={item.id}
-                className="relative w-full h-48 md:h-64 cursor-pointer group overflow-hidden rounded-xl shadow-md bg-gray-200"
-                onClick={() => openLightbox(index)}
+                layoutId={`media-${item.id}`}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                // ✅ GANTI dari aspect-square menjadi aspect-video
+                className="group relative cursor-pointer overflow-hidden rounded-xl shadow-md break-inside-avoid aspect-video bg-gray-200"
+                onClick={() => openLightbox(item)}
               >
-                {/* === IMAGE === */}
-                {item.type === "IMAGE" && (
-                  <img
+                {item.type === "IMAGE" ? (
+                  <Image
                     src={item.url}
                     alt={item.title || "Gambar"}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                )}
-
-                {/* === VIDEO === */}
-                {item.type === "VIDEO" && (
+                ) : (
                   <>
-                    {/* kalau ada thumbnail, pakai */}
                     {item.thumbnailUrl ? (
-                      <img
+                      <Image
                         src={item.thumbnailUrl}
-                        alt="thumbnail video"
-                        className="w-full h-full object-cover"
+                        alt={item.title || "Video thumbnail"}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     ) : (
-                      // fallback → render frame pertama dari video
                       <video
-                        src={item.url}
-                        className="w-full h-full object-cover bg-black"
+                        src={`${item.url}#t=0.1`}
+                        className="h-full w-full object-cover bg-black"
                         muted
                         preload="metadata"
                         playsInline
                       />
                     )}
-                    {/* overlay icon play */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition">
-                      <FiPlayCircle className="text-white text-6xl opacity-90 group-hover:scale-110 transition-transform" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 transition-colors group-hover:bg-black/50">
+                      <PlayCircle className="text-6xl text-white opacity-90 drop-shadow-lg transition-transform group-hover:scale-110" />
                     </div>
                   </>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
         ) : (
-          <div className="text-center text-gray-500 py-20 text-xl">
-            Belum ada media di album ini.
+          <div className="py-20 text-center text-gray-500">
+            <ImageIcon size={48} className="mx-auto text-gray-300" />
+            <p className="mt-4 text-xl">Belum ada media di album ini.</p>
           </div>
         )}
       </main>
 
       <Footer />
 
-      {/* Lightbox */}
-      {lightboxIndex !== null && (
-        <Lightbox
-          media={album.mediaItems[lightboxIndex]}
-          onClose={closeLightbox}
-          onPrev={showPrev}
-          onNext={showNext}
-          hasPrev={lightboxIndex > 0}
-          hasNext={lightboxIndex < album.mediaItems.length - 1}
-        />
-      )}
+      <AnimatePresence>
+        {selectedMedia && (
+          <Lightbox
+            media={selectedMedia}
+            onClose={closeLightbox}
+            onPrev={showPrev}
+            onNext={showNext}
+            hasPrev={hasPrev}
+            hasNext={hasNext}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -137,7 +168,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const album = await prisma.galleryAlbum.findUnique({
     where: { id },
-    include: { mediaItems: true },
+    include: { 
+      mediaItems: {
+        orderBy: {
+          createdAt: 'asc'
+        }
+      } 
+    },
   });
 
   if (!album) return { notFound: true };
