@@ -1,20 +1,12 @@
+// src/pages/admin/_layout.tsx
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, type ReactNode } from "react";
 import { signOut } from "next-auth/react";
 import {
-  LayoutDashboard,
-  Newspaper,
-  Shapes,
-  Calendar,
-  Image,
-  LogOut,
-  Presentation,
-  Info,
-  Goal,
-  User,
-  X,
-  Menu,
+  LayoutDashboard, Newspaper, Shapes, Calendar, Image,
+  LogOut, Presentation, Info, Goal, User, X, Menu,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -22,11 +14,9 @@ interface AdminLayoutProps {
   children: ReactNode;
 }
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+// ✅ PINDAHKAN SidebarContent KE LUAR DARI AdminLayout
+const SidebarContent = () => {
   const router = useRouter();
-  const [showLogout, setShowLogout] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const menu = [
     { name: "Dashboard", href: "/admin", icon: <LayoutDashboard size={20} /> },
     { name: "User Account", href: "/admin/user", icon: <User size={20} /> },
@@ -35,17 +25,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: "Kategori", href: "/admin/kategori", icon: <Shapes size={20} /> },
     { name: "Event", href: "/admin/event", icon: <Calendar size={20} /> },
     { name: "Galeri", href: "/admin/galeri", icon: <Image size={20} /> },
-    { name: "Tentang Kami", href: "/admin/about", icon: <Info size={20} /> },
     { name: "Visi & Misi", href: "/admin/visimisi", icon: <Goal size={20} /> },
+    { name: "Tentang Kami", href: "/admin/about", icon: <Info size={20} /> },
+
   ];
 
-  const confirmLogout = async () => {
-    await signOut({ redirect: false });
-    router.push("/admin/login");
-    setShowLogout(false);
-  };
-
-  const SidebarContent = () => (
+  return (
     <>
       <div>
         <div className="p-5 border-b border-white/10 text-center">
@@ -91,27 +76,44 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </nav>
       </div>
       <div className="border-t border-white/10 p-4">
-        <motion.button
-          onClick={() => setShowLogout(true)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-600 py-2.5 font-medium text-white transition-colors hover:bg-red-700"
-        >
-          <LogOut size={18} />
-          <span>Logout</span>
-        </motion.button>
-        <p className="mt-3 text-center text-xs text-emerald-400">
-          © {new Date().getFullYear()} HIMPENAS
-        </p>
+        {/* Tombol logout sekarang ada di dalam komponen AdminLayout */}
       </div>
     </>
   );
+};
+
+
+export default function AdminLayout({ children }: AdminLayoutProps) {
+  const router = useRouter();
+  const [showLogout, setShowLogout] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const confirmLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/admin/login");
+    setShowLogout(false);
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* === SIDEBAR (Desktop) === */}
       <aside className="hidden w-64 flex-col justify-between bg-emerald-dark text-white shadow-lg lg:flex">
         <SidebarContent />
+        {/* ✅ Tombol Logout dipindah ke sini */}
+        <div className="border-t border-white/10 p-4">
+            <motion.button
+            onClick={() => setShowLogout(true)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-600 py-2.5 font-medium text-white transition-colors hover:bg-red-700"
+            >
+            <LogOut size={18} />
+            <span>Logout</span>
+            </motion.button>
+            <p className="mt-3 text-center text-xs text-emerald-400">
+                © {new Date().getFullYear()} HIMPENAS
+            </p>
+        </div>
       </aside>
 
       {/* === SIDEBAR (Mobile) === */}
@@ -133,6 +135,21 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               className="fixed top-0 left-0 z-50 flex h-full w-64 flex-col justify-between bg-emerald-dark text-white shadow-lg"
             >
               <SidebarContent />
+              {/* ✅ Tombol Logout dipindah ke sini juga */}
+              <div className="border-t border-white/10 p-4">
+                <motion.button
+                    onClick={() => setShowLogout(true)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-600 py-2.5 font-medium text-white transition-colors hover:bg-red-700"
+                >
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                </motion.button>
+                <p className="mt-3 text-center text-xs text-emerald-400">
+                    © {new Date().getFullYear()} HIMPENAS
+                </p>
+              </div>
             </motion.aside>
           </>
         )}
