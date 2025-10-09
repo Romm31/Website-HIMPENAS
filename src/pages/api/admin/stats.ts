@@ -6,7 +6,6 @@ import { getSession } from 'next-auth/react';
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Proteksi API, hanya admin yang bisa akses
   const session = await getSession({ req });
   if (!session) {
     return res.status(401).json({ message: 'Unauthorized' });
@@ -14,34 +13,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
-      // Menghitung total dari setiap model
-      const totalBerita = await prisma.berita.count();
-      const totalEvent = await prisma.event.count();
-      const totalAlbum = await prisma.galleryAlbum.count();
-      const totalUser = await prisma.user.count();
-      const totalKategori = await prisma.kategori.count();
-
-      // Mengambil 5 berita terbaru
-      const beritaTerbaru = await prisma.berita.findMany({
-        take: 5,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        select: {
-          id: true,
-          judul: true,
-          createdAt: true,
-        },
-      });
-
-      // Agregasi jumlah berita per kategori untuk grafik
-      const beritaPerKategori = await prisma.kategori.findMany({
-        include: {
-          _count: {
-            select: { berita: true },
-          },
-        },
-      });
+      const [
+        totalBerita,
+        totalEvent,
+        totalAlbum,
+        totalUser,
+        totalKategori,
+        beritaTerbaru,
+        beritaPerKategori,
+        eventTerbaru, // <-- TAMBAHKAN INI
+      ] = await prisma.$transaction([
+        prisma.berita.count(),
+        prisma.event.count(),
+        prisma.galleryAlbum.count(),
+        prisma.user.count(),
+        prisma.kategori.count(),
+        prisma.berita.findMany({
+          take: 4, // Ambil 4 berita terbaru
+          orderBy: { createdAt: 'desc' },
+          select: { id: true, judul: true, createdAt: true },
+        }),
+        prisma.kategori.findMany({
+          include: { _count: { select: { berita: true } } },
+        }),
+        // ✅ LOGIKA BARU: Ambil 4 event terbaru
+        prisma.event.findMany({
+          take: 4,
+          orderBy: { createdAt: 'desc' },
+          select: { id: true, judul: true, tanggal: true },
+        }),
+      ]);
       
       const chartData = beritaPerKategori.map(k => ({
         nama: k.nama,
@@ -56,6 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         totalKategori,
         beritaTerbaru,
         beritaPerKategori: chartData,
+        eventTerbaru, // <-- KIRIM DATA EVENT
       });
     } catch (error) {
       console.error("Error fetching dashboard stats:", error);

@@ -42,7 +42,7 @@ export default function ListBerita() {
   const [isLoading, setIsLoading] = useState(true);
   const [beritaToDelete, setBeritaToDelete] = useState<Berita | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 300); // Debounce untuk search
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const fetchBerita = async () => {
     setIsLoading(true);
@@ -65,7 +65,7 @@ export default function ListBerita() {
     if (!beritaToDelete) return;
     try {
       await fetch(`/api/admin/berita/${beritaToDelete.id}`, { method: "DELETE" });
-      fetchBerita(); // Muat ulang data
+      fetchBerita();
       toast.success(`Berita "${beritaToDelete.judul}" berhasil dihapus.`);
     } catch (error) {
         toast.error("Gagal menghapus berita.");
@@ -76,8 +76,8 @@ export default function ListBerita() {
   
   const filteredBerita = useMemo(() => 
     berita.filter(b => 
-        b.judul.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        b.kategori?.nama.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+        (b.judul?.toLowerCase() || '').includes(debouncedSearchTerm.toLowerCase()) ||
+        (b.kategori?.nama?.toLowerCase() || '').includes(debouncedSearchTerm.toLowerCase())
     ), [berita, debouncedSearchTerm]
   );
 
@@ -94,7 +94,6 @@ export default function ListBerita() {
         </Link>
       </div>
       
-      {/* Search Bar */}
       <div className="relative mt-8">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
         <input 
@@ -138,7 +137,10 @@ export default function ListBerita() {
             ) : (
               filteredBerita.map((b) => (
                 <motion.tr key={b.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="transition-colors hover:bg-gray-50">
-                  <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">{b.judul}</td>
+                  {/* ✅ PERBAIKAN DI SINI */}
+                  <td title={b.judul} className="px-6 py-4 font-medium text-gray-900 max-w-sm truncate">
+                    {b.judul}
+                  </td>
                   <td className="whitespace-nowrap px-6 py-4">
                     <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${b.kategori ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'}`}>
                         {b.kategori?.nama || "Tanpa Kategori"}

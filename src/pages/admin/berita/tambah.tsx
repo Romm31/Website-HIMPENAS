@@ -160,7 +160,7 @@ export default function TambahBerita() {
                 <div className="border-b p-4">
                     <input value={judul} onChange={(e) => setJudul(e.target.value)} className="w-full text-2xl font-bold placeholder-gray-400 focus:outline-none" placeholder="Ketik Judul Berita di Sini" required />
                 </div>
-                <ReactQuill forwardedRef={quillRef} theme="snow" value={konten} onChange={setKonten} modules={modules} placeholder="Tulis konten berita Anda di sini... Anda bisa copy-paste gambar ke editor ini." />
+                <ReactQuill forwardedRef={quillRef} theme="snow" value={konten} onChange={setKonten} modules={modules} placeholder="Tulis konten berita Anda di sini." />
             </div>
           </div>
 
