@@ -1,70 +1,148 @@
-import NextAuth, { AuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from '@/lib/prisma';
-import { compare } from 'bcryptjs';
+// src/pages/api/auth/[...nextauth].ts
+import NextAuth, { AuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@/lib/prisma";
+import { compare } from "bcryptjs";
+import type { IncomingMessage } from "http";
+
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_DURATION_HOURS = 2;
+
+function getIpFromReq(req: IncomingMessage): string {
+  const forwarded = (req.headers["x-forwarded-for"] || "") as string;
+  if (forwarded) return forwarded.split(",")[0].trim();
+  // @ts-ignore
+  return (req.socket && (req.socket as any).remoteAddress) || "unknown";
+}
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email dan password wajib diisi.');
+          throw new Error("Email dan password wajib diisi.");
         }
 
+        // @ts-ignore
+        const ip = getIpFromReq(req as IncomingMessage);
+        const now = new Date();
+
+        // Cek apakah IP sudah pernah tercatat
+        let record = await prisma.loginAttempt.findUnique({
+          where: { ip },
+        });
+
+        // Jika ada dan sedang terkunci
+        if (record && record.lockedUntil && record.lockedUntil > now) {
+          const minutesLeft = Math.ceil(
+            (record.lockedUntil.getTime() - now.getTime()) / (1000 * 60)
+          );
+          throw new Error(`Terlalu banyak percobaan login. Coba lagi dalam ${minutesLeft} menit.`);
+        }
+
+        // Cari user
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
         if (!user) {
-          throw new Error('Email atau password salah.');
+          // Jika user tidak ada, tetap hitung percobaan (IP-based)
+          const attempts = (record?.attempts || 0) + 1;
+          let lockoutUntil: Date | null = null;
+
+          if (attempts >= MAX_LOGIN_ATTEMPTS) {
+            lockoutUntil = new Date(now.getTime() + LOCKOUT_DURATION_HOURS * 60 * 60 * 1000);
+          }
+
+          await prisma.loginAttempt.upsert({
+            where: { ip },
+            update: {
+              attempts,
+              lockedUntil: lockoutUntil,
+              lastAttempt: now,
+            },
+            create: {
+              ip,
+              attempts,
+              lockedUntil: lockoutUntil,
+              lastAttempt: now,
+            },
+          });
+
+          if (lockoutUntil) {
+            throw new Error(`IP Anda dikunci selama ${LOCKOUT_DURATION_HOURS} jam karena 5x gagal login.`);
+          }
+
+          throw new Error("Email atau password salah.");
         }
 
-        const isPasswordValid = await compare(
-          credentials.password,
-          user.password
-        );
+        // Bandingkan password
+        const isPasswordValid = await compare(credentials.password, user.password);
 
         if (!isPasswordValid) {
-          throw new Error('Email atau password salah.');
+          const attempts = (record?.attempts || 0) + 1;
+          let lockoutUntil: Date | null = null;
+
+          if (attempts >= MAX_LOGIN_ATTEMPTS) {
+            lockoutUntil = new Date(now.getTime() + LOCKOUT_DURATION_HOURS * 60 * 60 * 1000);
+          }
+
+          await prisma.loginAttempt.upsert({
+            where: { ip },
+            update: {
+              attempts,
+              lockedUntil: lockoutUntil,
+              lastAttempt: now,
+            },
+            create: {
+              ip,
+              attempts,
+              lockedUntil: lockoutUntil,
+              lastAttempt: now,
+            },
+          });
+
+          if (lockoutUntil) {
+            throw new Error(`IP Anda dikunci selama ${LOCKOUT_DURATION_HOURS} jam karena 5x gagal login.`);
+          }
+
+          throw new Error("Email atau password salah.");
         }
 
-        // Return objek user yang sesuai dengan schema Prisma
+        // Jika password benar → reset percobaan IP
+        await prisma.loginAttempt.deleteMany({
+          where: { ip },
+        });
+
+        // Return data user
         return {
-          id: user.id.toString(), // pastikan string
+          id: user.id.toString(),
           email: user.email,
           name: user.name,
         };
       },
     }),
   ],
-  session: {
-    strategy: 'jwt',
-  },
+
+  session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: '/admin/login',
-  },
+  pages: { signIn: "/admin/login" },
 
   callbacks: {
     async jwt({ token, user }) {
-      // Saat login, 'user' tersedia. Tambahkan ID ke token.
-      if (user) {
-        token.id = user.id;
-      }
+      if (user) token.id = user.id;
       return token;
     },
     async session({ session, token }) {
-      // Teruskan ID dari token ke session.user
-      if (session.user) {
-        session.user.id = token.id as string;
-      }
+      if (session.user) session.user.id = token.id as string;
       return session;
     },
   },

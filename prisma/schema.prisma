@@ -15,6 +15,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   uploads   Upload[]
+  failedLoginAttempts Int      @default(0)
+  lastFailedLogin     DateTime?
+  lockoutUntil        DateTime?
 }
 
 model Kategori {
@@ -107,4 +110,12 @@ model GalleryMedia {
   createdAt    DateTime     @default(now())
   albumId      Int
   album        GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+}
+
+model LoginAttempt {
+  id          Int      @id @default(autoincrement())
+  ip          String   @unique
+  attempts    Int      @default(0)
+  lockedUntil DateTime?
+  lastAttempt DateTime @default(now())
 }
