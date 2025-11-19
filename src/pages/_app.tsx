@@ -60,7 +60,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@700;900&display=swap"
           rel="stylesheet"
         />
-        <title>HIMPENAS - Himpunan Pengolahan Sawit</title>
+        <title>Himpunan Mahasiswa Pengolahan Sawit</title>
         <meta name="description" content="Portal resmi Himpunan Pengolahan Sawit (HIMPENAS)" />
         <link rel="icon" href="/logo/logo.png" />
       </Head>

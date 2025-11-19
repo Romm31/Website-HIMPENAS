@@ -96,7 +96,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
               <h1 className="text-2xl md:text-3xl font-bold text-emerald-dark mb-1">
                 HIMPENAS
               </h1>
-              <p className="text-sm text-gray-500">Himpunan Pengolahan Sawit</p>
+              <p className="text-sm text-gray-500">Himpunan Mahasiswa Pengolahan Sawit</p>
             </motion.div>
 
             {/* Progress Bar */}
