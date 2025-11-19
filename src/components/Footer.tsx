@@ -69,7 +69,6 @@ const Footer: React.FC = () => {
 
         <div className="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
           <p>&copy; {new Date().getFullYear()} HIMPENAS. All rights reserved.</p>
-          <p className="mt-2">Didesain dengan <span className="text-red-500">♥</span> oleh tim HIMPENAS.</p>
         </div>
       </div>
     </footer>
