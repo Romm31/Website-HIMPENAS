@@ -206,13 +206,7 @@ const Footer: React.FC = () => {
             <p className="text-gray-500 text-sm text-center md:text-left">
               &copy; {currentYear} HIMPENAS. All rights reserved.
             </p>
-            
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />
-              <span>by HIMPENAS Team</span>
-            </div>
-
+             
             <div className="flex gap-6 text-sm">
               <Link href="/privacy" className="text-gray-500 hover:text-emerald-300 transition-colors duration-300">
                 Privacy Policy

@@ -66,7 +66,7 @@ const BeritaPage: NextPage<BeritaPageProps> = ({
             alt="Latar Belakang Berita"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-emerald-800/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-emerald-800/20 to-transparent"></div>
         </div>
 
         {/* Decorative Elements */}
@@ -150,19 +150,7 @@ const BeritaPage: NextPage<BeritaPageProps> = ({
             </div>
           </motion.div>
         </div>   
-           <div className="absolute bottom-0 left-0 w-full pointer-events-none leading-none">
-  <svg
-    className="w-full h-20 md:h-25"
-    preserveAspectRatio="none"
-    viewBox="0 0 1440 54"
-    fill="none"
-  >
-    <path
-      d="M0 22L60 26.7C120 31 240 41 360 39.2C480 37 600 23 720 17.8C840 13 960 17 1080 21.7C1200 26 1320 31 1380 33.3L1440 36V54H1380C1320 54 1200 54 1080 54C960 54 840 54 720 54C600 54 480 54 360 54C240 54 120 54 60 54H0V22Z"
-      fill="rgb(249, 250, 251)"
-    />
-  </svg>
-</div>   
+           
       </header>
 
       {/* Main Content */}

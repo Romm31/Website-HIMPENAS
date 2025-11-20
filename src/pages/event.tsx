@@ -71,7 +71,7 @@ const EventPage: NextPage<EventPageProps> = ({ upcomingEvents, pastEvents }) => 
         </div>
 
         {/* Animated Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/90 via-emerald-himp/80 to-emerald-700/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/50 via-emerald-himp/50 to-emerald-700/50"></div>
 
         {/* Decorative Shapes */}
         <motion.div 
