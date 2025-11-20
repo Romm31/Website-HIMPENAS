@@ -60,7 +60,7 @@ const EventPage: NextPage<EventPageProps> = ({ upcomingEvents, pastEvents }) => 
         className="relative bg-gradient-to-br from-emerald-dark via-emerald-himp to-emerald-700 text-white pt-32 md:pt-40 pb-28 md:pb-36 overflow-hidden"
       >
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-15">
           <Image
             src="/header/event-header.jpeg"
             fill
