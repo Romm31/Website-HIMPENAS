@@ -214,6 +214,20 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
             </div>
           </div>
 
+          {/* Decorative Bottom Wave */}
+          <div className="absolute bottom-0 left-0 w-full pointer-events-none leading-none translate-y-4 md:translate-y-6">
+  <svg
+    className="w-full h-14 md:h-20"
+    preserveAspectRatio="none"
+    viewBox="0 0 1440 54"
+    fill="none"
+  >
+    <path
+      d="M0 22L60 26.7C120 31 240 41 360 39.2C480 37 600 23 720 17.8C840 13 960 17 1080 21.7C1200 26 1320 31 1380 33.3L1440 36V54H1380C1320 54 1200 54 1080 54C960 54 840 54 720 54C600 54 480 54 360 54C240 54 120 54 60 54H0V22Z"
+      fill="rgb(249, 250, 251)"
+    />
+  </svg>
+</div>
 
         </section>
 
@@ -383,13 +397,12 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 * index }}
-                  className="h-full"
                 >
                   <Link
                     href={`/berita/${item.id}`}
-                    className="group flex flex-col h-full bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 border border-gray-100"
+                    className="group block bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 border border-gray-100"
                   >
-                    <div className="relative w-full h-48 md:h-52 overflow-hidden bg-gray-100 flex-shrink-0">
+                    <div className="relative w-full h-48 md:h-56 overflow-hidden bg-gray-100">
                       {item.gambarUrl ? (
                         <Image
                           src={item.gambarUrl}
@@ -406,16 +419,16 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
 
-                    <div className="p-5 md:p-6 flex flex-col flex-grow">
+                    <div className="p-5 md:p-6">
                       {item.kategori && (
-                        <span className="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">
+                        <span className="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
                           {item.kategori.nama}
                         </span>
                       )}
-                      <h3 className="font-bold text-lg md:text-xl text-gray-900 group-hover:text-emerald-600 line-clamp-2 mb-3 transition-colors flex-grow">
+                      <h3 className="font-bold text-lg md:text-xl text-gray-900 group-hover:text-emerald-600 line-clamp-2 mb-3 transition-colors">
                         {item.judul}
                       </h3>
-                      <div className="flex items-center justify-between text-sm text-gray-500 mt-auto">
+                      <div className="flex items-center justify-between text-sm text-gray-500">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span>
