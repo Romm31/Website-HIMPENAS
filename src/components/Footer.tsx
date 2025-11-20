@@ -1,77 +1,231 @@
-// src/components/Footer.tsx (Versi Final dengan Ikon)
+// src/components/Footer.tsx
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Mail, MapPin, Phone, Facebook, Instagram, Twitter, Youtube, ChevronRight, Heart } from 'lucide-react';
 
 const Footer: React.FC = () => {
+  const currentYear = new Date().getFullYear();
+
+  const navigationLinks = [
+    { name: 'Berita', href: '/berita' },
+    { name: 'Event', href: '/event' },
+    { name: 'Galeri', href: '/galeri' },
+    { name: 'Visi & Misi', href: '/visi-misi' },
+    { name: 'Tentang Kami', href: '/tentang' },
+    { name: 'Kontak', href: '/kontak' },
+  ];
+
+  const socialLinks = [
+    { name: 'Facebook', icon: Facebook, href: '#', color: 'hover:text-blue-400' },
+    { name: 'Instagram', icon: Instagram, href: '#', color: 'hover:text-pink-400' },
+    { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:text-sky-400' },
+    { name: 'Youtube', icon: Youtube, href: '#', color: 'hover:text-red-400' },
+  ];
+
   return (
-    <footer className="bg-gray-900 text-gray-400 font-sans">
-      <div className="container mx-auto py-12 px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 text-center md:text-left">
+    <footer className="relative bg-gradient-to-b from-gray-900 via-gray-900 to-black text-gray-400 font-sans overflow-hidden">
+      {/* Decorative Top Wave */}
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-none">
+        <svg className="relative block w-full h-12" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" 
+                fill="#f9fafb" opacity="0.05"></path>
+        </svg>
+      </div>
+
+      {/* Decorative Background Elements */}
+      <div className="absolute top-20 right-0 w-96 h-96 bg-emerald-himp/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-dark/5 rounded-full blur-3xl"></div>
+
+      <div className="container mx-auto py-16 px-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Kolom 1: Branding */}
-          <div className="flex flex-col items-center md:items-start">
-            <Link href="/" className="flex items-center space-x-3 mb-4">
-              <Image src="/logo/logo.png" alt="Logo HIMPENAS" width={40} height={40} className="rounded-full" />
-              <span className="font-bold text-2xl text-white">HIMPENAS</span>
+          <div className="text-center md:text-left">
+            <Link href="/" className="inline-flex items-center space-x-3 mb-6 group">
+              <div className="relative">
+                <Image 
+                  src="/logo/logo.png" 
+                  alt="Logo HIMPENAS" 
+                  width={50} 
+                  height={50} 
+                  className="rounded-full transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6" 
+                />
+                <div className="absolute inset-0 bg-emerald-400 rounded-full blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+              </div>
+              <span className="font-bold text-3xl text-white group-hover:text-emerald-300 transition-colors duration-300">
+                HIMPENAS
+              </span>
             </Link>
-            <p className="text-gray-400 text-sm">Wadah kreativitas mahasiswa</p>
+            <p className="text-gray-400 text-base leading-relaxed mb-6">
+              Himpunan Pengolahan Sawit - Wadah kreativitas dan inovasi mahasiswa untuk masa depan yang lebih baik.
+            </p>
+            
+            {/* Achievement Highlights */}
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              <div className="bg-gray-800/50 rounded-xl p-4 text-center hover:bg-emerald-himp/10 transition-all duration-300 group border border-gray-800 hover:border-emerald-himp/30">
+                <div className="text-2xl font-bold text-emerald-400 mb-1 group-hover:scale-110 transition-transform">
+                  500+
+                </div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Anggota</div>
+              </div>
+              <div className="bg-gray-800/50 rounded-xl p-4 text-center hover:bg-emerald-himp/10 transition-all duration-300 group border border-gray-800 hover:border-emerald-himp/30">
+                <div className="text-2xl font-bold text-emerald-400 mb-1 group-hover:scale-110 transition-transform">
+                  50+
+                </div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Event</div>
+              </div>
+              <div className="bg-gray-800/50 rounded-xl p-4 text-center hover:bg-emerald-himp/10 transition-all duration-300 group border border-gray-800 hover:border-emerald-himp/30">
+                <div className="text-2xl font-bold text-emerald-400 mb-1 group-hover:scale-110 transition-transform">
+                  10+
+                </div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Prestasi</div>
+              </div>
+            </div>
+
+            {/* Tagline */}
+            <div className="mt-6 px-4 py-3 bg-gradient-to-r from-emerald-900/20 to-transparent rounded-lg border-l-4 border-emerald-himp">
+              <p className="text-sm text-gray-300 italic">
+                "Bersama Membangun Masa Depan yang Berkelanjutan"
+              </p>
+            </div>
           </div>
 
           {/* Kolom 2: Navigasi */}
-          <div>
-            <h3 className="font-bold text-white text-lg mb-4 border-b-2 border-emerald-himp pb-2 inline-block">Navigasi</h3>
-            <ul className="space-y-3 text-base">
-              <li><Link href="/berita" className="hover:text-emerald-light transition-colors">Berita</Link></li>
-              <li><Link href="/event" className="hover:text-emerald-light transition-colors">Event</Link></li>
-              <li><Link href="/galeri" className="hover:text-emerald-light transition-colors">Galeri</Link></li>
-              <li><Link href="/visi-misi" className="hover:text-emerald-light transition-colors">Visi & Misi</Link></li>
-              <li><Link href="/tentang" className="hover:text-emerald-light transition-colors">Tentang Kami</Link></li>
-              <li><Link href="/kontak" className="hover:text-emerald-light transition-colors">Kontak</Link></li>
-              
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-white text-xl mb-6 relative inline-block">
+              Navigasi
+              <span className="absolute bottom-0 left-0 w-12 h-1 bg-emerald-himp rounded-full"></span>
+            </h3>
+            <ul className="space-y-3">
+              {navigationLinks.map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    href={link.href} 
+                    className="group inline-flex items-center text-gray-400 hover:text-emerald-300 transition-all duration-300"
+                  >
+                    <ChevronRight className="w-4 h-4 mr-2 opacity-0 -ml-6 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300" />
+                    <span>{link.name}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Kolom 3: Hubungi Kami */}
-          <div>
-            <h3 className="font-bold text-white text-lg mb-4 border-b-2 border-emerald-himp pb-2 inline-block">Hubungi Kami</h3>
-            <ul className="space-y-3 text-base">
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-white text-xl mb-6 relative inline-block">
+              Hubungi Kami
+              <span className="absolute bottom-0 left-0 w-12 h-1 bg-emerald-himp rounded-full"></span>
+            </h3>
+            <ul className="space-y-4">
               <li>
-                <a href="mailto:info@himpenas.org" className="flex items-center justify-center md:justify-start hover:text-emerald-light transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                  info@himpenas.org
+                <a 
+                  href="mailto:info@himpenas.org" 
+                  className="group flex items-center justify-center md:justify-start text-gray-400 hover:text-emerald-300 transition-colors duration-300"
+                >
+                  <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-emerald-himp/20 transition-colors duration-300">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <span className="text-sm">info@himpenas.org</span>
                 </a>
               </li>
               <li>
-                <div className="flex items-center justify-center md:justify-start">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                  Gedung A, Kampus Kita
+                <a 
+                  href="tel:+628123456789" 
+                  className="group flex items-center justify-center md:justify-start text-gray-400 hover:text-emerald-300 transition-colors duration-300"
+                >
+                  <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-emerald-himp/20 transition-colors duration-300">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <span className="text-sm">+62 812 3456 789</span>
+                </a>
+              </li>
+              <li>
+                <div className="group flex items-center justify-center md:justify-start text-gray-400">
+                  <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-emerald-himp/20 transition-colors duration-300">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <span className="text-sm">Gedung A, Kampus Kita<br/>Bandar Lampung</span>
                 </div>
               </li>
             </ul>
           </div>
 
-          {/* Kolom 4: Sosial Media (INI BAGIAN YANG DIPERBAIKI) */}
-          <div>
-            <h3 className="font-bold text-white text-lg mb-4 border-b-2 border-emerald-himp pb-2 inline-block">Sosial Media</h3>
-            <div className="flex space-x-4 justify-center md:justify-start mt-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Image src="/icons/facebook.svg" alt="Facebook" width={24} height={24} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Image src="/icons/twitter.svg" alt="Twitter" width={24} height={24} />
-              </a>
+          {/* Kolom 4: Sosial Media */}
+          <div className="text-center md:text-left">
+            <h3 className="font-bold text-white text-xl mb-6 relative inline-block">
+              Sosial Media
+              <span className="absolute bottom-0 left-0 w-12 h-1 bg-emerald-himp rounded-full"></span>
+            </h3>
+            <p className="text-gray-400 text-sm mb-6">
+              Ikuti kami di media sosial untuk update terbaru
+            </p>
+            <div className="flex gap-3 justify-center md:justify-start flex-wrap">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a 
+                    key={social.name}
+                    href={social.href} 
+                    className={`group p-3 bg-gray-800 rounded-xl ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/20`}
+                    aria-label={social.name}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Operating Hours */}
+            <div className="mt-8 bg-gray-800/50 rounded-xl p-4 border border-gray-800">
+              <h4 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                Jam Operasional
+              </h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between text-gray-400">
+                  <span>Senin - Jumat</span>
+                  <span className="text-gray-300">08:00 - 16:00</span>
+                </div>
+                <div className="flex justify-between text-gray-400">
+                  <span>Sabtu</span>
+                  <span className="text-gray-300">09:00 - 14:00</span>
+                </div>
+                <div className="flex justify-between text-gray-500">
+                  <span>Minggu</span>
+                  <span>Tutup</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} HIMPENAS. All rights reserved.</p>
+        {/* Bottom Section */}
+        <div className="mt-16 pt-8 border-t border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-gray-500 text-sm text-center md:text-left">
+              &copy; {currentYear} HIMPENAS. All rights reserved.
+            </p>
+            
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <span>Made with</span>
+              <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />
+              <span>by HIMPENAS Team</span>
+            </div>
+
+            <div className="flex gap-6 text-sm">
+              <Link href="/privacy" className="text-gray-500 hover:text-emerald-300 transition-colors duration-300">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-gray-500 hover:text-emerald-300 transition-colors duration-300">
+                Terms of Service
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
   );
-}
+};
+
 export default Footer;
