@@ -3,12 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, type ReactNode } from "react";
-import { signOut } from "next-auth/react";
 import NextImage from "next/image";
 import {
   LayoutDashboard, Newspaper, Shapes, Calendar,
-  LogOut, Presentation, Info, Goal, User, X, Menu,
-  Image,
+  LogOut, Presentation, Info, Goal, User, Menu, Image
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -50,6 +48,7 @@ const SidebarContent = () => {
               item.href === "/admin"
                 ? router.pathname === item.href
                 : router.pathname.startsWith(item.href);
+
             return (
               <motion.div
                 key={item.href}
@@ -67,15 +66,6 @@ const SidebarContent = () => {
                 >
                   {item.icon}
                   <span>{item.name}</span>
-                  {active && (
-                    <motion.div
-                      layoutId="active-pill"
-                      className="absolute left-0 top-0 bottom-0 w-1 rounded-r-full bg-white"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    ></motion.div>
-                  )}
                 </Link>
               </motion.div>
             );
@@ -86,14 +76,14 @@ const SidebarContent = () => {
   );
 };
 
-
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const [showLogout, setShowLogout] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // 🔥 FIX LOGOUT TANPA NEXTAUTH
   const confirmLogout = async () => {
-    await signOut({ redirect: false });
+    await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login");
     setShowLogout(false);
   };
@@ -113,11 +103,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <span>Logout</span>
           </motion.button>
           <p className="mt-3 text-center text-xs text-emerald-400">
-              © {new Date().getFullYear()} HIMPENAS
+            © {new Date().getFullYear()} HIMPENAS
           </p>
         </div>
       </aside>
 
+      {/* SIDEBAR MOBILE */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
@@ -128,6 +119,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               onClick={() => setSidebarOpen(false)}
               className="fixed inset-0 z-40 bg-black/50 lg:hidden"
             />
+
             <motion.aside
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
@@ -136,25 +128,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               className="fixed top-0 left-0 z-50 flex h-full w-64 flex-col justify-between bg-emerald-dark text-white shadow-lg"
             >
               <SidebarContent />
+
               <div className="p-4 mt-auto">
                 <motion.button
-                    onClick={() => setShowLogout(true)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-600 py-2.5 font-medium text-white transition-colors hover:bg-red-700"
+                  onClick={() => setShowLogout(true)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full flex items-center justify-center gap-2 rounded-lg bg-red-600 py-2.5 font-medium text-white transition-colors hover:bg-red-700"
                 >
-                    <LogOut size={18} />
-                    <span>Logout</span>
+                  <LogOut size={18} />
+                  <span>Logout</span>
                 </motion.button>
-                <p className="mt-3 text-center text-xs text-emerald-400">
-                    © {new Date().getFullYear()} HIMPENAS
-                </p>
               </div>
             </motion.aside>
           </>
         )}
       </AnimatePresence>
 
+      {/* MAIN */}
       <div className="flex flex-1 flex-col">
         <header className="sticky top-0 z-30 flex items-center justify-between bg-white p-4 shadow-sm lg:hidden">
           <h1 className="text-xl font-bold text-emerald-dark">Admin HIMPENAS</h1>
@@ -163,7 +154,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </button>
         </header>
 
-        {/* === MAIN CONTENT === */}
         <main className="flex-1 pt-6 px-4 pb-4 sm:px-6 sm:pb-6 lg:px-8 lg:pb-8">
           <AnimatePresence mode="wait">
             <motion.div
@@ -179,6 +169,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </main>
       </div>
 
+      {/* MODAL LOGOUT */}
       <AnimatePresence>
         {showLogout && (
           <motion.div
@@ -200,6 +191,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <p className="mt-2 text-gray-500">
                 Apakah Anda yakin ingin keluar dari dashboard?
               </p>
+
               <div className="mt-8 flex justify-center gap-4">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -209,6 +201,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 >
                   Batal
                 </motion.button>
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
