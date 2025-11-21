@@ -1,26 +1,30 @@
 import { NextResponse } from "next/server";
-import { jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // allow public routes
-  if (pathname.startsWith("/admin/login")) return NextResponse.next();
-  if (pathname.startsWith("/api/auth/login")) return NextResponse.next();
+  if (pathname.startsWith("/admin/login") || pathname === "/api/auth/login") {
+    return NextResponse.next();
+  }
 
-  // protect /admin/*
   if (pathname.startsWith("/admin")) {
     const token = req.cookies.get("token")?.value;
+
     if (!token) {
-      return NextResponse.redirect(new URL("/admin/login", req.url));
+      const url = req.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
     }
 
     try {
       await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
       return NextResponse.next();
     } catch (err) {
-      return NextResponse.redirect(new URL("/admin/login", req.url));
+      const url = req.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
     }
   }
 
@@ -28,5 +32,8 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/api/:path*",
+  ],
 };
