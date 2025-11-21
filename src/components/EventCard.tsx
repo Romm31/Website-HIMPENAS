@@ -195,5 +195,6 @@ const EventCard: React.FC<EventCardProps> = ({ event, isPast = false }) => {
     </div>
   );
 };
+  
 
 export default EventCard;

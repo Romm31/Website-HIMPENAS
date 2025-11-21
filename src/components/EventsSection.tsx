@@ -1,15 +1,46 @@
-import React from 'react';
-import { Event } from '@prisma/client';
-import { useInView } from 'react-intersection-observer';
-import { Calendar, MapPin, Clock, ArrowRight, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Calendar, MapPin, Clock, ArrowRight, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
+
+interface Event {
+  id: string;
+  judul: string;
+  deskripsi?: string;
+  tanggal: Date;
+  lokasi: string;
+}
 
 interface EventsSectionProps {
   events: Event[];
 }
 
 const EventsSection: React.FC<EventsSectionProps> = ({ events }) => {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [inView, setInView] = useState(false);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const parallaxX = useTransform(mouseX, [0, 1000], [-20, 20]);
+  const parallaxY = useTransform(mouseY, [0, 1000], [-20, 20]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+
+    const element = document.getElementById('event');
+    if (element) observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
 
   if (!events || events.length === 0) return null;
 
@@ -23,168 +54,273 @@ const EventsSection: React.FC<EventsSectionProps> = ({ events }) => {
     };
   };
 
+  const checkScrollability = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 5);
+    }
+  };
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return;
+
+    const scrollAmount = 400;
+    const newScrollLeft =
+      direction === 'left'
+        ? scrollContainerRef.current.scrollLeft - scrollAmount
+        : scrollContainerRef.current.scrollLeft + scrollAmount;
+
+    scrollContainerRef.current.scrollTo({
+      left: newScrollLeft,
+      behavior: 'smooth'
+    });
+
+    setTimeout(checkScrollability, 300);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    checkScrollability();
+  };
+
+  const handleMouseMoveParallax = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
+  useEffect(() => {
+    checkScrollability();
+    const handleResize = () => checkScrollability();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [events]);
+
   return (
     <section
       id="event"
-      ref={ref}
-      className={`relative py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden fade-in-section ${
-        inView ? 'is-visible' : ''
-      }`}
+      onMouseMove={handleMouseMoveParallax}
+      className="relative py-24 bg-gradient-to-b from-white via-gray-50 to-white overflow-hidden"
     >
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100/20 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-100/20 rounded-full blur-3xl"></div>
+      {/* BG decorative elements */}
+      <motion.div
+        style={{ x: parallaxX, y: parallaxY }}
+        className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-green-300/20 rounded-full blur-3xl"
+        animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+      />
+
+      <motion.div
+        style={{ x: useTransform(parallaxX, v => -v), y: useTransform(parallaxY, v => -v) }}
+        className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-green-200/30 to-emerald-300/20 rounded-full blur-3xl"
+        animate={{ scale: [1.2, 1, 1.2], rotate: [90, 0, 90] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+      />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Header Section */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 30 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-emerald-himp" />
-            <span className="text-sm font-semibold text-emerald-himp uppercase tracking-wide">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: inView ? 1 : 0 }}
+            transition={{ duration: 0.5, type: 'spring' }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-green-50 rounded-full mb-6 shadow-md"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            >
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+            </motion.div>
+            <span className="text-sm font-semibold text-emerald-700 uppercase tracking-wide">
               Agenda Terkini
             </span>
-          </div>
+          </motion.div>
 
-          {/* Title */}
-          <h2 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-gray-900 mb-4">
-            Kegiatan & <span className="text-emerald-himp">Acara</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+            Kegiatan &{' '}
+            <span className="bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+              Acara
+            </span>
           </h2>
 
-          {/* Divider */}
-          <div className="w-24 h-1 bg-emerald-himp mx-auto rounded-full mb-6"></div>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: inView ? 96 : 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="h-1 bg-gradient-to-r from-emerald-500 to-green-500 mx-auto rounded-full mb-6"
+          />
 
-          {/* Description */}
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: inView ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed"
+          >
             Ikuti berbagai kegiatan dan acara menarik dari HIMPENAS
-          </p>
+          </motion.p>
         </motion.div>
 
-        {/* Events Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {events.map((event, index) => {
-            const dateInfo = formatDate(event.tanggal);
-            
-            return (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 30 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
+        {/* Carousel */}
+        <div className="relative mt-4">
+          {/* Arrows */}
+          <AnimatePresence>
+            {canScrollLeft && (
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                onClick={() => scroll('left')}
+                className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white shadow-xl hover:bg-emerald-600 hover:text-white transition-all duration-300 text-gray-700 -ml-7 border border-gray-100 items-center justify-center"
               >
-                <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 flex overflow-hidden transform hover:-translate-y-2 h-full">
-                  {/* Gradient Border Effect */}
-                  <div className="absolute inset-0 bg-emerald-himp opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-md"></div>
+                <ChevronLeft className="w-6 h-6" />
+              </motion.button>
+            )}
 
-                  {/* Date Section - Vertical */}
-                  <div className="relative flex flex-col justify-center items-center bg-emerald-himp text-white p-4 w-24 rounded-l-2xl overflow-hidden">
-                    {/* Background Pattern */}
-                    <div className="absolute inset-0 opacity-10">
-                      <div className="absolute top-0 right-0 w-20 h-20 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                      <div className="absolute bottom-0 left-0 w-16 h-16 bg-white rounded-full translate-y-1/2 -translate-x-1/2"></div>
-                    </div>
+            {canScrollRight && (
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                onClick={() => scroll('right')}
+                className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-white shadow-xl hover:bg-emerald-600 hover:text-white transition-all duration-300 text-gray-700 -mr-7 border border-gray-100 items-center justify-center"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </motion.button>
+            )}
+          </AnimatePresence>
 
-                    {/* Date Content */}
-                    <div className="relative z-10 text-center">
-                      <span className="text-4xl font-bold leading-none block">
-                        {dateInfo.day}
-                      </span>
-                      <span className="font-bold text-sm tracking-wider mt-1 block">
-                        {dateInfo.month}
-                      </span>
-                      <div className="w-8 h-px bg-white/40 mx-auto my-2"></div>
-                      <span className="text-xs opacity-90 block">
-                        {dateInfo.year}
-                      </span>
-                    </div>
+          {/* SCROLL AREA — ALREADY PROPERLY CENTERED */}
+         <div
+  ref={scrollContainerRef}
+  onScroll={checkScrollability}
+  onMouseDown={handleMouseDown}
+  onMouseMove={handleMouseMove}
+  onMouseUp={handleDragEnd}
+  onMouseLeave={handleDragEnd}
+  onTouchStart={handleTouchStart}
+  onTouchMove={handleTouchMove}
+  onTouchEnd={handleDragEnd}
+  className={`flex gap-6 overflow-x-auto pb-8 scrollbar-hide scroll-smooth snap-x snap-mandatory 
+              justify-start md:justify-center ${
+                isDragging ? 'cursor-grabbing' : 'cursor-grab'
+              }`}
+  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+>
 
-                    {/* Calendar Icon at Bottom */}
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 opacity-20">
-                      <Calendar className="w-8 h-8" />
-                    </div>
-                  </div>
+            {events.map((event, index) => {
+              const dateInfo = formatDate(event.tanggal);
+              return (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -8 }}
+                  className="group flex-shrink-0 w-80 sm:w-96 snap-center"
+                >
+                  {/* Event card (tidak diubah) */}
+                  <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 flex overflow-hidden h-full border border-gray-100">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="relative flex flex-col justify-center items-center bg-gradient-to-br from-emerald-600 to-green-600 text-white p-4 w-24 rounded-l-2xl overflow-hidden"
+                    >
+                      <span className="text-4xl font-bold">{dateInfo.day}</span>
+                      <span className="font-bold text-sm mt-1">{dateInfo.month}</span>
+                      <div className="h-px bg-white/40 w-8 my-2" />
+                      <span className="text-xs opacity-90">{dateInfo.year}</span>
+                    </motion.div>
 
-                  {/* Content Section */}
-                  <div className="flex-1 p-6 flex flex-col relative">
-                    {/* Decorative Corner */}
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-50 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    {/* Title */}
-                    <h3 className="font-bold text-xl text-gray-900 mb-3 leading-tight relative group/title line-clamp-2">
-                      <span className="transition-colors duration-300 group-hover/title:text-emerald-dark">
+                    <div className="flex-1 p-6 flex flex-col">
+                      <h3 className="font-bold text-xl text-gray-900 mb-3 line-clamp-2">
                         {event.judul}
-                      </span>
-                      <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-emerald-himp group-hover/title:w-full transition-all duration-300"></span>
-                    </h3>
+                      </h3>
 
-                    {/* Description (if available) */}
-                    {event.deskripsi && (
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-                        {event.deskripsi}
-                      </p>
-                    )}
+                      {event.deskripsi && (
+                        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                          {event.deskripsi}
+                        </p>
+                      )}
 
-                    <div className="flex-grow"></div>
-
-                    {/* Event Details */}
-                    <div className="space-y-2 mt-4">
-                      {/* Location */}
-                      <div className="flex items-center text-sm text-gray-600 group/location">
-                        <div className="p-2 bg-emerald-50 rounded-lg mr-3 transition-colors duration-300 group-hover/location:bg-emerald-100">
-                          <MapPin className="w-4 h-4 text-emerald-dark" />
+                      <div className="mt-auto space-y-3">
+                        <div className="flex items-center text-sm text-gray-600">
+                          <MapPin className="w-4 h-4 text-emerald-600 mr-3" />
+                          {event.lokasi}
                         </div>
-                        <span className="font-medium">{event.lokasi}</span>
+
+                        <div className="flex items-center text-sm text-gray-600">
+                          <Clock className="w-4 h-4 text-emerald-600 mr-3" />
+                          {dateInfo.time} WIB
+                        </div>
                       </div>
 
-                      {/* Time */}
-                      <div className="flex items-center text-sm text-gray-600 group/time">
-                        <div className="p-2 bg-emerald-50 rounded-lg mr-3 transition-colors duration-300 group-hover/time:bg-emerald-100">
-                          <Clock className="w-4 h-4 text-emerald-dark" />
+                      {index < 3 && (
+                        <div className="absolute top-4 right-4 px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-full shadow-lg">
+                          BARU
                         </div>
-                        <span className="font-medium">{dateInfo.time} WIB</span>
-                      </div>
+                      )}
                     </div>
-
-
-
-                    {/* Hover Shimmer Effect */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"></div>
                   </div>
+                </motion.div>
+              );
+            })}
+          </div>
 
-                  {/* "NEW" Badge for Recent Events */}
-                  {index < 3 && (
-                    <div className="absolute top-4 right-4 px-2.5 py-1 bg-emerald-himp text-white text-xs font-bold rounded-full shadow-lg transform rotate-3">
-                      BARU
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
+          {/* Mobile Hint */}
+          <div className="md:hidden text-center mt-6 text-gray-500 text-sm">
+            <motion.div
+              animate={{ x: [-5, 5, -5] }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="flex items-center justify-center gap-2"
+            >
+              <span>←</span>
+              <span className="font-medium">Geser untuk melihat lebih banyak</span>
+              <span>→</span>
+            </motion.div>
+          </div>
         </div>
-
-        {/* View All Button */}
-        {events.length > 6 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-center mt-12"
-          >
-            <button className="group inline-flex items-center gap-3 rounded-full bg-emerald-dark px-10 py-4 font-bold text-white shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-emerald-800 relative overflow-hidden">
-              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-              <span className="relative">Lihat Semua Event</span>
-              <ArrowRight className="w-5 h-5 relative transition-transform group-hover:translate-x-2" />
-            </button>
-          </motion.div>
-        )}
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };
