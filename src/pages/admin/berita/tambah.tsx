@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import AdminLayout from "../_layout";
 import Link from "next/link";
-import { ArrowLeft, Save, Loader2, Image as ImageIcon } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowLeft, Save, Loader2, Image as ImageIcon, X, Eye, CheckCircle2, AlertCircle, FileText, Settings, Upload, Plus, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
 import "react-quill/dist/quill.snow.css";
 import type ReactQuillType from "react-quill";
@@ -14,14 +14,13 @@ import type ReactQuillType from "react-quill";
 const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
-    // eslint-disable-next-line react/display-name
     return ({ forwardedRef, ...props }: { forwardedRef: React.Ref<ReactQuillType>, [key: string]: any }) => (
       <RQ ref={forwardedRef} {...props} />
     );
   },
   {
     ssr: false,
-    loading: () => <div className="h-48 animate-pulse rounded-md bg-gray-200" />,
+    loading: () => <div className="h-96 animate-pulse rounded-xl bg-gray-100" />,
   }
 );
 
@@ -38,6 +37,8 @@ export default function TambahBerita() {
   const [gambarUrl, setGambarUrl] = useState("");
   const [kategori, setKategori] = useState<Kategori[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [charCount, setCharCount] = useState(0);
   const quillRef = useRef<ReactQuillType>(null);
 
   useEffect(() => {
@@ -46,6 +47,12 @@ export default function TambahBerita() {
       .then(setKategori)
       .catch(() => toast.error("Gagal memuat daftar kategori."));
   }, []);
+
+  useEffect(() => {
+    // Count characters excluding HTML tags
+    const text = konten.replace(/<[^>]*>/g, '');
+    setCharCount(text.length);
+  }, [konten]);
 
   const modules = useMemo(() => {
     const imageHandler = () => {
@@ -57,6 +64,21 @@ export default function TambahBerita() {
       input.onchange = async () => {
         if (input.files && quillRef.current) {
           const file = input.files[0];
+
+          // Validate file
+          const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+          const maxSize = 5 * 1024 * 1024; // 5MB
+
+          if (!validTypes.includes(file.type)) {
+            toast.error("Format file tidak didukung. Gunakan JPG, PNG, atau WebP");
+            return;
+          }
+
+          if (file.size > maxSize) {
+            toast.error("Ukuran file terlalu besar. Maksimal 5MB");
+            return;
+          }
+
           const toastId = toast.loading("Mengunggah gambar ke konten...");
           const formData = new FormData();
           formData.append("file", file);
@@ -104,33 +126,69 @@ export default function TambahBerita() {
   const handleGambarUnggulan = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const toastId = toast.loading("Mengunggah gambar...");
+
+    // Validate file
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    if (!validTypes.includes(file.type)) {
+      toast.error("Format file tidak didukung. Gunakan JPG, PNG, atau WebP");
+      return;
+    }
+
+    if (file.size > maxSize) {
+      toast.error("Ukuran file terlalu besar. Maksimal 5MB");
+      return;
+    }
+
+    const toastId = toast.loading("Mengunggah gambar unggulan...");
     const fd = new FormData();
     fd.append("file", file);
 
     try {
-        const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-        const data = await res.json();
-        if (!res.ok || !data?.url) throw new Error("Upload gagal");
-        setGambarUrl(data.url);
-        toast.success("Gambar berhasil diunggah!", { id: toastId });
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok || !data?.url) throw new Error("Upload gagal");
+      setGambarUrl(data.url);
+      toast.success("Gambar unggulan berhasil diunggah!", { id: toastId });
     } catch (error) {
-        toast.error("Upload gagal.", { id: toastId });
+      toast.error("Upload gagal.", { id: toastId });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!judul.trim()) {
+      toast.error("Judul berita tidak boleh kosong");
+      return;
+    }
+
+    if (!konten.trim() || konten === '<p><br></p>') {
+      toast.error("Konten berita tidak boleh kosong");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const res = await fetch("/api/admin/berita", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ judul, konten, kategoriId: kategoriId ? Number(kategoriId) : null, gambarUrl }),
+        body: JSON.stringify({ 
+          judul, 
+          konten, 
+          kategoriId: kategoriId ? Number(kategoriId) : null, 
+          gambarUrl 
+        }),
       });
+      
       if (!res.ok) throw new Error(await res.text());
+      
       toast.success("Berita baru berhasil dipublikasikan!");
-      router.push("/admin/berita");
+      
+      setTimeout(() => {
+        router.push("/admin/berita");
+      }, 1000);
     } catch (err) {
       toast.error("Gagal menyimpan berita.");
     } finally {
@@ -141,58 +199,347 @@ export default function TambahBerita() {
   return (
     <AdminLayout>
       <Toaster position="top-right" richColors />
-      <form onSubmit={handleSubmit}>
-        <div className="flex items-center justify-between mb-8">
+
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <Link
+          href="/admin/berita"
+          className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-gray-600 transition-all hover:bg-gray-100 hover:text-gray-900 mb-4"
+        >
+          <ArrowLeft size={18} />
+          <span className="font-medium">Kembali ke Daftar Berita</span>
+        </Link>
+
+        <div className="flex items-start justify-between">
           <div>
-            <Link href="/admin/berita" className="flex items-center gap-2 text-gray-500 transition hover:text-gray-800 mb-2">
-              <ArrowLeft size={18} /> Kembali ke Daftar Berita
-            </Link>
-            <h1 className="text-3xl font-bold text-gray-800">Tulis Berita Baru</h1>
+            <h1 className="text-4xl font-bold text-gray-900">Tulis Berita Baru</h1>
+            <p className="mt-2 text-gray-600">Buat dan publikasikan berita untuk website</p>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-1.5">
+                <Plus size={14} className="text-emerald-600" />
+                <span className="text-sm font-semibold text-emerald-700">Berita Baru</span>
+              </div>
+              {charCount > 0 && (
+                <div className="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-1.5">
+                  <span className="text-sm font-semibold text-blue-700">{charCount.toLocaleString()} Karakter</span>
+                </div>
+              )}
+            </div>
           </div>
-          <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-2 rounded-lg bg-emerald-dark px-5 py-2.5 font-semibold text-white shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60">
-            {isSubmitting ? <><Loader2 className="animate-spin" size={20}/> Menyimpan...</> : <><Save size={18} /> Publikasikan</>}
+
+          <motion.button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+            whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
+            className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/30 transition-all hover:shadow-xl hover:shadow-emerald-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                <span>Menyimpan...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={20} />
+                <span>Publikasikan</span>
+              </>
+            )}
           </motion.button>
         </div>
+      </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-                <div className="border-b p-4">
-                    <input value={judul} onChange={(e) => setJudul(e.target.value)} className="w-full text-2xl font-bold placeholder-gray-400 focus:outline-none" placeholder="Ketik Judul Berita di Sini" required />
-                </div>
-                <ReactQuill forwardedRef={quillRef} theme="snow" value={konten} onChange={setKonten} modules={modules} placeholder="Tulis konten berita Anda di sini." />
+      {/* Content */}
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Main Content Area */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+          className="lg:col-span-2 space-y-6"
+        >
+          {/* Title & Editor Card */}
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            <div className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white px-6 py-4">
+              <div className="flex items-center gap-2">
+                <FileText size={20} className="text-emerald-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Konten Berita</h3>
+              </div>
+            </div>
+
+            {/* Title Input */}
+            <div className="border-b border-gray-100 p-6">
+              <input
+                value={judul}
+                onChange={(e) => setJudul(e.target.value)}
+                className="w-full text-3xl font-bold text-gray-900 placeholder-gray-400 focus:outline-none"
+                placeholder="Ketik Judul Berita di Sini..."
+                required
+              />
+              <p className="mt-2 text-sm text-gray-500">
+                {judul.length}/200 karakter
+              </p>
+            </div>
+
+            {/* Rich Text Editor */}
+            <div className="quill-wrapper">
+              <ReactQuill
+                forwardedRef={quillRef}
+                theme="snow"
+                value={konten}
+                onChange={setKonten}
+                modules={modules}
+                placeholder="Tulis konten berita Anda di sini... Gunakan toolbar untuk format teks, sisipkan gambar, atau tambahkan link."
+                className="min-h-[400px]"
+              />
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700">Pengaturan</h3>
-                <div className="mt-6 space-y-4">
-                    <label htmlFor="kategori" className="block font-medium text-sm">Kategori</label>
-                    <select id="kategori" value={kategoriId ?? ""} onChange={(e) => setKategoriId(e.target.value ? Number(e.target.value) : null)} className="w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-dark focus:ring-emerald-dark">
-                        <option value="">Pilih kategori...</option>
-                        {kategori.map((k) => (<option key={k.id} value={k.id}>{k.nama}</option>))}
-                    </select>
-                </div>
+          {/* Tips Card */}
+          <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+            <div className="flex gap-3">
+              <AlertCircle className="h-5 w-5 flex-shrink-0 text-blue-600 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-blue-900">Tips Menulis Berita</h4>
+                <ul className="mt-2 space-y-1 text-sm text-blue-700">
+                  <li>• Gunakan judul yang menarik dan informatif</li>
+                  <li>• Tulis konten yang jelas, padat, dan mudah dipahami</li>
+                  <li>• Gunakan heading untuk struktur konten yang lebih baik</li>
+                  <li>• Sisipkan gambar untuk memperkaya konten visual</li>
+                  <li>• Pilih kategori yang sesuai untuk kemudahan navigasi</li>
+                </ul>
+              </div>
             </div>
-             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-700">Gambar Unggulan</h3>
-                <label htmlFor="file-upload" className={`mt-4 flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 text-center transition-colors hover:border-emerald-dark hover:bg-emerald-50 ${gambarUrl ? 'border-emerald-dark bg-emerald-50' : 'border-gray-300'}`}>
-                  {gambarUrl ? (
-                    <img src={gambarUrl} alt="Preview" className="h-28 w-full object-contain" />
-                  ) : (
-                    <>
-                      <ImageIcon size={40} className="text-gray-400" />
-                      <p className="mt-2 text-sm text-gray-500">Pilih gambar</p>
-                    </>
-                  )}
-                  <input id="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleGambarUnggulan} />
+          </div>
+
+          {/* Required Fields Notice */}
+          {(!judul || !konten || konten === '<p><br></p>') && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl border border-orange-100 bg-orange-50 p-4"
+            >
+              <div className="flex gap-3">
+                <AlertCircle className="h-5 w-5 flex-shrink-0 text-orange-600 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-orange-900">Field Wajib</h4>
+                  <ul className="mt-2 space-y-1 text-sm text-orange-700">
+                    {!judul && <li>• Judul belum diisi</li>}
+                    {(!konten || konten === '<p><br></p>') && <li>• Konten berita belum diisi</li>}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* Sidebar */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="space-y-6"
+        >
+          {/* Settings Card */}
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            <div className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white px-6 py-4">
+              <div className="flex items-center gap-2">
+                <Settings size={20} className="text-emerald-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Pengaturan</h3>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+              {/* Category Select */}
+              <div>
+                <label htmlFor="kategori" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Kategori Berita
                 </label>
-                {gambarUrl && <button type="button" onClick={() => setGambarUrl('')} className="mt-2 w-full text-sm text-red-600 hover:underline">Hapus gambar</button>}
+                <select
+                  id="kategori"
+                  value={kategoriId ?? ""}
+                  onChange={(e) => setKategoriId(e.target.value ? Number(e.target.value) : null)}
+                  className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 transition-all focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
+                >
+                  <option value="">Pilih kategori...</option>
+                  {kategori.map((k) => (
+                    <option key={k.id} value={k.id}>
+                      {k.nama}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-2 text-xs text-gray-500">
+                  Kategori bersifat opsional tapi direkomendasikan
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* Featured Image Card */}
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            <div className="border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white px-6 py-4">
+              <div className="flex items-center gap-2">
+                <ImageIcon size={20} className="text-emerald-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Gambar Unggulan</h3>
+              </div>
+              <p className="mt-1 text-sm text-gray-500">Gambar utama berita (opsional)</p>
+            </div>
+
+            <div className="p-6 space-y-4">
+              {!gambarUrl ? (
+                <label
+                  htmlFor="file-upload"
+                  className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 p-8 text-center transition-all hover:border-emerald-500 hover:bg-emerald-50"
+                >
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-emerald-50">
+                    <Upload size={32} className="text-emerald-600" />
+                  </div>
+                  <p className="mt-4 font-semibold text-gray-700">Upload Gambar</p>
+                  <p className="mt-2 text-sm text-gray-500">JPG, PNG, WebP (Max 5MB)</p>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    className="sr-only"
+                    accept="image/*"
+                    onChange={handleGambarUnggulan}
+                  />
+                </label>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-gray-700">Preview</p>
+                    <div className="flex gap-2">
+                      <motion.button
+                        type="button"
+                        onClick={() => setShowPreviewModal(true)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-200"
+                      >
+                        <Eye size={14} />
+                        Lihat
+                      </motion.button>
+                      <motion.button
+                        type="button"
+                        onClick={() => setGambarUrl('')}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-1 rounded-lg bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 transition-colors hover:bg-red-200"
+                      >
+                        <X size={14} />
+                        Hapus
+                      </motion.button>
+                    </div>
+                  </div>
+
+                  <div className="group relative overflow-hidden rounded-xl shadow-md">
+                    <img
+                      src={gambarUrl}
+                      alt="Featured"
+                      className="w-full rounded-xl transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute top-3 right-3">
+                      <span className="flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                        <CheckCircle2 size={14} />
+                        Siap
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Change Image Button */}
+                  <label
+                    htmlFor="file-upload-change"
+                    className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 py-3 text-sm font-medium text-gray-700 transition-all hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-700"
+                  >
+                    <Upload size={16} />
+                    <span>Ganti Gambar</span>
+                    <input
+                      id="file-upload-change"
+                      type="file"
+                      className="sr-only"
+                      accept="image/*"
+                      onChange={handleGambarUnggulan}
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Ready to Publish Notice */}
+          {judul && konten && konten !== '<p><br></p>' && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl border border-green-100 bg-green-50 p-4"
+            >
+              <div className="flex gap-3">
+                <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold text-green-900">Siap Publikasi!</h4>
+                  <p className="mt-1 text-sm text-green-700">
+                    Berita Anda sudah lengkap dan siap dipublikasikan. Klik tombol "Publikasikan" untuk menerbitkan.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
       </form>
+
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {showPreviewModal && gambarUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setShowPreviewModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-5xl w-full"
+            >
+              <button
+                onClick={() => setShowPreviewModal(false)}
+                className="absolute -top-12 right-0 rounded-lg bg-white/10 p-2 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              >
+                <X size={24} />
+              </button>
+              <img
+                src={gambarUrl}
+                alt="Preview Fullscreen"
+                className="w-full rounded-2xl shadow-2xl"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <style jsx global>{`
+        .quill-wrapper .ql-container {
+          min-height: 400px;
+          font-size: 16px;
+        }
+        .quill-wrapper .ql-editor {
+          min-height: 400px;
+        }
+        .quill-wrapper .ql-editor.ql-blank::before {
+          font-style: normal;
+          color: #9ca3af;
+        }
+      `}</style>
     </AdminLayout>
   );
 }
