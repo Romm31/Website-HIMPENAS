@@ -5,13 +5,17 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../_layout';
 import { Toaster, toast } from 'sonner';
 import Link from 'next/link';
-import { ArrowLeft, Save, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowLeft, Save, Loader2, Shapes, AlertCircle, CheckCircle2, Plus, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TambahKategori() {
   const [nama, setNama] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const router = useRouter();
+
+  const isValid = nama.trim().length >= 3;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -27,7 +31,10 @@ export default function TambahKategori() {
         throw new Error(data?.message || 'Gagal menyimpan');
       }
       toast.success('Kategori baru berhasil dibuat!');
-      router.push('/admin/kategori');
+      setShowSuccess(true);
+      setTimeout(() => {
+        router.push('/admin/kategori');
+      }, 1000);
     } catch (err: any) {
       toast.error(err.message || 'Gagal menyimpan');
     } finally {
@@ -38,30 +45,369 @@ export default function TambahKategori() {
   return (
     <AdminLayout>
       <Toaster position="top-right" richColors />
-      <div>
-        <Link href="/admin/kategori" className="flex items-center gap-2 text-gray-500 transition hover:text-gray-800 mb-6">
-          <ArrowLeft size={18} /> Kembali ke Daftar Kategori
+      
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Link href="/admin/kategori">
+          <motion.div
+            whileHover={{ x: -5 }}
+            className="inline-flex items-center gap-2 text-gray-600 transition hover:text-emerald-600 mb-6 group"
+          >
+            <motion.div
+              whileHover={{ x: -3 }}
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-emerald-100 transition-colors"
+            >
+              <ArrowLeft size={18} />
+            </motion.div>
+            <span className="font-medium">Kembali ke Daftar Kategori</span>
+          </motion.div>
         </Link>
-        <h1 className="text-3xl font-bold text-gray-800">Tambah Kategori Baru</h1>
-        <p className="mt-1 text-gray-500">Buat kategori baru untuk mengelompokkan berita.</p>
-      </div>
+        
+        <div className="flex items-start gap-4">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", delay: 0.1 }}
+            className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-green-500 shadow-lg"
+          >
+            <Plus className="h-7 w-7 text-white" />
+            <motion.div
+              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="absolute inset-0 rounded-2xl bg-emerald-400"
+            />
+          </motion.div>
+          
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+              Tambah Kategori Baru
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Sparkles className="h-6 w-6 text-emerald-500" />
+              </motion.div>
+            </h1>
+            <p className="mt-1 text-gray-500">Buat kategori baru untuk mengelompokkan berita.</p>
+          </div>
+        </div>
+      </motion.div>
 
-      <form onSubmit={handleSubmit} className="mt-8 max-w-lg">
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-700">Detail Kategori</h3>
-            <div className="mt-6">
-                <div className="relative">
-                    <input id="nama" type="text" value={nama} onChange={(e) => setNama(e.target.value)} required className="peer block w-full appearance-none rounded-md border border-gray-300 bg-transparent px-3 py-3 placeholder-transparent focus:border-emerald-dark focus:outline-none focus:ring-0" placeholder="Nama Kategori" />
-                    <label htmlFor="nama" className="absolute left-3 top-3 origin-[0] -translate-y-5 scale-75 transform bg-white px-1 text-gray-500 transition-all peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-5 peer-focus:scale-75 peer-focus:text-emerald-dark">Nama Kategori</label>
-                </div>
+      {/* Form */}
+      <motion.form
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        onSubmit={handleSubmit}
+        className="mt-8 max-w-2xl"
+      >
+        {/* Main Card */}
+        <motion.div
+          whileHover={{ y: -2 }}
+          className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg transition-all"
+        >
+          {/* Header with Gradient */}
+          <div className="bg-gradient-to-r from-emerald-500 to-green-500 px-6 py-4">
+            <div className="flex items-center gap-3">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm"
+              >
+                <Shapes className="h-6 w-6 text-white" />
+              </motion.div>
+              <div>
+                <h3 className="text-lg font-bold text-white">Detail Kategori</h3>
+                <p className="text-sm text-emerald-50">Masukkan informasi kategori baru</p>
+              </div>
             </div>
-        </div>
-        <div className="mt-6 flex justify-end">
-            <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center justify-center gap-2 rounded-lg bg-emerald-dark px-5 py-2.5 font-semibold text-white shadow-sm transition-all hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60">
-              {isSubmitting ? <><Loader2 className="animate-spin" size={20}/> Menyimpan...</> : <><Save size={18} /> Simpan</>}
-            </motion.button>
-        </div>
-      </form>
+          </div>
+
+          {/* Form Body */}
+          <div className="p-6 space-y-6">
+            {/* Input Field with Enhanced Design */}
+            <div className="relative">
+              <label
+                htmlFor="nama"
+                className="mb-2 block text-sm font-semibold text-gray-700"
+              >
+                Nama Kategori
+              </label>
+              
+              <div className="relative">
+                <motion.input
+                  id="nama"
+                  type="text"
+                  value={nama}
+                  onChange={(e) => setNama(e.target.value)}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  required
+                  animate={{
+                    scale: isFocused ? 1.01 : 1,
+                  }}
+                  className={`block w-full rounded-xl border-2 px-4 py-3.5 text-gray-900 placeholder-gray-400 transition-all focus:outline-none ${
+                    isFocused
+                      ? 'border-emerald-500 bg-emerald-50/30 shadow-lg shadow-emerald-100'
+                      : 'border-gray-300 bg-white hover:border-gray-400'
+                  } ${
+                    nama && !isValid
+                      ? 'border-red-300 bg-red-50/30'
+                      : ''
+                  }`}
+                  placeholder="Masukkan nama kategori..."
+                />
+                
+                {/* Status Icon */}
+                <AnimatePresence>
+                  {nama && (
+                    <motion.div
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      exit={{ scale: 0, rotate: 180 }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      {isValid ? (
+                        <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                      ) : (
+                        <AlertCircle className="h-5 w-5 text-red-500" />
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Character Counter & Validation */}
+              <div className="mt-2 flex items-center justify-between">
+                <AnimatePresence mode="wait">
+                  {!nama && (
+                    <motion.p
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="text-sm text-gray-500"
+                    >
+                      Minimal 3 karakter
+                    </motion.p>
+                  )}
+                  {nama && !isValid && (
+                    <motion.p
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="flex items-center gap-1.5 text-sm text-red-600"
+                    >
+                      <AlertCircle className="h-4 w-4" />
+                      Minimal 3 karakter diperlukan
+                    </motion.p>
+                  )}
+                  {nama && isValid && (
+                    <motion.p
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="flex items-center gap-1.5 text-sm text-emerald-600"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Nama kategori valid
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+                
+                <span className={`text-sm font-medium ${
+                  nama.length > 50 ? 'text-red-600' : 'text-gray-500'
+                }`}>
+                  {nama.length}/50
+                </span>
+              </div>
+            </div>
+
+            {/* Preview Card */}
+            <AnimatePresence>
+              {nama && isValid && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0, y: -10 }}
+                  animate={{ opacity: 1, height: 'auto', y: 0 }}
+                  exit={{ opacity: 0, height: 0, y: -10 }}
+                  className="overflow-hidden"
+                >
+                  <div className="rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 border-2 border-emerald-200 p-4">
+                    <div className="flex items-start gap-3">
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500"
+                      >
+                        <Shapes className="h-5 w-5 text-white" />
+                      </motion.div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-emerald-900">Preview Kategori</p>
+                        <p className="mt-1 text-lg font-bold text-emerald-700">{nama}</p>
+                        <p className="mt-1 text-xs text-emerald-600">
+                          Kategori ini akan muncul di halaman berita
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Info Box */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-xl bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-200 p-4"
+            >
+              <div className="flex gap-3">
+                <div className="flex-shrink-0">
+                  <motion.div
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500"
+                  >
+                    <AlertCircle className="h-5 w-5 text-white" />
+                  </motion.div>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-blue-900">Tips Penamaan Kategori</h4>
+                  <ul className="mt-2 space-y-1 text-sm text-blue-700">
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                      <span>Gunakan nama yang singkat, jelas, dan mudah dipahami</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                      <span>Hindari karakter spesial yang tidak perlu</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                      <span>Pastikan kategori belum ada sebelumnya</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                      <span>Gunakan huruf kapital untuk huruf pertama</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Example Categories */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-xl bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 p-4"
+            >
+              <h4 className="font-semibold text-purple-900 mb-3">Contoh Kategori yang Baik</h4>
+              <div className="flex flex-wrap gap-2">
+                {['Teknologi', 'Pendidikan', 'Olahraga', 'Kesehatan', 'Bisnis', 'Politik'].map((cat, idx) => (
+                  <motion.button
+                    key={cat}
+                    type="button"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5 + idx * 0.1 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setNama(cat)}
+                    className="rounded-lg bg-white border border-purple-200 px-3 py-1.5 text-sm font-medium text-purple-700 hover:bg-purple-100 transition-colors"
+                  >
+                    {cat}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Card Footer */}
+          <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
+            <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-gray-600">
+                <span className="font-medium text-gray-900">Tips:</span> Kategori akan langsung aktif setelah dibuat
+              </p>
+              
+              <div className="flex gap-3 w-full sm:w-auto">
+                <Link href="/admin/kategori" className="flex-1 sm:flex-none">
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto rounded-xl border-2 border-gray-300 px-6 py-2.5 font-semibold text-gray-700 transition-all hover:bg-gray-50 hover:border-gray-400"
+                  >
+                    Batal
+                  </motion.button>
+                </Link>
+                
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting || !isValid}
+                  whileHover={{ scale: isSubmitting || !isValid ? 1 : 1.02 }}
+                  whileTap={{ scale: isSubmitting || !isValid ? 1 : 0.98 }}
+                  className={`flex-1 sm:flex-none flex items-center justify-center gap-2 rounded-xl px-6 py-2.5 font-semibold text-white shadow-lg transition-all ${
+                    isSubmitting || !isValid
+                      ? 'cursor-not-allowed bg-gray-400'
+                      : 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 hover:shadow-xl'
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      >
+                        <Loader2 size={20} />
+                      </motion.div>
+                      Menyimpan...
+                    </>
+                  ) : (
+                    <>
+                      <Save size={18} />
+                      Simpan Kategori
+                    </>
+                  )}
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </motion.form>
+
+      {/* Success Indicator */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.8 }}
+            className="fixed bottom-8 right-8 z-50"
+          >
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 0.5, repeat: 3 }}
+              className="rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 px-6 py-4 text-white shadow-2xl"
+            >
+              <div className="flex items-center gap-3">
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 0.5, repeat: 2 }}
+                >
+                  <CheckCircle2 className="h-6 w-6" />
+                </motion.div>
+                <div>
+                  <p className="font-semibold">Berhasil!</p>
+                  <p className="text-sm text-emerald-50">Kategori baru berhasil dibuat</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AdminLayout>
   );
 }
