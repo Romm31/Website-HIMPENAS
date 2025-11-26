@@ -119,3 +119,34 @@ model LoginAttempt {
   lockedUntil DateTime?
   lastAttempt DateTime @default(now())
 }
+
+model AlumniYear {
+  id        Int            @id @default(autoincrement())
+  year      Int            @unique
+  slug      String         @unique
+  program   String?        
+  batch     String?        
+  batchYear Int?           
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  members   AlumniMember[]
+}
+
+
+model AlumniMember {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?      
+  periodStart Int?         
+  periodEnd   Int?         
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  yearId      Int
+  year        AlumniYear   @relation(fields: [yearId], references: [id])
+}
+
+
+
