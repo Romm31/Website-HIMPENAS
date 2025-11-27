@@ -5,7 +5,7 @@ import { Calendar, MapPin, Clock, ArrowRight, Sparkles, ChevronLeft, ChevronRigh
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion';
 
 interface Event {
-  id: string;
+  id: number;
   judul: string;
   deskripsi?: string;
   tanggal: Date;
