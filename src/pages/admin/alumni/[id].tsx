@@ -8,7 +8,6 @@ import {
   Plus,
   Trash2,
   Pencil,
-  Save,
   X,
   CheckCircle2,
 } from "lucide-react";
@@ -58,7 +57,6 @@ export default function AlumniManagePage() {
   // Add Member
   const addMember = async () => {
     if (!name) return toast.warning("Nama alumni wajib diisi");
-
     setAdding(true);
 
     try {
@@ -90,32 +88,29 @@ export default function AlumniManagePage() {
     }
   };
 
-  // Delete Member
+  // Delete Member (FIXED)
   const deleteMember = async (memberId: number) => {
     try {
-      const res = await fetch("/api/admin/alumni/member", {
+      const res = await fetch(`/api/admin/alumni/member/${memberId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: memberId }),
       });
 
       if (!res.ok) throw new Error();
+      toast.success("Alumni berhasil dihapus");
 
-      toast.success("Alumni dihapus");
       fetchYear();
     } catch {
       toast.error("Gagal menghapus alumni");
     }
   };
 
-  // Save Edit
+  // Save Edit (FIXED)
   const saveEdit = async () => {
     try {
-      const res = await fetch("/api/admin/alumni/member", {
+      const res = await fetch(`/api/admin/alumni/member/${editId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id: editId,
           name: editName,
           description: editDesc,
           periodStart: editStart ? Number(editStart) : null,
@@ -124,7 +119,6 @@ export default function AlumniManagePage() {
       });
 
       if (!res.ok) throw new Error();
-
       toast.success("Data alumni diperbarui");
 
       setEditId(null);
@@ -134,7 +128,7 @@ export default function AlumniManagePage() {
     }
   };
 
-  // Delete Modal Component
+  // Delete Modal
   const ConfirmDeleteModal = () => (
     <AnimatePresence>
       {confirmDeleteId !== null && (
@@ -150,9 +144,7 @@ export default function AlumniManagePage() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
           >
-            <h3 className="text-xl font-semibold mb-2">
-              Konfirmasi Hapus
-            </h3>
+            <h3 className="text-xl font-semibold mb-2">Konfirmasi Hapus</h3>
             <p className="text-gray-600 mb-5">
               Apakah Anda yakin ingin menghapus alumni ini?
             </p>
@@ -206,9 +198,7 @@ export default function AlumniManagePage() {
       <div className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <School size={34} className="text-blue-600" />
-          <h1 className="text-3xl font-bold">
-            Kelola Alumni {yearData.year}
-          </h1>
+          <h1 className="text-3xl font-bold">Kelola Alumni {yearData.year}</h1>
         </div>
 
         {/* Add Member */}
@@ -254,11 +244,7 @@ export default function AlumniManagePage() {
             disabled={adding}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:bg-blue-300"
           >
-            {adding ? (
-              <Loader2 size={20} className="animate-spin" />
-            ) : (
-              <Plus size={20} />
-            )}
+            {adding ? <Loader2 size={20} className="animate-spin" /> : <Plus size={20} />}
             Tambah Alumni
           </button>
         </div>

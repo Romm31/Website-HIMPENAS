@@ -9,7 +9,19 @@ import TeamCard from "@/components/TeamCard";
 import DepartmentCard from "@/components/DepartmentCard";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Users, Award, Target, Mail, Sparkles, ArrowRight, Building2, TrendingUp, Calendar, Shield } from "lucide-react";
+import AlumniListCards from "@/components/AlumniListCards"; // <<< DITAMBAHKAN
+import {
+  Users,
+  Award,
+  Target,
+  Mail,
+  Sparkles,
+  ArrowRight,
+  Building2,
+  TrendingUp,
+  Calendar,
+  Shield,
+} from "lucide-react";
 
 interface TentangPageProps {
   about: About | null;
@@ -54,18 +66,18 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/90 via-emerald-himp/80 to-emerald-700/90"></div>
 
         {/* Decorative Shapes */}
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
+            opacity: [0.3, 0.5, 0.3],
           }}
           transition={{ duration: 8, repeat: Infinity }}
           className="absolute top-20 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl"
         ></motion.div>
-        <motion.div 
-          animate={{ 
+        <motion.div
+          animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2]
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{ duration: 10, repeat: Infinity, delay: 1 }}
           className="absolute bottom-20 left-10 w-80 h-80 bg-emerald-300/10 rounded-full blur-3xl"
@@ -77,7 +89,10 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
+              animate={{
+                opacity: headerInView ? 1 : 0,
+                y: headerInView ? 0 : 20,
+              }}
               transition={{ duration: 0.6 }}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30 shadow-lg"
             >
@@ -90,7 +105,10 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
             {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 30 }}
+              animate={{
+                opacity: headerInView ? 1 : 0,
+                y: headerInView ? 0 : 30,
+              }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight"
             >
@@ -100,7 +118,10 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
             {/* Subtitle */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
+              animate={{
+                opacity: headerInView ? 1 : 0,
+                y: headerInView ? 0 : 20,
+              }}
               transition={{ duration: 0.7, delay: 0.4 }}
               className="text-lg md:text-xl lg:text-2xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto"
             >
@@ -110,7 +131,10 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
             {/* Stats */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
+              animate={{
+                opacity: headerInView ? 1 : 0,
+                y: headerInView ? 0 : 20,
+              }}
               transition={{ duration: 0.7, delay: 0.6 }}
               className="flex flex-wrap justify-center gap-4 md:gap-6"
             >
@@ -120,8 +144,12 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
-                    <div className="text-3xl md:text-4xl font-bold text-white">500+</div>
-                    <div className="text-sm text-white/80 font-medium">Anggota Aktif</div>
+                    <div className="text-3xl md:text-4xl font-bold text-white">
+                      500+
+                    </div>
+                    <div className="text-sm text-white/80 font-medium">
+                      Anggota Aktif
+                    </div>
                   </div>
                 </div>
               </div>
@@ -132,8 +160,12 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                     <Award className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
-                    <div className="text-3xl md:text-4xl font-bold text-white">50+</div>
-                    <div className="text-sm text-white/80 font-medium">Event Sukses</div>
+                    <div className="text-3xl md:text-4xl font-bold text-white">
+                      50+
+                    </div>
+                    <div className="text-sm text-white/80 font-medium">
+                      Event Sukses
+                    </div>
                   </div>
                 </div>
               </div>
@@ -179,7 +211,7 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
+
                   {/* Floating Badge */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -193,8 +225,12 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                         <Shield className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <div className="text-sm font-bold text-gray-900">Sejak 2020</div>
-                        <div className="text-xs text-gray-600">Terus Berkembang</div>
+                        <div className="text-sm font-bold text-gray-900">
+                          Sejak 2020
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          Terus Berkembang
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -226,13 +262,11 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                 <div className="w-24 h-1 bg-gradient-to-r from-emerald-himp to-emerald-dark rounded-full mb-8"></div>
 
                 <div
-                  className="prose prose-lg max-w-none
-                             prose-headings:text-gray-900 prose-headings:font-bold
-                             prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
-                             prose-strong:text-emerald-himp prose-strong:font-bold
-                             prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700"
+                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4 prose-strong:text-emerald-himp prose-strong:font-bold prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700"
                   dangerouslySetInnerHTML={{
-                    __html: about?.profile || "<p class='text-gray-500 italic'>Informasi profil belum tersedia.</p>",
+                    __html:
+                      about?.profile ||
+                      "<p class='text-gray-500 italic'>Informasi profil belum tersedia.</p>",
                   }}
                 />
 
@@ -242,22 +276,36 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                     whileHover={{ y: -4 }}
                     className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-5 text-center hover:shadow-lg transition-all duration-300 cursor-pointer"
                   >
-                    <div className="text-3xl md:text-4xl font-bold text-emerald-dark mb-1">10+</div>
-                    <div className="text-xs text-gray-700 font-medium uppercase tracking-wide">Prestasi</div>
+                    <div className="text-3xl md:text-4xl font-bold text-emerald-dark mb-1">
+                      10+
+                    </div>
+                    <div className="text-xs text-gray-700 font-medium uppercase tracking-wide">
+                      Prestasi
+                    </div>
                   </motion.div>
+
                   <motion.div
                     whileHover={{ y: -4 }}
                     className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-5 text-center hover:shadow-lg transition-all duration-300 cursor-pointer"
                   >
-                    <div className="text-3xl md:text-4xl font-bold text-emerald-dark mb-1">5</div>
-                    <div className="text-xs text-gray-700 font-medium uppercase tracking-wide">Departemen</div>
+                    <div className="text-3xl md:text-4xl font-bold text-emerald-dark mb-1">
+                      5
+                    </div>
+                    <div className="text-xs text-gray-700 font-medium uppercase tracking-wide">
+                      Departemen
+                    </div>
                   </motion.div>
+
                   <motion.div
                     whileHover={{ y: -4 }}
                     className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-5 text-center hover:shadow-lg transition-all duration-300 cursor-pointer"
                   >
-                    <div className="text-3xl md:text-4xl font-bold text-emerald-dark mb-1">80+</div>
-                    <div className="text-xs text-gray-700 font-medium uppercase tracking-wide">Pengurus</div>
+                    <div className="text-3xl md:text-4xl font-bold text-emerald-dark mb-1">
+                      80+
+                    </div>
+                    <div className="text-xs text-gray-700 font-medium uppercase tracking-wide">
+                      Pengurus
+                    </div>
                   </motion.div>
                 </div>
               </motion.div>
@@ -303,8 +351,16 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center w-full max-w-4xl"
               >
-                <TeamCard imageUrl="/struktur/ketua.jpg" name="Nama Ketua" role="Ketua Himpunan" />
-                <TeamCard imageUrl="/struktur/wakil.jpg" name="Nama Wakil" role="Wakil Ketua Himpunan" />
+                <TeamCard
+                  imageUrl="/struktur/ketua.jpg"
+                  name="Nama Ketua"
+                  role="Ketua Himpunan"
+                />
+                <TeamCard
+                  imageUrl="/struktur/wakil.jpg"
+                  name="Nama Wakil"
+                  role="Wakil Ketua Himpunan"
+                />
               </motion.div>
 
               {/* Sekum + Bendahara */}
@@ -315,9 +371,21 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center w-full max-w-5xl"
               >
-                <TeamCard imageUrl="/struktur/sekre.jpg" name="Nama Sekum" role="Sekretaris Umum" />
-                <TeamCard imageUrl="/struktur/bendum1.jpg" name="Nama Bendum 1" role="Bendahara Umum 1" />
-                <TeamCard imageUrl="/struktur/bendum2.jpg" name="Nama Bendum 2" role="Bendahara Umum 2" />
+                <TeamCard
+                  imageUrl="/struktur/sekre.jpg"
+                  name="Nama Sekum"
+                  role="Sekretaris Umum"
+                />
+                <TeamCard
+                  imageUrl="/struktur/bendum1.jpg"
+                  name="Nama Bendum 1"
+                  role="Bendahara Umum 1"
+                />
+                <TeamCard
+                  imageUrl="/struktur/bendum2.jpg"
+                  name="Nama Bendum 2"
+                  role="Bendahara Umum 2"
+                />
               </motion.div>
 
               {/* Departemen */}
@@ -329,11 +397,14 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                 className="w-full"
               >
                 <div className="text-center mb-12">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Departemen</h3>
-                  <p className="text-gray-600">5 Departemen dengan fokus berbeda untuk kemajuan organisasi</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                    Departemen
+                  </h3>
+                  <p className="text-gray-600">
+                    5 Departemen dengan fokus berbeda untuk kemajuan organisasi
+                  </p>
                 </div>
 
-                {/*FIX */}
                 <div
                   className="
                     flex gap-6 overflow-x-auto snap-x snap-mandatory
@@ -341,46 +412,113 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
                     md:gap-8 hide-scrollbar
                   "
                 >
-                {/* >>> END FIX <<< */}
-
                   <DepartmentCard
                     title="Departemen Internal"
                     staffCount={18}
-                    ketua={{ name: "Nama Ketua Internal", imageUrl: "/struktur/departemen/internal/foto1.jpg" }}
-                    wakil={{ name: "Nama Wakil Internal", imageUrl: "/struktur/departemen/internal/foto2.jpg" }}
-                    sekretaris={{ name: "Nama Sekretaris Internal", imageUrl: "/struktur/departemen/internal/foto3.jpg" }}
+                    ketua={{
+                      name: "Nama Ketua Internal",
+                      imageUrl:
+                        "/struktur/departemen/internal/foto1.jpg",
+                    }}
+                    wakil={{
+                      name: "Nama Wakil Internal",
+                      imageUrl:
+                        "/struktur/departemen/internal/foto2.jpg",
+                    }}
+                    sekretaris={{
+                      name: "Nama Sekretaris Internal",
+                      imageUrl:
+                        "/struktur/departemen/internal/foto3.jpg",
+                    }}
                   />
                   <DepartmentCard
                     title="Departemen Eksternal"
                     staffCount={20}
-                    ketua={{ name: "Nama Ketua Eksternal", imageUrl: "/struktur/departemen/eksternal/foto1.jpg" }}
-                    wakil={{ name: "Nama Wakil Eksternal", imageUrl: "/struktur/departemen/eksternal/foto2.jpg" }}
-                    sekretaris={{ name: "Nama Sekretaris Eksternal", imageUrl: "/struktur/departemen/eksternal/foto3.jpg" }}
+                    ketua={{
+                      name: "Nama Ketua Eksternал",
+                      imageUrl:
+                        "/struktur/departemen/eksternal/foto1.jpg",
+                    }}
+                    wakil={{
+                      name: "Nama Wakil Eksternal",
+                      imageUrl:
+                        "/struktur/departemen/eksternal/foto2.jpg",
+                    }}
+                    sekretaris={{
+                      name: "Nama Sekretaris Eksternал",
+                      imageUrl:
+                        "/struktur/departemen/eksternal/foto3.jpg",
+                    }}
                   />
                   <DepartmentCard
                     title="Departemen Akademik"
                     staffCount={14}
-                    ketua={{ name: "Nama Ketua Akademik", imageUrl: "/struktur/departemen/akademik/foto1.jpg" }}
-                    wakil={{ name: "Nama Wakil Akademik", imageUrl: "/struktur/departemen/akademik/foto2.jpg" }}
-                    sekretaris={{ name: "Nama Sekretaris Akademik", imageUrl: "/struktur/departemen/akademik/foto3.jpg" }}
+                    ketua={{
+                      name: "Nama Ketua Akademik",
+                      imageUrl:
+                        "/struktur/departemen/akademik/foto1.jpg",
+                    }}
+                    wakil={{
+                      name: "Nama Wakil Akademik",
+                      imageUrl:
+                        "/struktur/departemen/akademik/foto2.jpg",
+                    }}
+                    sekretaris={{
+                      name: "Nama Sekretaris Akademik",
+                      imageUrl:
+                        "/struktur/departemen/akademik/foto3.jpg",
+                    }}
                   />
                   <DepartmentCard
                     title="Departemen PSDM"
                     staffCount={19}
-                    ketua={{ name: "Nama Ketua PSDM", imageUrl: "/struktur/departemen/psdm/foto1.jpg" }}
-                    wakil={{ name: "Nama Wakil PSDM", imageUrl: "/struktur/departemen/psdm/foto2.jpg" }}
-                    sekretaris={{ name: "Nama Sekretaris PSDM", imageUrl: "/struktur/departemen/psdm/foto3.jpg" }}
+                    ketua={{
+                      name: "Nama Ketua PSDM",
+                      imageUrl:
+                        "/struktur/departemen/psdm/foto1.jpg",
+                    }}
+                    wakil={{
+                      name: "Nama Wakil PSDM",
+                      imageUrl:
+                        "/struktur/departemen/psdm/foto2.jpg",
+                    }}
+                    sekretaris={{
+                      name: "Nama Sekretaris PSDM",
+                      imageUrl:
+                        "/struktur/departemen/psdm/foto3.jpg",
+                    }}
                   />
                   <DepartmentCard
                     title="Departemen INFOKOM"
                     staffCount={9}
-                    ketua={{ name: "Nama Ketua INFOKOM", imageUrl: "/struktur/departemen/infokom/foto1.jpg" }}
-                    wakil={{ name: "Nama Wakil INFOKOM", imageUrl: "/struktur/departemen/infokom/foto2.jpg" }}
-                    sekretaris={{ name: "Nama Sekretaris INFOKOM", imageUrl: "/struktur/departemen/infokom/foto3.jpg" }}
+                    ketua={{
+                      name: "Nama Ketua INFOKOM",
+                      imageUrl:
+                        "/struktur/departemen/infokom/foto1.jpg",
+                    }}
+                    wakil={{
+                      name: "Nama Wakil INFOKOM",
+                      imageUrl:
+                        "/struktur/departemen/infokom/foto2.jpg",
+                    }}
+                    sekretaris={{
+                      name: "Nama Sekretaris INFOKOM",
+                      imageUrl:
+                        "/struktur/departemen/infokom/foto3.jpg",
+                    }}
                   />
                 </div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* ============================ */}
+        {/*      ALUMNI SECTION BARU     */}
+        {/* ============================ */}
+        <section className="py-16 md:py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 md:px-8">
+            <AlumniListCards />
           </div>
         </section>
 
@@ -395,13 +533,16 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30">
                 <Mail className="w-4 h-4" />
-                <span className="text-sm font-bold uppercase tracking-wider">Bergabung Bersama Kami</span>
+                <span className="text-sm font-bold uppercase tracking-wider">
+                  Bergabung Bersama Kami
+                </span>
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6">
                 Tertarik untuk Bergabung?
               </h2>
               <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Jadilah bagian dari komunitas kami dan kembangkan skill-mu di HIMPENAS!
+                Jadilah bagian dari komunitas kami dan kembangkan skill-mu di
+                HIMPENAS!
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
