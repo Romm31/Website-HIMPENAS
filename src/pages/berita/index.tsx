@@ -8,8 +8,7 @@ import FilterControls from "@/components/FilterControls";
 import Pagination from "@/components/Pagination";
 import React, { useRef, useEffect, useState } from "react";
 import BeritaCard from "@/components/BeritaCard";
-import { motion } from "framer-motion";
-import { Newspaper, TrendingUp, Calendar } from "lucide-react";
+import { Newspaper, TrendingUp, Calendar, Sparkles } from "lucide-react";
 
 type BeritaWithKategori = Berita & { kategori: Kategori | null };
 
@@ -53,109 +52,117 @@ const BeritaPage: NextPage<BeritaPageProps> = ({
       {/* Enhanced Header */}
       <header
         ref={headerRef}
-        className={`relative bg-gradient-to-br from-emerald-dark via-emerald-himp to-emerald-800 text-white pt-32 md:pt-40 pb-24 md:pb-32 overflow-hidden fade-in-section ${
-          headerInView ? "is-visible" : ""
-        }`}
+        className="relative bg-gradient-to-br from-emerald-dark via-emerald-himp to-emerald-700 text-white pt-32 md:pt-40 pb-28 md:pb-36 overflow-hidden"
       >
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-15">
           <Image
             src="/header/berita-header.jpeg"
             fill
-            className="object-cover opacity-10"
-            alt="Latar Belakang Berita"
+            className="object-cover"
+            alt="Berita Background"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/80 via-emerald-800/20 to-transparent"></div>
         </div>
 
-        {/* Decorative Elements */}
-        <div className="absolute top-10 right-10 w-64 h-64 bg-emerald-300/10 rounded-full blur-3xl animate-pulse"></div>
-        <div
-          className="absolute bottom-10 left-10 w-72 h-72 bg-green-400/10 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1s" }}
+        {/* Animated Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/50 via-emerald-himp/50 to-emerald-700/50"></div>
+
+        {/* Decorative Shapes */}
+        <div 
+          className="absolute top-20 right-10 w-64 h-64 md:w-96 md:h-96 bg-white/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '8s' }}
+        ></div>
+        <div 
+          className="absolute bottom-20 left-10 w-64 h-64 md:w-80 md:h-80 bg-emerald-300/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '10s', animationDelay: '1s' }}
         ></div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 30 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-emerald-900/30 backdrop-blur-md rounded-full mb-6 border border-emerald-400/30"
-          >
-            <Newspaper className="w-4 md:w-5 h-4 md:h-5 text-emerald-200" />
-            <span className="font-bold uppercase tracking-wider text-xs md:text-sm text-emerald-100">
-              Pusat Informasi
-            </span>
-          </motion.div>
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Badge */}
+            <div
+              className={`inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30 shadow-lg transition-all duration-700 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              }`}
+            >
+              <Newspaper className="w-4 h-4 md:w-5 md:h-5 text-white" />
+              <span className="font-bold uppercase tracking-wider text-xs md:text-sm text-white">
+                Pusat Informasi
+              </span>
+            </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-4xl md:text-5xl lg:text-7xl font-extrabold font-heading tracking-tight mb-4 md:mb-6"
-          >
-            <span className="block md:inline">Arsip </span>
-            <span className="text-emerald-200 relative inline-block">
-              Berita
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: headerInView ? 1 : 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="absolute -bottom-2 left-0 right-0 h-1 bg-emerald-300 rounded-full origin-left"
-              ></motion.div>
-            </span>
-          </motion.h1>
+            {/* Title */}
+            <h1
+              className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight transition-all duration-700 delay-200 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              Arsip Berita
+            </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base md:text-lg lg:text-2xl text-emerald-50 max-w-3xl mx-auto leading-relaxed px-4"
-          >
-            Temukan cerita, inovasi, dan aksi terbaru dari HIMPENAS
-          </motion.p>
+            {/* Subtitle */}
+            <p
+              className={`text-base md:text-lg lg:text-2xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto px-4 transition-all duration-700 delay-300 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              }`}
+            >
+              Temukan cerita, inovasi, dan aksi terbaru dari HIMPENAS
+            </p>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-wrap justify-center gap-4 md:gap-8 mt-8 px-4"
-          >
-            <div className="group flex items-center gap-3 px-5 md:px-6 py-3 md:py-4 bg-emerald-900/40 backdrop-blur-md rounded-xl border border-emerald-400/30 hover:bg-emerald-800/50 transition-all duration-300 hover:scale-105 hover:border-emerald-300/50">
-              <div className="p-2 bg-emerald-500/20 rounded-lg group-hover:bg-emerald-500/30 transition-colors">
-                <TrendingUp className="w-5 h-5 text-emerald-200 group-hover:scale-110 transition-transform" />
+            {/* Stats */}
+            <div
+              className={`flex flex-wrap justify-center gap-4 md:gap-6 transition-all duration-700 delay-500 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              }`}
+            >
+              <div className="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-5 md:px-6 py-3 md:py-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
+                    <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white">{totalBerita}</div>
+                    <div className="text-xs md:text-sm text-white/80 font-medium">Total Berita</div>
+                  </div>
+                </div>
               </div>
-              <div className="text-left">
-                <div className="text-2xl md:text-3xl font-bold text-white">{totalBerita}</div>
-                <div className="text-xs text-emerald-200 uppercase tracking-wide">
-                  Total Berita
+
+              <div className="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-5 md:px-6 py-3 md:py-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
+                    <Calendar className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white">{kategoriList.length}</div>
+                    <div className="text-xs md:text-sm text-white/80 font-medium">Kategori</div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="group flex items-center gap-3 px-5 md:px-6 py-3 md:py-4 bg-emerald-900/40 backdrop-blur-md rounded-xl border border-emerald-400/30 hover:bg-emerald-800/50 transition-all duration-300 hover:scale-105 hover:border-emerald-300/50">
-              <div className="p-2 bg-emerald-500/20 rounded-lg group-hover:bg-emerald-500/30 transition-colors">
-                <Calendar className="w-5 h-5 text-emerald-200 group-hover:scale-110 transition-transform" />
-              </div>
-              <div className="text-left">
-                <div className="text-2xl md:text-3xl font-bold text-white">
-                  {kategoriList.length}
-                </div>
-                <div className="text-xs text-emerald-200 uppercase tracking-wide">
-                  Kategori
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>   
-           
+          </div>
+        </div>
+
+        {/* Wave Separator */}
+        <div className="absolute bottom-0 left-0 w-full pointer-events-none leading-none translate-y-4 md:translate-y-6">
+          <svg
+            className="w-full h-14 md:h-20"
+            preserveAspectRatio="none"
+            viewBox="0 0 1440 54"
+            fill="none"
+          >
+            <path
+              d="M0 22L60 26.7C120 31 240 41 360 39.2C480 37 600 23 720 17.8C840 13 960 17 1080 21.7C1200 26 1320 31 1380 33.3L1440 36V54H1380C1320 54 1200 54 1080 54C960 54 840 54 720 54C600 54 480 54 360 54C240 54 120 54 60 54H0V22Z"
+              fill="rgb(249, 250, 251)"
+            />
+          </svg>
+        </div>
       </header>
 
       {/* Main Content */}
       <main className="flex-grow -mt-20 relative z-10 bg-transparent">
-        <div className="container mx-auto px-6 bg-transparent !shadow-none">
+        <div className="container mx-auto px-4 md:px-6 bg-transparent !shadow-none">
           {/* Filter Controls */}
           <FilterControls
             kategoriList={kategoriList}
@@ -165,13 +172,11 @@ const BeritaPage: NextPage<BeritaPageProps> = ({
 
           {/* Results Info */}
           {(currentSearch || currentKategori) && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-8 flex items-center justify-between px-6 py-4 bg-emerald-50 rounded-xl border border-emerald-200"
+            <div
+              className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between px-4 md:px-6 py-4 bg-emerald-50 rounded-xl border border-emerald-200 gap-3 animate-in fade-in duration-300"
             >
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-emerald-himp rounded-lg">
+                <div className="p-2 bg-emerald-himp rounded-lg flex-shrink-0">
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -181,58 +186,48 @@ const BeritaPage: NextPage<BeritaPageProps> = ({
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           )}
 
           {/* Grid Berita */}
           {berita.length > 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 animate-in fade-in duration-500">
               {berita.map((item, index) => (
-                <motion.div
+                <div
                   key={item.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="animate-in slide-in-from-bottom duration-500"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <BeritaCard berita={item} />
-                </motion.div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="col-span-full"
-            >
-              <div className="text-center py-20 bg-white rounded-2xl shadow-xl border border-gray-100">
-                <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                  <Newspaper className="w-12 h-12 text-gray-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              ))}
+            </div>
+          ) : (
+            <div className="col-span-full animate-in zoom-in-95 duration-300">
+              <div className="text-center py-16 md:py-20 bg-white rounded-2xl shadow-xl border border-gray-100">
+                <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Newspaper className="w-10 h-10 md:w-12 md:h-12 text-gray-400" />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                   Berita Tidak Ditemukan
                 </h3>
-                <p className="text-gray-600 text-lg mb-6 max-w-md mx-auto">
+                <p className="text-gray-600 text-base md:text-lg mb-6 max-w-md mx-auto px-4">
                   Coba gunakan kata kunci atau filter yang berbeda untuk
                   menemukan berita yang Anda cari.
                 </p>
                 <button
                   onClick={() => (window.location.href = "/berita")}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-himp text-white rounded-full font-semibold hover:bg-emerald-dark transition-colors duration-300"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-himp text-white rounded-full font-semibold hover:bg-emerald-dark transition-colors duration-300 hover:scale-105"
                 >
                   Reset Filter
                 </button>
               </div>
-            </motion.div>
+            </div>
           )}
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-16 mb-16">
+            <div className="mt-12 md:mt-16 mb-12 md:mb-16">
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}

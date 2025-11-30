@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Target, CheckCircle2, Sparkles, TrendingUp, Eye, ListChecks } from "lucide-react";
 
 interface VisiMisiPageProps {
@@ -49,109 +48,96 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
         </div>
 
         {/* Animated Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/90 via-emerald-himp/80 to-emerald-700/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/50 via-emerald-himp/50 to-emerald-700/50"></div>
 
         {/* Decorative Shapes */}
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-20 right-10 w-96 h-96 bg-white/10 rounded-full blur-3xl"
-        ></motion.div>
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 10, repeat: Infinity, delay: 1 }}
-          className="absolute bottom-20 left-10 w-80 h-80 bg-emerald-300/10 rounded-full blur-3xl"
-        ></motion.div>
+        <div 
+          className="absolute top-20 right-10 w-64 h-64 md:w-96 md:h-96 bg-white/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '8s' }}
+        ></div>
+        <div 
+          className="absolute bottom-20 left-10 w-64 h-64 md:w-80 md:h-80 bg-emerald-300/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: '10s', animationDelay: '1s' }}
+        ></div>
 
         {/* Content */}
         <div className="container mx-auto px-4 sm:px-6 md:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30 shadow-lg"
+            <div
+              className={`inline-flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30 shadow-lg transition-all duration-700 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              }`}
             >
               <Target className="w-4 h-4 md:w-5 md:h-5 text-white" />
               <span className="font-bold uppercase tracking-wider text-xs md:text-sm text-white">
                 Arah & Tujuan HIMPENAS
               </span>
-            </motion.div>
+            </div>
 
             {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 30 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight"
+            <h1
+              className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight transition-all duration-700 delay-200 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
             >
               Visi & Misi
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="text-lg md:text-xl lg:text-2xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto"
+            <p
+              className={`text-base md:text-lg lg:text-2xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto px-4 transition-all duration-700 delay-300 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              }`}
             >
               Arah dan tujuan yang menjadi landasan gerak HIMPENAS menuju masa depan yang lebih baik
-            </motion.p>
+            </p>
 
             {/* Stats/Icons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: headerInView ? 1 : 0, y: headerInView ? 0 : 20 }}
-              transition={{ duration: 0.7, delay: 0.6 }}
-              className="flex flex-wrap justify-center gap-4 md:gap-6"
+            <div
+              className={`flex flex-wrap justify-center gap-4 md:gap-6 transition-all duration-700 delay-500 ${
+                headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+              }`}
             >
-              <div className="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
-                    <Eye className="w-6 h-6 text-white" />
+              <div className="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-5 md:px-6 py-3 md:py-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
+                    <Eye className="w-5 h-5 md:w-6 md:h-6 text-white" />
                   </div>
                   <div className="text-left">
-                    <div className="text-sm text-white/80 font-medium">Visi Jelas</div>
+                    <div className="text-xs md:text-sm text-white/80 font-medium">Visi Jelas</div>
                   </div>
                 </div>
               </div>
 
-              <div className="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
-                    <ListChecks className="w-6 h-6 text-white" />
+              <div className="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-5 md:px-6 py-3 md:py-4 hover:bg-white/20 transition-all duration-300 hover:scale-105 shadow-xl">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-xl group-hover:bg-white/30 transition-colors">
+                    <ListChecks className="w-5 h-5 md:w-6 md:h-6 text-white" />
                   </div>
                   <div className="text-left">
-                    <div className="text-sm text-white/80 font-medium">Misi Terukur</div>
+                    <div className="text-xs md:text-sm text-white/80 font-medium">Misi Terukur</div>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Wave Separator */}
         <div className="absolute bottom-0 left-0 w-full pointer-events-none leading-none translate-y-4 md:translate-y-6">
-  <svg
-    className="w-full h-14 md:h-20"
-    preserveAspectRatio="none"
-    viewBox="0 0 1440 54"
-    fill="none"
-  >
-    <path
-      d="M0 22L60 26.7C120 31 240 41 360 39.2C480 37 600 23 720 17.8C840 13 960 17 1080 21.7C1200 26 1320 31 1380 33.3L1440 36V54H1380C1320 54 1200 54 1080 54C960 54 840 54 720 54C600 54 480 54 360 54C240 54 120 54 60 54H0V22Z"
-      fill="rgb(249, 250, 251)"
-    />
-  </svg>
-</div>
-        
+          <svg
+            className="w-full h-14 md:h-20"
+            preserveAspectRatio="none"
+            viewBox="0 0 1440 54"
+            fill="none"
+          >
+            <path
+              d="M0 22L60 26.7C120 31 240 41 360 39.2C480 37 600 23 720 17.8C840 13 960 17 1080 21.7C1200 26 1320 31 1380 33.3L1440 36V54H1380C1320 54 1200 54 1080 54C960 54 840 54 720 54C600 54 480 54 360 54C240 54 120 54 60 54H0V22Z"
+              fill="rgb(249, 250, 251)"
+            />
+          </svg>
+        </div>
       </header>
 
       {/* Main Content */}
@@ -160,12 +146,10 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
           <div className="container mx-auto px-4 sm:px-6 md:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
               {/* VISI Card */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
-                className="group"
+              <div
+                className={`group transition-all duration-700 ${
+                  headerInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+                }`}
               >
                 <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 h-full flex flex-col">
                   {/* Card Header */}
@@ -208,15 +192,13 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* MISI Card */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
-                className="group"
+              <div
+                className={`group transition-all duration-700 delay-200 ${
+                  headerInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+                }`}
               >
                 <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 h-full flex flex-col">
                   {/* Card Header */}
@@ -259,7 +241,7 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -267,12 +249,7 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
         {/* CTA Section */}
         <section className="py-16 md:py-20 bg-gradient-to-br from-emerald-dark to-emerald-himp">
           <div className="container mx-auto px-4 sm:px-6 md:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="max-w-4xl mx-auto text-center"
-            >
+            <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-xl rounded-full mb-6 border border-white/30">
                 <TrendingUp className="w-4 h-4 text-white" />
                 <span className="text-sm font-bold uppercase tracking-wider text-white">Mari Bergabung</span>
@@ -283,15 +260,13 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
               <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                 Bergabunglah dengan kami untuk mewujudkan visi dan misi HIMPENAS dalam memajukan organisasi dan mengembangkan potensi mahasiswa
               </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center gap-3 bg-white text-emerald-himp px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
+              <button
+                className="inline-flex items-center gap-3 bg-white text-emerald-himp px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
               >
                 <span>Hubungi Kami</span>
                 <TrendingUp className="w-5 h-5" />
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
           </div>
         </section>
       </main>
