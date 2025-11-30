@@ -193,12 +193,12 @@ export default function AlumniAdminPage() {
       <Toaster richColors position="top-right" />
       <ConfirmDeleteModal />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8 animate-in slide-in-from-top duration-500">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-600 flex items-center justify-center shadow-lg">
                 <GraduationCap className="text-white" size={28} />
               </div>
               <div>
@@ -219,8 +219,8 @@ export default function AlumniAdminPage() {
                   <p className="text-gray-500 text-sm font-medium mb-1">Total Alumni</p>
                   <h3 className="text-3xl font-bold text-gray-900">{totalAlumni}</h3>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
-                  <Users className="text-blue-600" size={28} />
+                <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center">
+                  <Users className="text-emerald-600" size={28} />
                 </div>
               </div>
             </div>
@@ -231,8 +231,8 @@ export default function AlumniAdminPage() {
                   <p className="text-gray-500 text-sm font-medium mb-1">Tahun Alumni</p>
                   <h3 className="text-3xl font-bold text-gray-900">{totalYears}</h3>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center">
-                  <Calendar className="text-purple-600" size={28} />
+                <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
+                  <Calendar className="text-green-600" size={28} />
                 </div>
               </div>
             </div>
@@ -245,8 +245,8 @@ export default function AlumniAdminPage() {
                     {totalYears > 0 ? Math.round(totalAlumni / totalYears) : 0}
                   </h3>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
-                  <TrendingUp className="text-green-600" size={28} />
+                <div className="w-14 h-14 rounded-2xl bg-teal-100 flex items-center justify-center">
+                  <TrendingUp className="text-teal-600" size={28} />
                 </div>
               </div>
             </div>
@@ -256,7 +256,7 @@ export default function AlumniAdminPage() {
           <div className="mb-6 animate-in slide-in-from-bottom delay-300">
             <button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-green-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-emerald-700 hover:to-green-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Plus size={20} />
               Tambah Tahun Alumni
@@ -268,7 +268,7 @@ export default function AlumniAdminPage() {
             <div className="mb-8 animate-in slide-in-from-top duration-300">
               <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-100">
                 <h2 className="text-xl font-bold mb-5 flex items-center gap-2">
-                  <School className="text-blue-600" size={24} />
+                  <School className="text-emerald-600" size={24} />
                   Formulir Tahun Alumni Baru
                 </h2>
 
@@ -280,7 +280,7 @@ export default function AlumniAdminPage() {
                     <input
                       type="number"
                       placeholder="Misal: 2022"
-                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                       value={yearInput}
                       onChange={(e) => setYearInput(e.target.value)}
                     />
@@ -293,7 +293,7 @@ export default function AlumniAdminPage() {
                     <input
                       type="text"
                       placeholder="Misal: TPS"
-                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                       value={program}
                       onChange={(e) => setProgram(e.target.value)}
                     />
@@ -306,7 +306,7 @@ export default function AlumniAdminPage() {
                     <input
                       type="text"
                       placeholder="Misal: Batch 1"
-                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                       value={batch}
                       onChange={(e) => setBatch(e.target.value)}
                     />
@@ -319,7 +319,7 @@ export default function AlumniAdminPage() {
                     <input
                       type="number"
                       placeholder="Misal: 2000"
-                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                       value={batchYear}
                       onChange={(e) => setBatchYear(e.target.value)}
                     />
@@ -330,7 +330,7 @@ export default function AlumniAdminPage() {
                   <button
                     onClick={addYear}
                     disabled={adding}
-                    className="flex-1 md:flex-none bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all"
+                    className="flex-1 md:flex-none bg-gradient-to-r from-emerald-600 to-green-600 text-white px-8 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-emerald-700 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all"
                   >
                     {adding ? (
                       <>
@@ -359,13 +359,13 @@ export default function AlumniAdminPage() {
           {/* List Tahun Alumni */}
           <div className="bg-white shadow-xl rounded-2xl p-6 border border-gray-100 animate-in slide-in-from-bottom delay-500">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <School className="text-purple-600" size={24} />
+              <School className="text-emerald-600" size={24} />
               Daftar Tahun Alumni
             </h2>
 
             {loading ? (
               <div className="flex flex-col items-center justify-center py-12">
-                <Loader2 size={40} className="animate-spin text-blue-600 mb-4" />
+                <Loader2 size={40} className="animate-spin text-emerald-600 mb-4" />
                 <p className="text-gray-500">Memuat data alumni...</p>
               </div>
             ) : years.length === 0 ? (
@@ -388,26 +388,26 @@ export default function AlumniAdminPage() {
                       <div className="w-full">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                           <input
-                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                             value={editYear}
                             onChange={(e) => setEditYear(e.target.value)}
                             placeholder="Tahun Alumni"
                             type="number"
                           />
                           <input
-                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                             value={editProgram}
                             onChange={(e) => setEditProgram(e.target.value)}
                             placeholder="Program"
                           />
                           <input
-                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                             value={editBatch}
                             onChange={(e) => setEditBatch(e.target.value)}
                             placeholder="Batch"
                           />
                           <input
-                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                             value={editBatchYear}
                             onChange={(e) => setEditBatchYear(e.target.value)}
                             placeholder="Tahun Batch"
@@ -418,7 +418,7 @@ export default function AlumniAdminPage() {
                         <div className="flex gap-3">
                           <button
                             onClick={saveEdit}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 font-medium transition-colors"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-medium transition-colors"
                           >
                             <CheckCircle2 size={18} /> Simpan
                           </button>
@@ -434,7 +434,7 @@ export default function AlumniAdminPage() {
                     ) : (
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center flex-shrink-0 shadow-md">
                             <GraduationCap className="text-white" size={24} />
                           </div>
                           <div>
@@ -444,17 +444,17 @@ export default function AlumniAdminPage() {
                             {(y.program || y.batch || y.batchYear) && (
                               <p className="text-sm text-gray-600 mb-1 flex flex-wrap items-center gap-2">
                                 {y.program && (
-                                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">
+                                  <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-medium">
                                     {y.program}
                                   </span>
                                 )}
                                 {y.batch && (
-                                  <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-medium">
+                                  <span className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-medium">
                                     {y.batch}
                                   </span>
                                 )}
                                 {y.batchYear && (
-                                  <span className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-medium">
+                                  <span className="px-2 py-1 bg-teal-100 text-teal-700 rounded-lg text-xs font-medium">
                                     Tahun {y.batchYear}
                                   </span>
                                 )}
@@ -476,7 +476,7 @@ export default function AlumniAdminPage() {
                               setEditBatch(y.batch || "");
                               setEditBatchYear(y.batchYear || "");
                             }}
-                            className="p-2.5 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
+                            className="p-2.5 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-colors"
                             title="Edit"
                           >
                             <Pencil size={18} />
@@ -494,7 +494,7 @@ export default function AlumniAdminPage() {
                             onClick={() =>
                               (window.location.href = `/admin/alumni/${y.id}`)
                             }
-                            className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 font-medium transition-all shadow-md hover:shadow-lg"
+                            className="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl hover:from-emerald-700 hover:to-green-700 font-medium transition-all shadow-md hover:shadow-lg"
                           >
                             Kelola →
                           </button>

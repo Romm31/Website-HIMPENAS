@@ -189,9 +189,9 @@ export default function AlumniManagePage() {
   if (loading)
     return (
       <AdminLayout>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4 md:p-8">
           <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-20">
-            <Loader2 size={48} className="animate-spin text-blue-600 mb-4" />
+            <Loader2 size={48} className="animate-spin text-emerald-600 mb-4" />
             <p className="text-gray-500 text-lg">Memuat data alumni...</p>
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function AlumniManagePage() {
   if (!yearData)
     return (
       <AdminLayout>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4 md:p-8">
           <div className="max-w-7xl mx-auto flex flex-col items-center justify-center py-20">
             <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
               <AlertCircle size={40} className="text-gray-400" />
@@ -217,7 +217,7 @@ export default function AlumniManagePage() {
       <Toaster richColors position="top-right" />
       <ConfirmDeleteModal />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Back Button & Header */}
           <div className="mb-8 animate-in slide-in-from-top duration-500">
@@ -230,7 +230,7 @@ export default function AlumniManagePage() {
             </button>
 
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-emerald-600 to-green-600 flex items-center justify-center shadow-lg">
                 <School className="text-white" size={28} />
               </div>
               <div>
@@ -257,8 +257,8 @@ export default function AlumniManagePage() {
                     {yearData.members.length}
                   </h3>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
-                  <Users className="text-blue-600" size={28} />
+                <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center">
+                  <Users className="text-emerald-600" size={28} />
                 </div>
               </div>
             </div>
@@ -269,8 +269,8 @@ export default function AlumniManagePage() {
                   <p className="text-gray-500 text-sm font-medium mb-1">Tahun Alumni</p>
                   <h3 className="text-3xl font-bold text-gray-900">{yearData.year}</h3>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center">
-                  <Calendar className="text-purple-600" size={28} />
+                <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
+                  <Calendar className="text-green-600" size={28} />
                 </div>
               </div>
             </div>
@@ -283,8 +283,8 @@ export default function AlumniManagePage() {
                     {yearData.program || "Tidak ada"}
                   </h3>
                 </div>
-                <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center">
-                  <Award className="text-green-600" size={28} />
+                <div className="w-14 h-14 rounded-2xl bg-teal-100 flex items-center justify-center">
+                  <Award className="text-teal-600" size={28} />
                 </div>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function AlumniManagePage() {
           <div className="mb-6 animate-in slide-in-from-bottom delay-300">
             <button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-purple-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+              className="w-full md:w-auto bg-gradient-to-r from-emerald-600 to-green-600 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-emerald-700 hover:to-green-700 font-medium shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <Plus size={20} />
               Tambah Alumni
@@ -305,7 +305,7 @@ export default function AlumniManagePage() {
           {showAddForm && (
             <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 mb-8 animate-in slide-in-from-top duration-300">
               <h2 className="text-xl font-bold mb-5 flex items-center gap-2">
-                <User className="text-blue-600" size={24} />
+                <User className="text-emerald-600" size={24} />
                 Formulir Alumni Baru
               </h2>
 
@@ -317,7 +317,7 @@ export default function AlumniManagePage() {
                   <input
                     type="text"
                     placeholder="Masukkan nama lengkap"
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
@@ -329,7 +329,7 @@ export default function AlumniManagePage() {
                   </label>
                   <textarea
                     placeholder="Deskripsi atau catatan tambahan (opsional)"
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={3}
@@ -343,7 +343,7 @@ export default function AlumniManagePage() {
                   <input
                     type="number"
                     placeholder="Misal: 2018"
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     value={periodStart}
                     onChange={(e) => setPeriodStart(e.target.value)}
                   />
@@ -356,7 +356,7 @@ export default function AlumniManagePage() {
                   <input
                     type="number"
                     placeholder="Misal: 2022"
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     value={periodEnd}
                     onChange={(e) => setPeriodEnd(e.target.value)}
                   />
@@ -367,7 +367,7 @@ export default function AlumniManagePage() {
                 <button
                   onClick={addMember}
                   disabled={adding}
-                  className="flex-1 md:flex-none bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all"
+                  className="flex-1 md:flex-none bg-gradient-to-r from-emerald-600 to-green-600 text-white px-8 py-3 rounded-xl flex items-center justify-center gap-2 hover:from-emerald-700 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all"
                 >
                   {adding ? (
                     <>
@@ -395,7 +395,7 @@ export default function AlumniManagePage() {
           {/* List Members */}
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-bottom delay-500">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <Users className="text-purple-600" size={24} />
+              <Users className="text-emerald-600" size={24} />
               Daftar Alumni ({yearData.members.length})
             </h2>
 
@@ -418,13 +418,13 @@ export default function AlumniManagePage() {
                     {editId === m.id ? (
                       <div className="w-full space-y-3">
                         <input
-                          className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
                           placeholder="Nama Alumni"
                         />
                         <textarea
-                          className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                          className="w-full border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none"
                           value={editDesc}
                           onChange={(e) => setEditDesc(e.target.value)}
                           placeholder="Deskripsi"
@@ -432,14 +432,14 @@ export default function AlumniManagePage() {
                         />
                         <div className="grid grid-cols-2 gap-3">
                           <input
-                            className="border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                             value={editStart}
                             onChange={(e) => setEditStart(e.target.value)}
                             type="number"
                             placeholder="Tahun Mulai"
                           />
                           <input
-                            className="border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 px-4 py-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                             value={editEnd}
                             onChange={(e) => setEditEnd(e.target.value)}
                             type="number"
@@ -450,7 +450,7 @@ export default function AlumniManagePage() {
                         <div className="flex gap-3 pt-2">
                           <button
                             onClick={saveEdit}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 font-medium transition-colors"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-medium transition-colors"
                           >
                             <CheckCircle2 size={18} /> Simpan
                           </button>
@@ -466,7 +466,7 @@ export default function AlumniManagePage() {
                     ) : (
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center flex-shrink-0 shadow-md">
                             <User className="text-white" size={24} />
                           </div>
                           <div>
@@ -496,7 +496,7 @@ export default function AlumniManagePage() {
                               setEditStart(m.periodStart || "");
                               setEditEnd(m.periodEnd || "");
                             }}
-                            className="p-2.5 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
+                            className="p-2.5 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-colors"
                             title="Edit"
                           >
                             <Pencil size={18} />
