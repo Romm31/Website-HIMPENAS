@@ -17,11 +17,7 @@ function getIpFromReq(req: IncomingMessage): string {
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
-
-  // ⚠️ PENTING: jangan arahkan NextAuth LOGIN ke /admin/login
-  // biarin default /api/auth/signin
   pages: {},
-
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
 
@@ -46,7 +42,6 @@ export const authOptions: AuthOptions = {
           where: { ip },
         });
 
-        // locked?
         if (record && record.lockedUntil && record.lockedUntil > now) {
           const minutesLeft = Math.ceil(
             (record.lockedUntil.getTime() - now.getTime()) / (1000 * 60)
@@ -56,15 +51,14 @@ export const authOptions: AuthOptions = {
           );
         }
 
-        // cari user
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
         if (!user) {
           const attempts = (record?.attempts || 0) + 1;
-
           let lockoutUntil: Date | null = null;
+
           if (attempts >= MAX_LOGIN_ATTEMPTS) {
             lockoutUntil = new Date(
               now.getTime() + LOCKOUT_DURATION_HOURS * 60 * 60 * 1000
@@ -96,8 +90,8 @@ export const authOptions: AuthOptions = {
 
         if (!isPasswordValid) {
           const attempts = (record?.attempts || 0) + 1;
-
           let lockoutUntil: Date | null = null;
+
           if (attempts >= MAX_LOGIN_ATTEMPTS) {
             lockoutUntil = new Date(
               now.getTime() + LOCKOUT_DURATION_HOURS * 60 * 60 * 1000
@@ -122,10 +116,8 @@ export const authOptions: AuthOptions = {
           throw new Error("Email atau password salah.");
         }
 
-        // reset attempt
         await prisma.loginAttempt.deleteMany({ where: { ip } });
 
-        // Return data user
         return {
           id: user.id.toString(),
           email: user.email,

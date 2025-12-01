@@ -2,17 +2,28 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '@/lib/prisma';
-import { getToken } from "next-auth/jwt";
+import { jwtVerify } from "jose"; // Ganti getToken dengan jwtVerify
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // JWT AUTH UNTUK IP PUBLIC (tanpa domain)
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  // 1. Ambil cookie manual bernama 'token' (sesuai yang diset di login.ts)
+  const { token } = req.cookies;
+  const SECRET = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET; // Pastikan env variable sama dengan login.ts
 
+  // 2. Cek apakah token ada
   if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: "Unauthorized: Token not found" });
+  }
+
+  // 3. Verifikasi Token menggunakan jose (sama seperti saat sign di login.ts)
+  try {
+    const secretKey = new TextEncoder().encode(SECRET);
+    await jwtVerify(token, secretKey);
+    // Jika lolos baris ini, berarti token valid
+  } catch (err) {
+    return res.status(401).json({ error: "Unauthorized: Invalid token" });
   }
 
   if (req.method !== "GET") {
