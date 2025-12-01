@@ -52,7 +52,6 @@ const StatCard = ({
       transition={{ duration: 0.3 }}
       className={`relative overflow-hidden rounded-2xl ${gradient} p-6 md:p-8 shadow-lg hover:shadow-2xl transition-shadow duration-300 group cursor-pointer`}
     >
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -mr-16 -mt-16"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full -ml-12 -mb-12"></div>
@@ -78,7 +77,6 @@ const StatCard = ({
         </div>
       </div>
 
-      {/* Shine Effect */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
         animate={{ x: ["-100%", "100%"] }}
@@ -96,12 +94,16 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch("/api/admin/stats");
+        const res = await fetch("/api/admin/stats", {
+          method: "GET",
+          credentials: "include",      // ⬅️ FIX PENTING AGAR COOKIE TERKIRIM
+        });
+
         if (!res.ok) throw new Error("Gagal memuat statistik");
         const data = await res.json();
         setStats(data);
       } catch (err) {
-        console.error(err);
+        console.error("Error load stats:", err);
       } finally {
         setIsLoading(false);
       }
@@ -144,7 +146,6 @@ export default function AdminDashboard() {
 
   return (
     <AdminLayout>
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -187,12 +188,11 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Main Content Grid */}
+      {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8">
         
-        {/* Left Column - Charts & Events */}
+        {/* Left Column */}
         <div className="lg:col-span-3 space-y-6 md:space-y-8">
-          {/* Chart */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
             </div>
           </motion.div>
 
-          {/* Events */}
+          {/* Recent Events */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -260,6 +260,7 @@ export default function AdminDashboard() {
               </div>
               Event Terbaru
             </h3>
+
             <div className="space-y-3">
               {isLoading ? (
                 Array.from({ length: 3 }).map((_, i) => (
@@ -303,9 +304,9 @@ export default function AdminDashboard() {
           </motion.div>
         </div>
 
-        {/* Right Column - Activity & Quick Actions */}
+        {/* Right Column */}
         <div className="lg:col-span-2 space-y-6 md:space-y-8">
-          {/* Recent Activity */}
+          {/* Recent News */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -317,6 +318,7 @@ export default function AdminDashboard() {
               </div>
               Aktivitas Terbaru
             </h3>
+
             <div className="space-y-3">
               {isLoading ? (
                 Array.from({ length: 4 }).map((_, i) => (
@@ -373,6 +375,7 @@ export default function AdminDashboard() {
               </div>
               Aksi Cepat
             </h3>
+
             <div className="space-y-3">
               <Link href="/admin/event/tambah" legacyBehavior>
                 <motion.a
@@ -383,6 +386,7 @@ export default function AdminDashboard() {
                   <FiArrowRight className="transition-transform group-hover:translate-x-1" />
                 </motion.a>
               </Link>
+
               <Link href="/admin/galeri/tambah" legacyBehavior>
                 <motion.a
                   whileHover={{ x: 4 }}
@@ -392,6 +396,7 @@ export default function AdminDashboard() {
                   <FiArrowRight className="transition-transform group-hover:translate-x-1" />
                 </motion.a>
               </Link>
+
               <Link href="/admin/kategori" legacyBehavior>
                 <motion.a
                   whileHover={{ x: 4 }}
