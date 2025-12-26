@@ -314,5 +314,3 @@ docker-compose up -d
 MIT License - lihat file [LICENSE](LICENSE) untuk detail lengkap.
 
 ---
-
-Dikembangkan oleh Tim HIMPENAS - Institut Teknologi Sains Bandung
