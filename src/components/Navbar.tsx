@@ -148,11 +148,7 @@ const Navbar: React.FC = () => {
                 `}></span>
                 
                 {/* Background hover effect */}
-                <span className="
-                  absolute inset-0 rounded-lg bg-white/5
-                  transform scale-0 group-hover:scale-100
-                  transition-transform duration-300
-                "></span>
+                <span className="absolute inset-0 rounded-lg bg-white/5 transform scale-0 group-hover:scale-100 transition-transform duration-300"></span>
 
                 {/* Active indicator glow */}
                 {isActive && (
@@ -167,9 +163,7 @@ const Navbar: React.FC = () => {
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle Menu"
-          className="md:hidden relative w-10 h-10 flex items-center justify-center
-                     text-white hover:text-green-200 transition-colors duration-300
-                     focus:outline-none group"
+          className="md:hidden relative w-10 h-10 flex items-center justify-center text-white hover:text-green-200 transition-colors duration-300 focus:outline-none group"
         >
           <div className="w-6 h-5 flex flex-col justify-between">
             <span className={`
@@ -313,3 +307,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+

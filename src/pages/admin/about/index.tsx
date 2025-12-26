@@ -5,7 +5,7 @@ import AdminLayout from "../_layout";
 import { Toaster, toast } from "sonner";
 import { Save, Loader2, Info, AlertCircle, CheckCircle2, FileText, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.snow.css";
 import type ReactQuillType from "react-quill";
 import dynamic from "next/dynamic";
 

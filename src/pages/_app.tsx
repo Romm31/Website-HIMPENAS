@@ -5,7 +5,7 @@ import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.snow.css";
 import { Toaster } from "react-hot-toast";
 import LoadingScreen from "@/components/LoadingScreen";
 

@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ArrowLeft, Save, Loader2, Image as ImageIcon, X, Eye, CheckCircle2, AlertCircle, FileText, Settings, Upload, Plus, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
-import "react-quill/dist/quill.snow.css";
+import "quill/dist/quill.snow.css";
 import type ReactQuillType from "react-quill";
 
 const ReactQuill = dynamic(

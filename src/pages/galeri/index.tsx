@@ -82,7 +82,7 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
         className="relative bg-gradient-to-br from-emerald-dark via-emerald-himp to-emerald-700 text-white pt-32 md:pt-40 pb-28 md:pb-36 overflow-hidden"
       >
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-15">
           <Image
             src="/header/event-header.jpeg"
             fill
@@ -93,7 +93,7 @@ const GaleriPage: NextPage<GaleriPageProps> = ({
         </div>
 
         {/* Animated Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/90 via-emerald-himp/80 to-emerald-700/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-dark/50 via-emerald-himp/50 to-emerald-700/50"></div>
 
         {/* Decorative Shapes */}
         <motion.div 

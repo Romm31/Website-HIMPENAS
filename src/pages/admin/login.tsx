@@ -228,9 +228,7 @@ export default function AdminLogin() {
                         onFocus={() => setFocusedInput('email')}
                         onBlur={() => setFocusedInput(null)}
                         required
-                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl
-                                   focus:bg-white focus:border-emerald-himp focus:outline-none
-                                   transition-all duration-300 text-gray-900"
+                        className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:bg-white focus:border-emerald-himp focus:outline-none transition-all duration-300 text-gray-900"
                         placeholder="admin@himpenas.org"
                         autoComplete="email"
                       />
@@ -256,9 +254,7 @@ export default function AdminLogin() {
                         onFocus={() => setFocusedInput('password')}
                         onBlur={() => setFocusedInput(null)}
                         required
-                        className="w-full pl-12 pr-12 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl
-                                   focus:bg-white focus:border-emerald-himp focus:outline-none
-                                   transition-all duration-300 text-gray-900"
+                        className="w-full pl-12 pr-12 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:bg-white focus:border-emerald-himp focus:outline-none transition-all duration-300 text-gray-900"
                         placeholder="••••••••"
                         autoComplete="current-password"
                       />
@@ -339,3 +335,4 @@ export default function AdminLogin() {
     </>
   );
 }
+
