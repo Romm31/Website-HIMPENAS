@@ -353,12 +353,12 @@ const TentangPage: NextPage<TentangPageProps> = ({ about }) => {
               >
                 <TeamCard
                   imageUrl="/struktur/ketua.jpg"
-                  name="Nama Ketua"
+                  name="Nathanael J Munthe"
                   role="Ketua Himpunan"
                 />
                 <TeamCard
                   imageUrl="/struktur/wakil.jpg"
-                  name="Nama Wakil"
+                  name="Atha F. Sitorus"
                   role="Wakil Ketua Himpunan"
                 />
               </motion.div>

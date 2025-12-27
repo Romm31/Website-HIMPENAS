@@ -145,7 +145,7 @@ const Footer: React.FC = () => {
                   <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-emerald-himp/20 transition-colors duration-300">
                     <MapPin className="w-5 h-5" />
                   </div>
-                  <span className="text-sm">Kota Deltamas Lot-A1 CBD,<br/>Jl. Ganesha Boulevard No.1 Blok A,<br/>Pasirranji, Kec. Cikarang Pusat,<br/>Kabupaten Bekasi, Jawa Barat 17530</span>
+                  <span className="text-sm">Kota Deltamas Lot-A1 CBD,<br/>Jl. Ganesha Boulevard No.1 Blok A,<br/>Pasirranji, Kec. Cikarang Pusat,<br/>Kabupaten Bekasi, Jawa Barat</span>
                 </div>
               </li>
             </ul>

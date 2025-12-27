@@ -26,6 +26,27 @@ const VisiMisiSection: React.FC<VisiMisiSectionProps> = ({ data }) => {
     return html.replace(/^<p>/gi, "").replace(/<\/p>$/gi, "").trim();
   };
 
+  // Function to format mission content into numbered list
+  const formatMisiContent = (content: string | null | undefined): string => {
+    if (!content) return "<p class='text-center text-gray-400 italic'>Belum ada misi yang ditambahkan.</p>";
+    
+    // Check if content contains numbered items like "1. ... 2. ..."
+    const numberedPattern = /(\d+)\.\s*([^0-9]+?)(?=\d+\.\s|$)/g;
+    const matches = [...content.matchAll(numberedPattern)];
+    
+    if (matches.length > 0) {
+      // Convert to ordered list
+      const listItems = matches.map(match => {
+        const text = match[2].trim();
+        return `<li>${text}</li>`;
+      }).join('');
+      return `<ol class="list-decimal list-inside space-y-3">${listItems}</ol>`;
+    }
+    
+    // Return sanitized content if no numbered pattern found
+    return sanitizeHTML(content, "<p class='text-center text-gray-400 italic'>Belum ada misi yang ditambahkan.</p>");
+  };
+
   return (
     <section className="relative py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-hidden">
       {/* Decorative Background Elements */}
@@ -161,10 +182,7 @@ const VisiMisiSection: React.FC<VisiMisiSectionProps> = ({ data }) => {
               <div
                 className="text-gray-600 leading-relaxed text-left prose prose-lg max-w-none prose-p:mb-4 prose-ul:my-4 prose-li:my-2 prose-li:before:text-emerald-himp"
                 dangerouslySetInnerHTML={{
-                  __html: sanitizeHTML(
-                    data?.misi,
-                    "<p class='text-center text-gray-400 italic'>Belum ada misi yang ditambahkan.</p>"
-                  ),
+                  __html: formatMisiContent(data?.misi),
                 }}
               />
 

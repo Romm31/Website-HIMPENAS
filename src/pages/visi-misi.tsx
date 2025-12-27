@@ -12,6 +12,27 @@ interface VisiMisiPageProps {
   misi: Misi | null;
 }
 
+// Function to format mission content into numbered list
+const formatMisiContent = (content: string | null | undefined): string => {
+  if (!content) return "<p class='text-gray-500 italic'>Misi belum diatur.</p>";
+  
+  // Check if content contains numbered items like "1. ... 2. ..."
+  const numberedPattern = /(\d+)\.\s*([^0-9]+?)(?=\d+\.\s|$)/g;
+  const matches = [...content.matchAll(numberedPattern)];
+  
+  if (matches.length > 0) {
+    // Convert to ordered list
+    const listItems = matches.map(match => {
+      const text = match[2].trim();
+      return `<li>${text}</li>`;
+    }).join('');
+    return `<ol class="list-decimal list-inside space-y-3">${listItems}</ol>`;
+  }
+  
+  // Return original content if no numbered pattern found
+  return content;
+};
+
 const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
   const headerRef = useRef<HTMLElement>(null);
   const [headerInView, setHeaderInView] = useState(false);
@@ -228,7 +249,7 @@ const VisiMisiPage: NextPage<VisiMisiPageProps> = ({ visi, misi }) => {
                                  prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700 prose-li:mb-2 prose-li:marker:text-emerald-himp
                                  prose-strong:text-emerald-himp prose-strong:font-bold"
                       dangerouslySetInnerHTML={{
-                        __html: misi?.konten || "<p class='text-gray-500 italic'>Misi belum diatur.</p>",
+                        __html: formatMisiContent(misi?.konten),
                       }}
                     />
                   </div>
