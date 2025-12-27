@@ -13,14 +13,10 @@ const Footer: React.FC = () => {
     { name: 'Galeri', href: '/galeri' },
     { name: 'Visi & Misi', href: '/visi-misi' },
     { name: 'Tentang Kami', href: '/tentang' },
-    { name: 'Kontak', href: '/kontak' },
   ];
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: '#', color: 'hover:text-blue-400' },
-    { name: 'Instagram', icon: Instagram, href: '#', color: 'hover:text-pink-400' },
-    { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:text-sky-400' },
-    { name: 'Youtube', icon: Youtube, href: '#', color: 'hover:text-red-400' },
+    { name: 'Instagram', icon: Instagram, href: 'https://www.instagram.com/himpenas_itsb?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', color: 'hover:text-pink-400' },
   ];
 
   return (
@@ -120,24 +116,13 @@ const Footer: React.FC = () => {
             <ul className="space-y-4">
               <li>
                 <a 
-                  href="mailto:info@himpenas.org" 
+                  href="mailto:himpenas@gmail.com" 
                   className="group flex items-center justify-center md:justify-start text-gray-400 hover:text-emerald-300 transition-colors duration-300"
                 >
                   <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-emerald-himp/20 transition-colors duration-300">
                     <Mail className="w-5 h-5" />
                   </div>
-                  <span className="text-sm">info@himpenas.org</span>
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="tel:+628123456789" 
-                  className="group flex items-center justify-center md:justify-start text-gray-400 hover:text-emerald-300 transition-colors duration-300"
-                >
-                  <div className="p-2 bg-gray-800 rounded-lg mr-3 group-hover:bg-emerald-himp/20 transition-colors duration-300">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <span className="text-sm">+62 812 3456 789</span>
+                  <span className="text-sm">himpenas@gmail.com</span>
                 </a>
               </li>
               <li>
@@ -176,27 +161,7 @@ const Footer: React.FC = () => {
               })}
             </div>
 
-            {/* Operating Hours */}
-            <div className="mt-8 bg-gray-800/50 rounded-xl p-4 border border-gray-800">
-              <h4 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                Jam Operasional
-              </h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-400">
-                  <span>Senin - Jumat</span>
-                  <span className="text-gray-300">08:00 - 16:00</span>
-                </div>
-                <div className="flex justify-between text-gray-400">
-                  <span>Sabtu</span>
-                  <span className="text-gray-300">09:00 - 14:00</span>
-                </div>
-                <div className="flex justify-between text-gray-500">
-                  <span>Minggu</span>
-                  <span>Tutup</span>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
 
