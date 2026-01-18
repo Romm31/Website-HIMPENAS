@@ -239,11 +239,11 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-8"
+              className="lg:col-span-8 min-w-0"
             >
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 md:p-10 lg:p-12">
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 md:p-10 lg:p-12 overflow-hidden">
                 <div
-                  className="prose prose-base md:prose-lg max-w-none 
+                  className="prose prose-base md:prose-lg max-w-none w-full break-words
                              prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mb-4
                              prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
                              prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
@@ -255,7 +255,8 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
                              prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-emerald-600
                              prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:p-4
                              prose-hr:border-gray-300 prose-hr:my-8
-                             prose-table:border-collapse prose-th:bg-emerald-50 prose-th:border prose-th:p-3 prose-td:border prose-td:p-3"
+                             prose-table:border-collapse prose-th:bg-emerald-50 prose-th:border prose-th:p-3 prose-td:border prose-td:p-3
+                             [&>*:first-child]:mt-0"
                   dangerouslySetInnerHTML={{ __html: berita.konten }}
                 />
               </div>
