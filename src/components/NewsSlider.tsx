@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useInView } from 'react-intersection-observer';
 import { ArrowLeft, ArrowRight, Calendar, Clock, TrendingUp } from 'lucide-react';
+import { getExcerpt } from '@/utils/stringUtils';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -27,12 +28,6 @@ const NewsSlider: React.FC<NewsSliderProps> = ({ berita }) => {
       month: 'short', 
       year: 'numeric' 
     });
-  };
-
-  // Function to get excerpt from konten
-  const getExcerpt = (konten: string, maxLength: number = 100) => {
-    const text = konten.replace(/<[^>]*>/g, ''); // Remove HTML tags
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
   return (

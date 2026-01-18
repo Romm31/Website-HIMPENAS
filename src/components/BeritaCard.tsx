@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, ArrowRight, Eye, Tag } from "lucide-react";
 import { motion } from "framer-motion";
+import { stripHtml, getExcerpt } from "@/utils/stringUtils";
 
 type BeritaWithKategori = Berita & { kategori: Kategori | null };
 
@@ -19,7 +20,8 @@ const BeritaCard: React.FC<BeritaCardProps> = ({ berita }) => {
   });
 
   // Calculate reading time (avg 200 words per minute)
-  const wordCount = berita.konten.replace(/<[^>]+>/g, "").split(" ").length;
+  const cleanContent = stripHtml(berita.konten);
+  const wordCount = cleanContent.split(" ").length;
   const readingTime = Math.ceil(wordCount / 200);
 
   return (
@@ -97,7 +99,7 @@ const BeritaCard: React.FC<BeritaCardProps> = ({ berita }) => {
 
           {/* Excerpt */}
           <p className="text-sm text-gray-600 line-clamp-3 flex-grow leading-relaxed mb-4">
-            {berita.konten.replace(/<[^>]+>/g, "").slice(0, 150)}...
+            {getExcerpt(berita.konten, 150)}
           </p>
 
           {/* Divider */}
