@@ -259,7 +259,8 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
                                  prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:p-4
                                  prose-hr:border-gray-300 prose-hr:my-8
                                  prose-table:border-collapse prose-th:bg-emerald-50 prose-th:border prose-th:p-3 prose-td:border prose-td:p-3
-                                 [&>*:first-child]:mt-0"
+                                 [&>*:first-child]:mt-0
+                                 [&>.ql-editor_p]:!mb-6 [&>.ql-editor_li]:!mb-2"
                       dangerouslySetInnerHTML={{ __html: berita.konten }}
                     />
                   </div>

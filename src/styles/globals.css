@@ -7,7 +7,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     @apply bg-gray-50 text-gray-900;
   }
 
@@ -82,7 +82,7 @@
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #046A38 !important; /* Warna Hijau Emerald */
+  background-color: #046a38 !important; /* Warna Hijau Emerald */
 }
 
 /* Tombol Panah Slider Berita yang elegan */
@@ -214,7 +214,7 @@
   background: #ffffff;
   border-radius: 0 0 0.5rem 0.5rem;
   min-height: 300px;
-  margin: 0 !important;       /* ❌ Hilangin margin bawah */
+  margin: 0 !important; /* ❌ Hilangin margin bawah */
   padding: 0 !important;
 }
 
@@ -269,7 +269,20 @@
   font-size: 15px;
 }
 
-.ql-editor img { max-width: 100%; border-radius: .25rem; margin: 8px 0; }
+.ql-editor img {
+  max-width: 100%;
+  border-radius: 0.25rem;
+  margin: 8px 0;
+}
+
+/* FIX: Paksa paragraf punya jarak (spasi) */
+.ql-editor p {
+  margin-bottom: 1.2em !important;
+}
+
+.ql-editor li {
+  margin-bottom: 0.5em !important;
+}
 
 .prose iframe {
   display: block;
@@ -281,7 +294,6 @@
   border-radius: 0.75rem;
   margin-right: auto;
 }
-
 
 .prose img {
   display: block;
