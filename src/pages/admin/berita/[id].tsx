@@ -334,7 +334,7 @@ export default function EditBerita() {
                 onChange={setKonten}
                 modules={modules}
                 placeholder="Tulis konten berita Anda di sini... Anda bisa copy-paste gambar ke editor ini atau gunakan tombol gambar di toolbar."
-                className="min-h-[400px]"
+                className="min-h-[400px] prose prose-base max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-emerald-600 prose-img:rounded-xl"
               />
             </div>
           </div>

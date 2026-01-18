@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Eye, Clock, Share2, Bookmark, ChevronRight, TrendingUp, Tag, ArrowLeft } from "lucide-react";
+import "react-quill-new/dist/quill.snow.css";
 
 type BeritaWithKategori = Berita & { kategori: Kategori | null };
 
@@ -242,23 +243,26 @@ const BeritaDetailPage: NextPage<BeritaDetailPageProps> = ({
               className="lg:col-span-8 min-w-0"
             >
               <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 md:p-10 lg:p-12 overflow-hidden">
-                <div
-                  className="prose prose-base md:prose-lg max-w-none w-full break-words
-                             prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mb-4
-                             prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
-                             prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
-                             prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-a:font-medium
-                             prose-strong:text-gray-900 prose-strong:font-bold
-                             prose-img:rounded-xl prose-img:shadow-lg prose-img:my-6
-                             prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:bg-emerald-50 prose-blockquote:p-4 prose-blockquote:rounded-r-lg prose-blockquote:text-gray-700 prose-blockquote:italic
-                             prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700 prose-li:mb-2
-                             prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-emerald-600
-                             prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:p-4
-                             prose-hr:border-gray-300 prose-hr:my-8
-                             prose-table:border-collapse prose-th:bg-emerald-50 prose-th:border prose-th:p-3 prose-td:border prose-td:p-3
-                             [&>*:first-child]:mt-0"
-                  dangerouslySetInnerHTML={{ __html: berita.konten }}
-                />
+                  <div className="ql-snow">
+                    <div
+                      className="ql-editor !h-auto !min-h-0 !overflow-visible !p-0 !text-base
+                                 prose prose-base md:prose-lg max-w-none w-full break-words
+                                 prose-headings:font-bold prose-headings:text-gray-900 prose-headings:mb-4
+                                 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
+                                 prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-4
+                                 prose-a:text-emerald-600 prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+                                 prose-strong:text-gray-900 prose-strong:font-bold
+                                 prose-img:rounded-xl prose-img:shadow-lg prose-img:my-6
+                                 prose-blockquote:border-l-4 prose-blockquote:border-emerald-500 prose-blockquote:bg-emerald-50 prose-blockquote:p-4 prose-blockquote:rounded-r-lg prose-blockquote:text-gray-700 prose-blockquote:italic
+                                 prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700 prose-li:mb-2
+                                 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-emerald-600
+                                 prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-xl prose-pre:p-4
+                                 prose-hr:border-gray-300 prose-hr:my-8
+                                 prose-table:border-collapse prose-th:bg-emerald-50 prose-th:border prose-th:p-3 prose-td:border prose-td:p-3
+                                 [&>*:first-child]:mt-0"
+                      dangerouslySetInnerHTML={{ __html: berita.konten }}
+                    />
+                  </div>
               </div>
 
               {/* Tags */}
