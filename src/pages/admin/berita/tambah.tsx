@@ -8,12 +8,12 @@ import Link from "next/link";
 import { ArrowLeft, Save, Loader2, Image as ImageIcon, X, Eye, CheckCircle2, AlertCircle, FileText, Settings, Upload, Plus, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
-import "quill/dist/quill.snow.css";
-import type ReactQuillType from "react-quill";
+import "react-quill-new/dist/quill.snow.css";
+import type ReactQuillType from "react-quill-new";
 
 const ReactQuill = dynamic(
   async () => {
-    const { default: RQ } = await import("react-quill");
+    const { default: RQ } = await import("react-quill-new");
     return ({ forwardedRef, ...props }: { forwardedRef: React.Ref<ReactQuillType>, [key: string]: any }) => (
       <RQ ref={forwardedRef} {...props} />
     );

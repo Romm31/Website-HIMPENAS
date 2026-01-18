@@ -5,13 +5,13 @@ import AdminLayout from "../_layout";
 import { Toaster, toast } from "sonner";
 import { Save, Loader2, Info, AlertCircle, CheckCircle2, FileText, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import "quill/dist/quill.snow.css";
-import type ReactQuillType from "react-quill";
+import "react-quill-new/dist/quill.snow.css";
+import type ReactQuillType from "react-quill-new";
 import dynamic from "next/dynamic";
 
 const ReactQuill = dynamic(
   async () => {
-    const { default: RQ } = await import("react-quill");
+    const { default: RQ } = await import("react-quill-new");
     return ({ forwardedRef, ...props }: { forwardedRef: React.Ref<ReactQuillType>, [key: string]: any }) => (
       <RQ ref={forwardedRef} {...props} />
     );
